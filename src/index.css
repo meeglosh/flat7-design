@@ -528,5 +528,5 @@ body {
 
 /* ── Mobile ──────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .theme-tab { padding: 0.35rem 0.65rem; font-size: 0.58rem; }
+  .theme-tab { padding: 0.5rem 0.9rem; font-size: 0.75rem; }
 }

@@ -146,7 +146,7 @@ export function MidCenturyPage() {
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: sans, minHeight: '100vh' }}>
       <style>{`
-        .mc-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${mono}; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; transition: color 0.2s; }
+        .mc-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${mono}; font-size: 20px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
         .mc-nav-link:hover { color: ${p.terra}; }
         .mc-project-row { transition: opacity 0.3s; }
         .mc-project-row:hover .mc-project-name { color: ${p.terra}; }
@@ -201,18 +201,18 @@ export function MidCenturyPage() {
             {/* Nav links */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
               {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
-                <a key={id} href={`#mc-${id}`} className="mc-nav-link" onClick={() => setDrawerOpen(false)} style={{ fontSize: '13px' }}>{label}</a>
+                <a key={id} href={`#mc-${id}`} className="mc-nav-link" onClick={() => setDrawerOpen(false)}>{label}</a>
               ))}
             </div>
             {/* Divider */}
             <div style={{ height: '1px', background: p.border }} />
             {/* Theme selector */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <span style={{ fontFamily: mono, fontSize: '9px', color: p.textFaint, letterSpacing: '0.3em' }}>THEME</span>
+              <span style={{ fontFamily: mono, fontSize: '12px', color: p.textFaint, letterSpacing: '0.2em' }}>THEME</span>
               <ThemeTabBar wrap />
             </div>
             {/* Light/dark toggle */}
-            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: 'transparent', border: `1px solid ${p.borderStrong}`, color: p.textMuted, fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '6px 14px', cursor: 'pointer' }}>
+            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: 'transparent', border: `1px solid ${p.borderStrong}`, color: p.textMuted, fontFamily: mono, fontSize: '14px', letterSpacing: '0.1em', padding: '10px 20px', cursor: 'pointer' }}>
               {dark ? '☀ LIGHT MODE' : '☾ DARK MODE'}
             </button>
           </div>

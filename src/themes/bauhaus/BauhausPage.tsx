@@ -121,7 +121,7 @@ export function BauhausPage() {
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: body, minHeight: '100vh' }}>
       <style>{`
-        .bh-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${display}; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; transition: color 0.15s; }
+        .bh-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${display}; font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; transition: color 0.15s; }
         .bh-nav-link:hover { color: ${p.text}; }
         .bh-proj-row:hover .bh-proj-name { opacity: 0.7; }
         @media (max-width: 768px) {
@@ -171,10 +171,10 @@ export function BauhausPage() {
             </div>
             <div style={{ height: '2px', background: p.text, opacity: 0.15 }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <span style={{ fontFamily: mono, fontSize: '9px', color: p.textMuted, letterSpacing: '0.3em' }}>THEME</span>
+              <span style={{ fontFamily: mono, fontSize: '12px', color: p.textMuted, letterSpacing: '0.2em' }}>THEME</span>
               <ThemeTabBar wrap />
             </div>
-            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: 'transparent', border: `1px solid ${p.text}`, color: p.text, fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '6px 14px', cursor: 'pointer' }}>
+            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: 'transparent', border: `1px solid ${p.text}`, color: p.text, fontFamily: mono, fontSize: '14px', letterSpacing: '0.1em', padding: '10px 20px', cursor: 'pointer' }}>
               {dark ? '☀ LIGHT MODE' : '☾ DARK MODE'}
             </button>
           </div>
