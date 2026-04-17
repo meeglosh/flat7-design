@@ -121,7 +121,7 @@ export function BauhausPage() {
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: body, minHeight: '100vh' }}>
       <style>{`
-        .bh-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${display}; font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; transition: color 0.15s; }
+        .bh-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${display}; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; transition: color 0.15s; }
         .bh-nav-link:hover { color: ${p.text}; }
         .bh-proj-row:hover .bh-proj-name { opacity: 0.7; }
         @media (max-width: 768px) {
@@ -132,6 +132,7 @@ export function BauhausPage() {
           .bh-meta-bar { display: none !important; }
           .bh-nav-links { display: none !important; }
           .bh-hamburger { display: flex !important; }
+          .bh-nav-link { font-size: 22px; letter-spacing: 0.08em; }
         }
         @media (min-width: 769px) { .bh-hamburger { display: none !important; } }
       `}</style>

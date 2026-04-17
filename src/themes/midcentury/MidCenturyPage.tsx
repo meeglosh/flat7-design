@@ -146,7 +146,7 @@ export function MidCenturyPage() {
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: sans, minHeight: '100vh' }}>
       <style>{`
-        .mc-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${mono}; font-size: 20px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+        .mc-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${mono}; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; transition: color 0.2s; }
         .mc-nav-link:hover { color: ${p.terra}; }
         .mc-project-row { transition: opacity 0.3s; }
         .mc-project-row:hover .mc-project-name { color: ${p.terra}; }
@@ -160,6 +160,7 @@ export function MidCenturyPage() {
           .mc-meta-bar { display: none !important; }
           .mc-nav-links { display: none !important; }
           .mc-hamburger { display: flex !important; }
+          .mc-nav-link { font-size: 20px; letter-spacing: 0.08em; }
         }
         @media (min-width: 769px) {
           .mc-hamburger { display: none !important; }

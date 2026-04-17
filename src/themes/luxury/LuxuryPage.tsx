@@ -112,7 +112,7 @@ export function LuxuryPage() {
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: sans, minHeight: '100vh' }}>
       <style>{`
-        .lx-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${mono}; font-size: 18px; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
+        .lx-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${mono}; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; transition: color 0.2s; }
         .lx-nav-link:hover { color: ${p.text}; }
         .lx-proj-row:hover .lx-proj-name { color: ${p.gold}; }
         .lx-proj-name { transition: color 0.25s; }
@@ -128,6 +128,7 @@ export function LuxuryPage() {
           .lx-nav-links { display: none !important; }
           .lx-cta-btn { display: none !important; }
           .lx-hamburger { display: flex !important; }
+          .lx-nav-link { font-size: 18px; letter-spacing: 0.1em; }
         }
         @media (min-width: 769px) { .lx-hamburger { display: none !important; } }
       `}</style>
