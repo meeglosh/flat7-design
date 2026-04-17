@@ -141,8 +141,8 @@ export function LuxuryPage() {
           <span style={{ fontFamily: display, fontStyle: 'italic', fontWeight: 400, fontSize: '18px', letterSpacing: '0.04em', color: p.text, marginRight: 'auto' }}>
             Mike Jerugim
           </span>
-          {['Work', 'About', 'Services', 'Contact'].map(item => (
-            <a key={item} href={`#lx-${item.toLowerCase()}`} className="lx-nav-link">{item}</a>
+          {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+            <a key={id} href={`#lx-${id}`} className="lx-nav-link">{label}</a>
           ))}
           <a href="mailto:mike@flat7.design" style={{ fontFamily: mono, fontSize: '8px', letterSpacing: '0.25em', color: p.text, textDecoration: 'none', border: `1px solid ${p.borderMid}`, padding: '7px 18px', borderRadius: '999px', transition: 'background 0.2s' }}>
             LET'S TALK

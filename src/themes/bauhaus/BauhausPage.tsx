@@ -145,8 +145,8 @@ export function BauhausPage() {
           <span style={{ fontFamily: display, fontWeight: 700, fontSize: '18px', letterSpacing: '0.06em', color: p.text, marginRight: 'auto' }}>
             FLAT7<span style={{ color: p.red }}>.</span>DESIGN
           </span>
-          {['Work', 'About', 'Services', 'Contact'].map(item => (
-            <a key={item} href={`#bh-${item.toLowerCase()}`} className="bh-nav-link">{item}</a>
+          {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+            <a key={id} href={`#bh-${id}`} className="bh-nav-link">{label}</a>
           ))}
         </div>
       </nav>

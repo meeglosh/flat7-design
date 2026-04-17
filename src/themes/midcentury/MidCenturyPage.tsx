@@ -130,6 +130,17 @@ export function MidCenturyPage() {
     return map[key] ?? p.terra;
   };
 
+  const parallaxRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const onScroll = () => {
+      if (parallaxRef.current) {
+        parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.15}px)`;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: sans, minHeight: '100vh' }}>
       <style>{`
@@ -162,15 +173,15 @@ export function MidCenturyPage() {
           <a href="#" style={{ fontFamily: serif, fontSize: '18px', fontStyle: 'italic', fontWeight: 700, color: p.text, textDecoration: 'none', marginRight: 'auto', letterSpacing: '-0.01em' }}>
             Mike Jerugim
           </a>
-          {['Work', 'About', 'Services', 'Contact'].map(item => (
-            <a key={item} href={`#mc-${item.toLowerCase()}`} className="mc-nav-link">{item}</a>
+          {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+            <a key={id} href={`#mc-${id}`} className="mc-nav-link">{label}</a>
           ))}
         </div>
       </nav>
 
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
       <section style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/mid-century1.png')", backgroundSize: 'cover', backgroundPosition: 'center bottom', transform: 'scale(1.04)' }} />
+        <div ref={parallaxRef} style={{ position: 'absolute', top: '-6%', bottom: '-6%', left: 0, right: 0, backgroundImage: "url('/mid-century1.png')", backgroundSize: 'cover', backgroundPosition: 'center bottom', willChange: 'transform' }} />
         <div style={{ position: 'absolute', inset: 0, background: p.heroOverlay }} />
 
         {/* Decorative circle */}
@@ -184,10 +195,10 @@ export function MidCenturyPage() {
 
         {/* Hero text */}
         <div className="mc-hero-text" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '60px 60px', maxWidth: '900px' }}>
-          <p style={{ fontFamily: mono, fontSize: '10px', color: p.terra, letterSpacing: '0.35em', textTransform: 'uppercase', marginBottom: '20px' }}>
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'rgba(250,243,232,0.7)', letterSpacing: '0.35em', textTransform: 'uppercase', marginBottom: '20px' }}>
             Mike Jerugim · Product Designer and Builder
           </p>
-          <h1 style={{ fontFamily: serif, fontSize: 'clamp(3rem, 6.5vw, 7rem)', fontStyle: 'italic', fontWeight: 700, lineHeight: 1.05, color: '#FAF3E8', marginBottom: '24px', textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}>
+          <h1 style={{ fontFamily: serif, fontSize: 'clamp(3rem, 6.5vw, 7rem)', fontWeight: 700, lineHeight: 1.05, color: '#FAF3E8', marginBottom: '24px', textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}>
             Human craft<br />at machine speed.
           </h1>
           <p style={{ fontFamily: sans, fontSize: '16px', color: 'rgba(250,243,232,0.75)', maxWidth: '480px', lineHeight: 1.7, marginBottom: '32px' }}>
@@ -202,7 +213,7 @@ export function MidCenturyPage() {
       {/* ── Work ────────────────────────────────────────────────────────────── */}
       <section id="mc-work" style={{ padding: '80px 40px', maxWidth: '1100px', margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '24px', marginBottom: '48px' }}>
-          <h2 style={{ fontFamily: serif, fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontStyle: 'italic', fontWeight: 700, color: p.text, lineHeight: 1 }}>Selected Work</h2>
+          <h2 style={{ fontFamily: serif, fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 700, color: p.text, lineHeight: 1 }}>Selected Work</h2>
           <div style={{ flex: 1, height: '1px', background: p.border }} />
         </div>
 
@@ -214,13 +225,13 @@ export function MidCenturyPage() {
             return (
               <div key={proj.id} ref={ref} className="mc-project-row" style={{ display: 'flex', borderTop: `1px solid ${p.border}`, padding: '36px 0', gap: '48px', alignItems: 'center', opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(16px)', transition: 'opacity 0.7s ease, transform 0.7s ease', transitionDelay: `${(i % 2) * 80}ms`, flexWrap: 'wrap' }} className="mc-project-layout">
                 {/* Number */}
-                <div style={{ width: '60px', flexShrink: 0, fontFamily: serif, fontSize: '3.5rem', fontStyle: 'italic', color: accent, opacity: 0.35, lineHeight: 1, textAlign: even ? 'left' : 'right' }}>
+                <div style={{ width: '60px', flexShrink: 0, fontFamily: serif, fontSize: '3.5rem', color: accent, opacity: 0.35, lineHeight: 1, textAlign: even ? 'left' : 'right' }}>
                   {proj.id}
                 </div>
                 {/* Content */}
                 <div style={{ flex: 1, minWidth: '240px' }}>
                   <p style={{ fontFamily: mono, fontSize: '9px', color: accent, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '10px' }}>{proj.cat}</p>
-                  <h3 className="mc-project-name" style={{ fontFamily: serif, fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontStyle: 'italic', fontWeight: 700, color: p.text, lineHeight: 1.05, marginBottom: '14px', transition: 'color 0.2s' }}>
+                  <h3 className="mc-project-name" style={{ fontFamily: serif, fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 700, color: p.text, lineHeight: 1.05, marginBottom: '14px', transition: 'color 0.2s' }}>
                     {proj.url
                       ? <a href={proj.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{proj.name} <span style={{ fontSize: '0.5em', verticalAlign: 'middle', color: accent }}>↗</span></a>
                       : proj.name
@@ -273,7 +284,7 @@ export function MidCenturyPage() {
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '24px', marginBottom: '64px' }}>
             <div style={{ flex: 1, height: '1px', background: p.border }} />
-            <h2 style={{ fontFamily: serif, fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontStyle: 'italic', fontWeight: 700, color: p.text, lineHeight: 1 }}>Ways of working</h2>
+            <h2 style={{ fontFamily: serif, fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 700, color: p.text, lineHeight: 1 }}>Ways of working</h2>
             <div style={{ flex: 1, height: '1px', background: p.border }} />
           </div>
 
@@ -283,9 +294,9 @@ export function MidCenturyPage() {
               const accent = accentColor(svc.accent);
               return (
                 <div key={svc.id} ref={ref} className="mc-service-card" style={{ background: p.cardBg, padding: '40px 32px', borderTop: `4px solid ${accent}`, opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(20px)', transition: 'opacity 0.7s ease, transform 0.7s ease, background 0.25s ease' }}>
-                  <div style={{ fontFamily: serif, fontSize: '4rem', fontStyle: 'italic', color: accent, opacity: 0.3, lineHeight: 1, marginBottom: '20px' }}>{svc.id}</div>
+                  <div style={{ fontFamily: serif, fontSize: '4rem', color: accent, opacity: 0.3, lineHeight: 1, marginBottom: '20px' }}>{svc.id}</div>
                   <div style={{ fontFamily: mono, fontSize: '9px', color: accent, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '14px' }}>{svc.duration}</div>
-                  <h3 style={{ fontFamily: serif, fontSize: '2.5rem', fontStyle: 'italic', fontWeight: 700, color: p.text, lineHeight: 1.05, marginBottom: '18px' }}>{svc.name}</h3>
+                  <h3 style={{ fontFamily: serif, fontSize: '2.5rem', fontWeight: 700, color: p.text, lineHeight: 1.05, marginBottom: '18px' }}>{svc.name}</h3>
                   <p style={{ fontFamily: sans, fontSize: '14px', color: p.textMuted, lineHeight: 1.7, marginBottom: '16px' }}>{svc.desc}</p>
                   <p style={{ fontFamily: mono, fontSize: '9px', color: p.textFaint, lineHeight: 1.6 }}>
                     <span style={{ color: p.textFaint, opacity: 0.6 }}>Ideal for · </span>{svc.ideal}
@@ -308,7 +319,7 @@ export function MidCenturyPage() {
             </h2>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <a href="mailto:mike@flat7.design" style={{ fontFamily: serif, fontSize: 'clamp(1.2rem, 2.5vw, 2rem)', fontStyle: 'italic', color: p.text, textDecoration: 'none', borderBottom: `2px solid ${p.terra}`, paddingBottom: '4px', display: 'block', marginBottom: '16px' }}>
+            <a href="mailto:mike@flat7.design" style={{ fontFamily: serif, fontSize: 'clamp(1.2rem, 2.5vw, 2rem)', color: p.text, textDecoration: 'none', borderBottom: `2px solid ${p.terra}`, paddingBottom: '4px', display: 'block', marginBottom: '16px' }}>
               Let's talk
             </a>
             <p style={{ fontFamily: mono, fontSize: '9px', color: p.textFaint, letterSpacing: '0.25em', textTransform: 'uppercase' }}>US · Canada · EU</p>

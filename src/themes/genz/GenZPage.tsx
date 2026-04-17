@@ -175,8 +175,8 @@ export function GenZPage() {
           <span style={{ fontFamily: font, fontWeight: 800, fontSize: '16px', color: p.text, marginRight: 'auto', letterSpacing: '-0.02em' }}>
             Mike Jerugim
           </span>
-          {['Work', 'About', 'Services', 'Contact'].map(item => (
-            <a key={item} href={`#gz-${item.toLowerCase()}`} className="gz-nav-link">{item}</a>
+          {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+            <a key={id} href={`#gz-${id}`} className="gz-nav-link">{label}</a>
           ))}
         </div>
       </nav>
