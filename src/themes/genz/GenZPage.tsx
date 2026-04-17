@@ -143,7 +143,7 @@ export function GenZPage() {
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: font, minHeight: '100vh' }}>
       <style>{`
-        .gz-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${font}; font-size: 26px; font-weight: 600; transition: color 0.15s; }
+        .gz-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${font}; font-size: 13px; font-weight: 600; transition: color 0.15s; }
         .gz-nav-link:hover { color: ${p.text}; }
         .gz-proj-card { transition: transform 0.22s ease, box-shadow 0.22s ease; }
         .gz-proj-card:hover { transform: translateY(-3px); box-shadow: ${dark ? '0 8px 32px rgba(0,0,0,0.5)' : '0 8px 32px rgba(100,80,200,0.14)'} !important; }
@@ -161,6 +161,7 @@ export function GenZPage() {
           .gz-meta-bar { display: none !important; }
           .gz-nav-links { display: none !important; }
           .gz-hamburger { display: flex !important; }
+          .gz-nav-link { font-size: 26px; }
         }
         @media (min-width: 769px) { .gz-hamburger { display: none !important; } }
       `}</style>
