@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0C0B0A;
+}
+
+@keyframes gradientDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(8%, -6%) scale(1.08); }
+  66%       { transform: translate(-5%, 9%) scale(0.94); }
+}
+
+@keyframes gradientDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-9%, 6%) scale(1.12); }
+  80%       { transform: translate(5%, -8%) scale(0.92); }
+}
+
+@keyframes gradientDrift3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(-7%, -6%) scale(1.1); }
+}
+
+/* Cormorant italic carries the weight of the provocation */
+.font-display em,
+h1 em,
+h2 em {
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Hover link arrow nudge */
+.arrow-link:hover .arrow {
+  transform: translateX(4px);
+}
+.arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
