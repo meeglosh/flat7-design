@@ -136,7 +136,7 @@ export function Hero() {
             </div>
 
             {/* Theme tab bar */}
-            <ThemeTabBar />
+            <ThemeTabBar wrap />
           </div>
 
           {/* Bottom tagline */}

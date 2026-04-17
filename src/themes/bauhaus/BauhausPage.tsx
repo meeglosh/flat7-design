@@ -116,6 +116,8 @@ export function BauhausPage() {
     return map[key] ?? p.red;
   };
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: body, minHeight: '100vh' }}>
       <style>{`
@@ -127,11 +129,15 @@ export function BauhausPage() {
           .bh-proj-inner { flex-direction: column !important; gap: 16px !important; }
           .bh-svc-grid { grid-template-columns: 1fr !important; }
           .bh-contact-split { flex-direction: column !important; }
+          .bh-meta-bar { display: none !important; }
+          .bh-nav-links { display: none !important; }
+          .bh-hamburger { display: flex !important; }
         }
+        @media (min-width: 769px) { .bh-hamburger { display: none !important; } }
       `}</style>
 
-      {/* ── Meta bar ──────────────────────────────────────────────────────────── */}
-      <div style={{ background: dark ? '#0A0A0A' : p.black, padding: '6px 24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', ['--fg' as string]: dark ? '245 240 232' : '245 240 232' }}>
+      {/* ── Meta bar (desktop only) ───────────────────────────────────────────── */}
+      <div className="bh-meta-bar" style={{ background: dark ? '#0A0A0A' : p.black, padding: '6px 24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', ['--fg' as string]: '245 240 232' }}>
         <span style={{ fontFamily: mono, fontSize: '9px', color: 'rgba(245,240,232,0.4)', letterSpacing: '0.35em', flexShrink: 0 }}>THEME</span>
         <ThemeTabBar />
         <button onClick={toggleColorScheme} style={{ marginLeft: 'auto', background: 'transparent', border: '1px solid rgba(245,240,232,0.3)', color: 'rgba(245,240,232,0.6)', fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '4px 10px', cursor: 'pointer', flexShrink: 0 }}>
@@ -140,15 +146,39 @@ export function BauhausPage() {
       </div>
 
       {/* ── Nav ───────────────────────────────────────────────────────────────── */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 40, background: p.navBg, backdropFilter: 'blur(10px)', borderBottom: `2px solid ${p.text}`, padding: '0 40px' }}>
-        <div style={{ maxWidth: '1140px', margin: '0 auto', display: 'flex', alignItems: 'center', height: '52px', gap: '32px' }}>
+      <nav style={{ position: 'sticky', top: 0, zIndex: 40, background: p.navBg, backdropFilter: 'blur(10px)', borderBottom: `2px solid ${p.text}` }}>
+        <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 24px 0 40px', display: 'flex', alignItems: 'center', height: '52px', gap: '32px' }}>
           <span style={{ fontFamily: display, fontWeight: 700, fontSize: '18px', letterSpacing: '0.06em', color: p.text, marginRight: 'auto' }}>
             FLAT7<span style={{ color: p.red }}>.</span>DESIGN
           </span>
-          {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
-            <a key={id} href={`#bh-${id}`} className="bh-nav-link">{label}</a>
-          ))}
+          <div className="bh-nav-links" style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+            {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+              <a key={id} href={`#bh-${id}`} className="bh-nav-link">{label}</a>
+            ))}
+          </div>
+          <button className="bh-hamburger" onClick={() => setDrawerOpen(o => !o)} style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', gap: '5px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 'auto' }}>
+            <span style={{ display: 'block', width: '22px', height: '2px', background: drawerOpen ? p.red : p.text, transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+            <span style={{ display: 'block', width: '22px', height: '2px', background: p.red, opacity: drawerOpen ? 0 : 1, transition: 'opacity 0.2s' }} />
+            <span style={{ display: 'block', width: '22px', height: '2px', background: drawerOpen ? p.red : p.text, transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+          </button>
         </div>
+        {drawerOpen && (
+          <div style={{ borderTop: `2px solid ${p.text}`, padding: '24px 24px', background: p.navBg, display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+                <a key={id} href={`#bh-${id}`} className="bh-nav-link" onClick={() => setDrawerOpen(false)}>{label}</a>
+              ))}
+            </div>
+            <div style={{ height: '2px', background: p.text, opacity: 0.15 }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <span style={{ fontFamily: mono, fontSize: '9px', color: p.textMuted, letterSpacing: '0.3em' }}>THEME</span>
+              <ThemeTabBar wrap />
+            </div>
+            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: 'transparent', border: `1px solid ${p.text}`, color: p.text, fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '6px 14px', cursor: 'pointer' }}>
+              {dark ? '☀ LIGHT MODE' : '☾ DARK MODE'}
+            </button>
+          </div>
+        )}
       </nav>
 
       {/* ── Hero ──────────────────────────────────────────────────────────────── */}

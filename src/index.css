@@ -391,19 +391,20 @@ body {
 }
 [data-style-theme="genz"] .theme-tab {
   border-radius: 999px;
-  border: 1px solid rgba(124,58,237,0.3);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.7);
   font-family: var(--font-body) !important;
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.05em;
 }
 [data-style-theme="genz"] .theme-tab:hover {
-  border-color: #FF2D78;
-  color: #FF2D78;
+  border-color: rgba(255,255,255,0.8);
+  color: #fff;
 }
 [data-style-theme="genz"] .theme-tab-active {
-  background: linear-gradient(135deg, #FF2D78, #7C3AED);
-  border-color: transparent;
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.7);
   color: white;
 }
 

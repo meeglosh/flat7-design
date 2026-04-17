@@ -130,6 +130,8 @@ export function MidCenturyPage() {
     return map[key] ?? p.terra;
   };
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   const parallaxRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const onScroll = () => {
@@ -155,11 +157,17 @@ export function MidCenturyPage() {
           .mc-service-grid { grid-template-columns: 1fr !important; }
           .mc-project-layout { flex-direction: column !important; }
           .mc-project-img { width: 100% !important; height: 220px !important; }
+          .mc-meta-bar { display: none !important; }
+          .mc-nav-links { display: none !important; }
+          .mc-hamburger { display: flex !important; }
+        }
+        @media (min-width: 769px) {
+          .mc-hamburger { display: none !important; }
         }
       `}</style>
 
-      {/* ── Theme / meta bar ────────────────────────────────────────────────── */}
-      <div style={{ background: dark ? '#0E0804' : '#EDE0C8', borderBottom: `1px solid ${p.border}`, padding: '6px 24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+      {/* ── Theme / meta bar (desktop only) ────────────────────────────────── */}
+      <div className="mc-meta-bar" style={{ background: dark ? '#0E0804' : '#EDE0C8', borderBottom: `1px solid ${p.border}`, padding: '6px 24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
         <span style={{ fontFamily: mono, fontSize: '9px', color: p.textFaint, letterSpacing: '0.3em', flexShrink: 0 }}>THEME</span>
         <ThemeTabBar />
         <button onClick={toggleColorScheme} style={{ marginLeft: 'auto', background: 'transparent', border: `1px solid ${p.borderStrong}`, color: p.textMuted, fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '4px 10px', cursor: 'pointer', flexShrink: 0 }}>
@@ -168,15 +176,47 @@ export function MidCenturyPage() {
       </div>
 
       {/* ── Navigation ──────────────────────────────────────────────────────── */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 40, background: p.navBg, backdropFilter: 'blur(12px)', borderBottom: `1px solid ${p.border}`, padding: '0 40px' }}>
+      <nav style={{ position: 'sticky', top: 0, zIndex: 40, background: p.navBg, backdropFilter: 'blur(12px)', borderBottom: `1px solid ${p.border}`, padding: '0 24px 0 40px' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', alignItems: 'center', height: '56px', gap: '32px' }}>
           <a href="#" style={{ fontFamily: serif, fontSize: '18px', fontStyle: 'italic', fontWeight: 700, color: p.text, textDecoration: 'none', marginRight: 'auto', letterSpacing: '-0.01em' }}>
             Mike Jerugim
           </a>
-          {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
-            <a key={id} href={`#mc-${id}`} className="mc-nav-link">{label}</a>
-          ))}
+          {/* Desktop nav links */}
+          <div className="mc-nav-links" style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+            {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+              <a key={id} href={`#mc-${id}`} className="mc-nav-link">{label}</a>
+            ))}
+          </div>
+          {/* Hamburger (mobile only) */}
+          <button className="mc-hamburger" onClick={() => setDrawerOpen(o => !o)} style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', gap: '5px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 'auto' }}>
+            <span style={{ display: 'block', width: '22px', height: '1.5px', background: drawerOpen ? p.terra : p.text, transition: 'transform 0.2s, opacity 0.2s', transform: drawerOpen ? 'translateY(6.5px) rotate(45deg)' : 'none' }} />
+            <span style={{ display: 'block', width: '22px', height: '1.5px', background: p.terra, opacity: drawerOpen ? 0 : 1, transition: 'opacity 0.2s' }} />
+            <span style={{ display: 'block', width: '22px', height: '1.5px', background: drawerOpen ? p.terra : p.text, transition: 'transform 0.2s, opacity 0.2s', transform: drawerOpen ? 'translateY(-6.5px) rotate(-45deg)' : 'none' }} />
+          </button>
         </div>
+
+        {/* Mobile drawer */}
+        {drawerOpen && (
+          <div style={{ borderTop: `1px solid ${p.border}`, padding: '24px', display: 'flex', flexDirection: 'column', gap: '28px', background: p.navBg }}>
+            {/* Nav links */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+              {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+                <a key={id} href={`#mc-${id}`} className="mc-nav-link" onClick={() => setDrawerOpen(false)} style={{ fontSize: '13px' }}>{label}</a>
+              ))}
+            </div>
+            {/* Divider */}
+            <div style={{ height: '1px', background: p.border }} />
+            {/* Theme selector */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <span style={{ fontFamily: mono, fontSize: '9px', color: p.textFaint, letterSpacing: '0.3em' }}>THEME</span>
+              <ThemeTabBar wrap />
+            </div>
+            {/* Light/dark toggle */}
+            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: 'transparent', border: `1px solid ${p.borderStrong}`, color: p.textMuted, fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '6px 14px', cursor: 'pointer' }}>
+              {dark ? '☀ LIGHT MODE' : '☾ DARK MODE'}
+            </button>
+          </div>
+        )}
       </nav>
 
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
