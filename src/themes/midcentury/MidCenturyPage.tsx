@@ -223,7 +223,7 @@ export function MidCenturyPage() {
             const accent = accentColor(proj.accent);
             const even = i % 2 === 0;
             return (
-              <div key={proj.id} ref={ref} className="mc-project-row" style={{ display: 'flex', borderTop: `1px solid ${p.border}`, padding: '36px 0', gap: '48px', alignItems: 'center', opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(16px)', transition: 'opacity 0.7s ease, transform 0.7s ease', transitionDelay: `${(i % 2) * 80}ms`, flexWrap: 'wrap' }} className="mc-project-layout">
+              <div key={proj.id} ref={ref} className="mc-project-row mc-project-layout" style={{ display: 'flex', borderTop: `1px solid ${p.border}`, padding: '36px 0', gap: '48px', alignItems: 'center', opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(16px)', transition: 'opacity 0.7s ease, transform 0.7s ease', transitionDelay: `${(i % 2) * 80}ms`, flexWrap: 'wrap' }}>
                 {/* Number */}
                 <div style={{ width: '60px', flexShrink: 0, fontFamily: serif, fontSize: '3.5rem', color: accent, opacity: 0.35, lineHeight: 1, textAlign: even ? 'left' : 'right' }}>
                   {proj.id}

@@ -40,6 +40,11 @@ function SceneBackground() {
       blob1: 'rgba(255,0,255,0.12)',
       blob2: 'rgba(0,255,255,0.08)',
     },
+    luxury: {
+      base: 'none',
+      blob1: 'rgba(196,168,130,0.1)',
+      blob2: 'rgba(196,168,130,0.06)',
+    },
   };
 
   const g = gradients[styleTheme];
