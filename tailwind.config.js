@@ -4,14 +4,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#0C0B0A',
-        parchment: '#F0EDE8',
-        amber: '#E8A020',
+        bg:  'rgb(var(--bg)  / <alpha-value>)',
+        fg:  'rgb(var(--fg)  / <alpha-value>)',
+        coral:    '#FF3D5A',
+        acid:     '#A8FF3E',
+        electric: '#00C8FF',
       },
       fontFamily: {
-        display: ['Cormorant Garamond', 'Georgia', 'serif'],
-        body: ['Instrument Sans', 'system-ui', 'sans-serif'],
-        mono: ['IBM Plex Mono', 'monospace'],
+        bebas: ['Bebas Neue', 'system-ui', 'sans-serif'],
+        body:  ['Space Grotesk', 'system-ui', 'sans-serif'],
+        mono:  ['IBM Plex Mono', 'monospace'],
       },
     },
   },

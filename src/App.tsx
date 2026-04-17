@@ -1,25 +1,27 @@
-import { Nav } from './components/Nav';
-import { Hero } from './components/Hero';
-import { Work } from './components/Work';
-import { About } from './components/About';
-import { Services } from './components/Services';
-import { Contact } from './components/Contact';
-import { Grain } from './components/Grain';
-import { Background } from './components/Background';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { DefaultPage } from './themes/DefaultPage';
+import { MySpacePage } from './themes/myspace/MySpacePage';
+import { MidCenturyPage } from './themes/midcentury/MidCenturyPage';
+import { BauhausPage } from './themes/bauhaus/BauhausPage';
+import { GenZPage } from './themes/genz/GenZPage';
+import { LuxuryPage } from './themes/luxury/LuxuryPage';
+
+function PageRouter() {
+  const { styleTheme } = useTheme();
+  switch (styleTheme) {
+    case 'myspace':    return <MySpacePage />;
+    case 'midcentury': return <MidCenturyPage />;
+    case 'bauhaus':    return <BauhausPage />;
+    case 'genz':       return <GenZPage />;
+    case 'luxury':     return <LuxuryPage />;
+    default:           return <DefaultPage />;
+  }
+}
 
 export default function App() {
   return (
-    <div className="min-h-screen text-parchment font-body">
-      <Background />
-      <Grain />
-      <Nav />
-      <main>
-        <Hero />
-        <Work />
-        <About />
-        <Services />
-        <Contact />
-      </main>
-    </div>
+    <ThemeProvider>
+      <PageRouter />
+    </ThemeProvider>
   );
 }
