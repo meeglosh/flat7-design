@@ -112,7 +112,7 @@ export function LuxuryPage() {
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: sans, minHeight: '100vh' }}>
       <style>{`
-        .lx-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${mono}; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; transition: color 0.2s; }
+        .lx-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${mono}; font-size: 18px; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
         .lx-nav-link:hover { color: ${p.text}; }
         .lx-proj-row:hover .lx-proj-name { color: ${p.gold}; }
         .lx-proj-name { transition: color 0.25s; }
@@ -172,10 +172,10 @@ export function LuxuryPage() {
             </div>
             <Rule color={p.border} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <span style={{ fontFamily: mono, fontSize: '8px', color: p.textFaint, letterSpacing: '0.35em' }}>THEME</span>
+              <span style={{ fontFamily: mono, fontSize: '12px', color: p.textFaint, letterSpacing: '0.2em' }}>THEME</span>
               <ThemeTabBar wrap />
             </div>
-            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: 'transparent', border: `1px solid ${p.borderMid}`, color: p.textMuted, fontFamily: mono, fontSize: '8px', letterSpacing: '0.25em', padding: '6px 16px', cursor: 'pointer' }}>
+            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: 'transparent', border: `1px solid ${p.borderMid}`, color: p.textMuted, fontFamily: mono, fontSize: '14px', letterSpacing: '0.15em', padding: '10px 20px', cursor: 'pointer' }}>
               {dark ? '○ LIGHT MODE' : '● DARK MODE'}
             </button>
           </div>

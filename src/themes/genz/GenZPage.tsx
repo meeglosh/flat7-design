@@ -143,7 +143,7 @@ export function GenZPage() {
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: font, minHeight: '100vh' }}>
       <style>{`
-        .gz-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${font}; font-size: 13px; font-weight: 600; transition: color 0.15s; }
+        .gz-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${font}; font-size: 26px; font-weight: 600; transition: color 0.15s; }
         .gz-nav-link:hover { color: ${p.text}; }
         .gz-proj-card { transition: transform 0.22s ease, box-shadow 0.22s ease; }
         .gz-proj-card:hover { transform: translateY(-3px); box-shadow: ${dark ? '0 8px 32px rgba(0,0,0,0.5)' : '0 8px 32px rgba(100,80,200,0.14)'} !important; }
@@ -200,10 +200,10 @@ export function GenZPage() {
             </div>
             <div style={{ height: '1px', background: p.border }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <span style={{ fontFamily: mono, fontSize: '9px', color: p.textFaint, letterSpacing: '0.3em' }}>THEME</span>
+              <span style={{ fontFamily: mono, fontSize: '12px', color: p.textFaint, letterSpacing: '0.3em' }}>THEME</span>
               <ThemeTabBar wrap />
             </div>
-            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)', border: 'none', color: p.textMuted, fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '7px 16px', borderRadius: '999px', cursor: 'pointer' }}>
+            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)', border: 'none', color: p.textMuted, fontFamily: mono, fontSize: '14px', letterSpacing: '0.15em', padding: '10px 20px', borderRadius: '999px', cursor: 'pointer' }}>
               {dark ? '☀ light mode' : '☾ dark mode'}
             </button>
           </div>
