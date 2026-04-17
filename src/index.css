@@ -407,6 +407,19 @@ body {
   border-color: rgba(255,255,255,0.7);
   color: white;
 }
+[data-style-theme="genz"][data-color-scheme="light"] .theme-tab {
+  border-color: rgba(102,0,238,0.25);
+  color: rgba(102,0,238,0.6);
+}
+[data-style-theme="genz"][data-color-scheme="light"] .theme-tab:hover {
+  border-color: rgba(102,0,238,0.6);
+  color: #6600EE;
+}
+[data-style-theme="genz"][data-color-scheme="light"] .theme-tab-active {
+  background: rgba(102,0,238,0.1);
+  border-color: #6600EE;
+  color: #6600EE;
+}
 
 /* ── MySpace ─────────────────────────────────────────────── */
 [data-style-theme="myspace"] .panel {
