@@ -5,43 +5,43 @@ import { ThemeTabBar } from '../../components/ThemeTabBar';
 // ─── Palette ──────────────────────────────────────────────────────────────────
 function usePalette(dark: boolean) {
   return dark ? {
-    pageBg:    '#0C0C14',
-    pageBg2:   '#12121E',
-    cardBg:    '#1A1A2E',
-    cardBg2:   '#16162A',
-    text:      '#F4F0FF',
-    textMuted: 'rgba(244,240,255,0.55)',
-    textFaint: 'rgba(244,240,255,0.3)',
-    magenta:   '#E879F9',
-    lavender:  '#A78BFA',
-    mint:      '#34D399',
-    yellow:    '#FCD34D',
-    coral:     '#FB7185',
-    sky:       '#38BDF8',
-    border:    'rgba(244,240,255,0.08)',
-    borderCard:'rgba(244,240,255,0.12)',
-    navBg:     'rgba(12,12,20,0.92)',
-    shadow:    '0 4px 24px rgba(0,0,0,0.4)',
-    shadowSm:  '0 2px 10px rgba(0,0,0,0.3)',
+    pageBg:    '#070412',
+    pageBg2:   '#0D0820',
+    cardBg:    '#110D24',
+    cardBg2:   '#0F0B1E',
+    text:      '#F0EAFF',
+    textMuted: 'rgba(240,234,255,0.6)',
+    textFaint: 'rgba(240,234,255,0.35)',
+    magenta:   '#FF00E8',
+    lavender:  '#B44FFF',
+    mint:      '#00FFB0',
+    yellow:    '#FFE600',
+    coral:     '#FF2D55',
+    sky:       '#00D4FF',
+    border:    'rgba(240,234,255,0.1)',
+    borderCard:'rgba(240,234,255,0.14)',
+    navBg:     'rgba(7,4,18,0.94)',
+    shadow:    '0 4px 32px rgba(0,0,0,0.6)',
+    shadowSm:  '0 2px 16px rgba(0,0,0,0.4)',
   } : {
-    pageBg:    '#FAFAFA',
-    pageBg2:   '#F3F0FF',
+    pageBg:    '#FBF7FF',
+    pageBg2:   '#EEE4FF',
     cardBg:    '#FFFFFF',
-    cardBg2:   '#F5F3FF',
-    text:      '#0D0D14',
-    textMuted: 'rgba(13,13,20,0.55)',
-    textFaint: 'rgba(13,13,20,0.35)',
-    magenta:   '#D946A6',
-    lavender:  '#8B5CF6',
-    mint:      '#10B981',
-    yellow:    '#F59E0B',
-    coral:     '#F43F5E',
-    sky:       '#0EA5E9',
-    border:    'rgba(13,13,20,0.07)',
-    borderCard:'rgba(13,13,20,0.09)',
-    navBg:     'rgba(250,250,250,0.9)',
-    shadow:    '0 4px 24px rgba(100,80,200,0.10)',
-    shadowSm:  '0 2px 10px rgba(100,80,200,0.07)',
+    cardBg2:   '#F3EAFF',
+    text:      '#0A0614',
+    textMuted: 'rgba(10,6,20,0.58)',
+    textFaint: 'rgba(10,6,20,0.38)',
+    magenta:   '#CC00A3',
+    lavender:  '#6600EE',
+    mint:      '#009960',
+    yellow:    '#CC8800',
+    coral:     '#E8002A',
+    sky:       '#0077DD',
+    border:    'rgba(10,6,20,0.08)',
+    borderCard:'rgba(10,6,20,0.11)',
+    navBg:     'rgba(251,247,255,0.92)',
+    shadow:    '0 4px 32px rgba(102,0,238,0.14)',
+    shadowSm:  '0 2px 16px rgba(102,0,238,0.09)',
   };
 }
 
@@ -127,17 +127,18 @@ export function GenZPage() {
 
   const pastelBg = (key: string, alpha = 1) => {
     const map: Record<string, [string, string]> = {
-      mint:     dark ? [`rgba(52,211,153,${alpha * 0.15})`, '#34D399'] : [`rgba(16,185,129,${alpha * 0.12})`, '#065F46'],
-      sky:      dark ? [`rgba(56,189,248,${alpha * 0.15})`, '#38BDF8'] : [`rgba(14,165,233,${alpha * 0.12})`, '#0C4A6E'],
-      yellow:   dark ? [`rgba(252,211,77,${alpha * 0.15})`, '#FCD34D'] : [`rgba(245,158,11,${alpha * 0.13})`, '#78350F'],
-      lavender: dark ? [`rgba(167,139,250,${alpha * 0.18})`, '#A78BFA'] : [`rgba(139,92,246,${alpha * 0.11})`, '#4C1D95'],
-      coral:    dark ? [`rgba(251,113,133,${alpha * 0.16})`, '#FB7185'] : [`rgba(244,63,94,${alpha * 0.1})`, '#881337'],
-      magenta:  dark ? [`rgba(232,121,249,${alpha * 0.16})`, '#E879F9'] : [`rgba(217,70,166,${alpha * 0.11})`, '#701A75'],
+      mint:     dark ? [`rgba(0,255,176,${alpha * 0.22})`, '#00FFB0']    : [`rgba(0,153,96,${alpha * 0.15})`, '#006640'],
+      sky:      dark ? [`rgba(0,212,255,${alpha * 0.22})`, '#00D4FF']    : [`rgba(0,119,221,${alpha * 0.14})`, '#004A99'],
+      yellow:   dark ? [`rgba(255,230,0,${alpha * 0.22})`, '#FFE600']    : [`rgba(204,136,0,${alpha * 0.16})`, '#7A4A00'],
+      lavender: dark ? [`rgba(180,79,255,${alpha * 0.28})`, '#B44FFF']   : [`rgba(102,0,238,${alpha * 0.15})`, '#4400AA'],
+      coral:    dark ? [`rgba(255,45,85,${alpha * 0.25})`, '#FF2D55']    : [`rgba(232,0,42,${alpha * 0.13})`, '#99001A'],
+      magenta:  dark ? [`rgba(255,0,232,${alpha * 0.25})`, '#FF00E8']    : [`rgba(204,0,163,${alpha * 0.14})`, '#880070'],
     };
     return map[key] ?? map['lavender'];
   };
 
   const [bgColor, textColor] = pastelBg('lavender');
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: font, minHeight: '100vh' }}>
@@ -150,35 +151,63 @@ export function GenZPage() {
         .gz-svc-card:hover { transform: translateY(-3px); }
         .gz-cta-btn { transition: transform 0.15s ease, box-shadow 0.15s ease; }
         .gz-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(217,70,166,0.35) !important; }
-        .gz-grad-hero { background: linear-gradient(135deg, ${p.magenta}, ${p.lavender}); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .gz-grad-contact { background: linear-gradient(135deg, ${p.coral}, ${p.magenta}); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gz-grad-hero { background: linear-gradient(120deg, ${p.magenta} 0%, ${p.lavender} 45%, ${p.sky} 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gz-grad-contact { background: linear-gradient(120deg, ${p.yellow} 0%, ${p.coral} 40%, ${p.magenta} 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         @media (max-width: 768px) {
           .gz-hero-inner { flex-direction: column !important; }
           .gz-bento { grid-template-columns: 1fr !important; }
           .gz-svc-grid { grid-template-columns: 1fr !important; }
           .gz-about-cols { flex-direction: column !important; }
+          .gz-meta-bar { display: none !important; }
+          .gz-nav-links { display: none !important; }
+          .gz-hamburger { display: flex !important; }
         }
+        @media (min-width: 769px) { .gz-hamburger { display: none !important; } }
       `}</style>
 
-      {/* ── Meta bar ──────────────────────────────────────────────────────────── */}
-      <div style={{ background: dark ? p.pageBg : p.lavender, padding: '6px 24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', ['--fg' as string]: dark ? '244 240 255' : '255 255 255' }}>
-        <span style={{ fontFamily: mono, fontSize: '9px', color: dark ? p.textFaint : 'rgba(255,255,255,0.5)', letterSpacing: '0.3em', flexShrink: 0 }}>THEME</span>
+      {/* ── Meta bar (desktop only) ───────────────────────────────────────────── */}
+      <div className="gz-meta-bar" style={{ background: dark ? `linear-gradient(90deg, rgba(180,79,255,0.9), rgba(255,0,232,0.85))` : `linear-gradient(90deg, ${p.lavender}, ${p.magenta})`, padding: '6px 24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', ['--fg' as string]: '255 255 255' }}>
+        <span style={{ fontFamily: mono, fontSize: '9px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.3em', flexShrink: 0 }}>THEME</span>
         <ThemeTabBar />
-        <button onClick={toggleColorScheme} style={{ marginLeft: 'auto', background: dark ? 'rgba(244,240,255,0.08)' : 'rgba(255,255,255,0.2)', border: 'none', color: dark ? p.textMuted : 'rgba(255,255,255,0.85)', fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '5px 12px', borderRadius: '999px', cursor: 'pointer', flexShrink: 0 }}>
+        <button onClick={toggleColorScheme} style={{ marginLeft: 'auto', background: 'rgba(255,255,255,0.2)', border: 'none', color: 'rgba(255,255,255,0.9)', fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '5px 12px', borderRadius: '999px', cursor: 'pointer', flexShrink: 0 }}>
           {dark ? '☀ light' : '☾ dark'}
         </button>
       </div>
 
       {/* ── Nav ───────────────────────────────────────────────────────────────── */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 40, background: p.navBg, backdropFilter: 'blur(16px)', borderBottom: `1px solid ${p.border}`, padding: '0 32px' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', alignItems: 'center', height: '56px', gap: '28px' }}>
+      <nav style={{ position: 'sticky', top: 0, zIndex: 40, background: p.navBg, backdropFilter: 'blur(16px)', borderBottom: `1px solid ${p.border}` }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 16px 0 32px', display: 'flex', alignItems: 'center', height: '56px', gap: '28px' }}>
           <span style={{ fontFamily: font, fontWeight: 800, fontSize: '16px', color: p.text, marginRight: 'auto', letterSpacing: '-0.02em' }}>
             Mike Jerugim
           </span>
-          {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
-            <a key={id} href={`#gz-${id}`} className="gz-nav-link">{label}</a>
-          ))}
+          <div className="gz-nav-links" style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
+            {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+              <a key={id} href={`#gz-${id}`} className="gz-nav-link">{label}</a>
+            ))}
+          </div>
+          <button className="gz-hamburger" onClick={() => setDrawerOpen(o => !o)} style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', gap: '5px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 'auto' }}>
+            <span style={{ display: 'block', width: '22px', height: '2px', background: drawerOpen ? p.magenta : p.text, borderRadius: '2px', transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+            <span style={{ display: 'block', width: '22px', height: '2px', background: p.magenta, borderRadius: '2px', opacity: drawerOpen ? 0 : 1, transition: 'opacity 0.2s' }} />
+            <span style={{ display: 'block', width: '22px', height: '2px', background: drawerOpen ? p.magenta : p.text, borderRadius: '2px', transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+          </button>
         </div>
+        {drawerOpen && (
+          <div style={{ borderTop: `1px solid ${p.border}`, padding: '24px 32px', background: p.navBg, display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+                <a key={id} href={`#gz-${id}`} className="gz-nav-link" onClick={() => setDrawerOpen(false)}>{label}</a>
+              ))}
+            </div>
+            <div style={{ height: '1px', background: p.border }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <span style={{ fontFamily: mono, fontSize: '9px', color: p.textFaint, letterSpacing: '0.3em' }}>THEME</span>
+              <ThemeTabBar wrap />
+            </div>
+            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)', border: 'none', color: p.textMuted, fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '7px 16px', borderRadius: '999px', cursor: 'pointer' }}>
+              {dark ? '☀ light mode' : '☾ dark mode'}
+            </button>
+          </div>
+        )}
       </nav>
 
       {/* ── Hero ──────────────────────────────────────────────────────────────── */}
@@ -358,7 +387,7 @@ export function GenZPage() {
 
       {/* ── Contact ───────────────────────────────────────────────────────────── */}
       <section id="gz-contact" style={{ padding: '0 32px 80px', maxWidth: '1100px', margin: '0 auto' }}>
-        <div style={{ background: dark ? p.cardBg : `linear-gradient(135deg, rgba(139,92,246,0.08) 0%, rgba(217,70,166,0.08) 100%)`, borderRadius: '28px', border: `1.5px solid ${p.borderCard}`, padding: 'clamp(40px, 6vw, 80px)', boxShadow: p.shadow, textAlign: 'center' }}>
+        <div style={{ background: dark ? `linear-gradient(135deg, rgba(180,79,255,0.22) 0%, rgba(255,0,232,0.18) 50%, rgba(255,45,85,0.15) 100%)` : `linear-gradient(135deg, rgba(102,0,238,0.1) 0%, rgba(204,0,163,0.1) 50%, rgba(232,0,42,0.08) 100%)`, borderRadius: '28px', border: `1.5px solid ${dark ? 'rgba(180,79,255,0.3)' : 'rgba(102,0,238,0.15)'}`, padding: 'clamp(40px, 6vw, 80px)', boxShadow: p.shadow, textAlign: 'center' }}>
           <Pill label="let's work together" bg={dark ? 'rgba(232,121,249,0.14)' : 'rgba(217,70,166,0.1)'} fg={p.magenta} size="md" />
           <h2 style={{ fontFamily: font, fontWeight: 800, fontSize: 'clamp(2.5rem, 7vw, 6rem)', letterSpacing: '-0.04em', lineHeight: 1, margin: '24px 0 20px' }}>
             Ready to move beyond{' '}

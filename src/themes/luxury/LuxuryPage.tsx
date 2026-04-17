@@ -97,6 +97,7 @@ export function LuxuryPage() {
   const sans    = "'DM Sans', system-ui, sans-serif";
   const mono    = "'DM Mono', 'IBM Plex Mono', monospace";
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const parallaxRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const onScroll = () => {
@@ -123,11 +124,16 @@ export function LuxuryPage() {
           .lx-svc-col { border-right: none !important; border-bottom: 1px solid ${p.border}; }
           .lx-about-cols { flex-direction: column !important; }
           .lx-contact-inner { flex-direction: column !important; align-items: flex-start !important; }
+          .lx-meta-bar { display: none !important; }
+          .lx-nav-links { display: none !important; }
+          .lx-cta-btn { display: none !important; }
+          .lx-hamburger { display: flex !important; }
         }
+        @media (min-width: 769px) { .lx-hamburger { display: none !important; } }
       `}</style>
 
-      {/* ── Theme / meta bar ──────────────────────────────────────────────────── */}
-      <div style={{ background: dark ? '#080706' : p.pageBg2, borderBottom: `1px solid ${p.border}`, padding: '5px 32px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+      {/* ── Theme / meta bar (desktop only) ──────────────────────────────────── */}
+      <div className="lx-meta-bar" style={{ background: dark ? '#080706' : p.pageBg2, borderBottom: `1px solid ${p.border}`, padding: '5px 32px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
         <span style={{ fontFamily: mono, fontSize: '8px', color: p.textFaint, letterSpacing: '0.35em', flexShrink: 0 }}>THEME</span>
         <ThemeTabBar />
         <button onClick={toggleColorScheme} style={{ marginLeft: 'auto', background: 'transparent', border: `1px solid ${p.borderMid}`, color: p.textMuted, fontFamily: mono, fontSize: '8px', letterSpacing: '0.25em', padding: '4px 12px', cursor: 'pointer', flexShrink: 0 }}>
@@ -137,18 +143,43 @@ export function LuxuryPage() {
 
       {/* ── Nav ───────────────────────────────────────────────────────────────── */}
       <nav style={{ position: 'sticky', top: 0, zIndex: 40, background: p.navBg, backdropFilter: 'blur(16px)' }}>
-        <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 48px', display: 'flex', alignItems: 'center', height: '60px', gap: '40px' }}>
+        <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 24px 0 48px', display: 'flex', alignItems: 'center', height: '60px', gap: '40px' }}>
           <span style={{ fontFamily: display, fontStyle: 'italic', fontWeight: 400, fontSize: '18px', letterSpacing: '0.04em', color: p.text, marginRight: 'auto' }}>
             Mike Jerugim
           </span>
-          {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
-            <a key={id} href={`#lx-${id}`} className="lx-nav-link">{label}</a>
-          ))}
-          <a href="mailto:mike@flat7.design" style={{ fontFamily: mono, fontSize: '8px', letterSpacing: '0.25em', color: p.text, textDecoration: 'none', border: `1px solid ${p.borderMid}`, padding: '7px 18px', borderRadius: '999px', transition: 'background 0.2s' }}>
+          <div className="lx-nav-links" style={{ display: 'flex', gap: '40px', alignItems: 'center' }}>
+            {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+              <a key={id} href={`#lx-${id}`} className="lx-nav-link">{label}</a>
+            ))}
+          </div>
+          <a href="mailto:mike@flat7.design" className="lx-cta-btn" style={{ fontFamily: mono, fontSize: '8px', letterSpacing: '0.25em', color: p.text, textDecoration: 'none', border: `1px solid ${p.borderMid}`, padding: '7px 18px', borderRadius: '999px', transition: 'background 0.2s' }}>
             LET'S TALK
           </a>
+          <button className="lx-hamburger" onClick={() => setDrawerOpen(o => !o)} style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', gap: '5px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 'auto' }}>
+            <span style={{ display: 'block', width: '22px', height: '1px', background: drawerOpen ? p.gold : p.text, transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(6px) rotate(45deg)' : 'none' }} />
+            <span style={{ display: 'block', width: '22px', height: '1px', background: p.gold, opacity: drawerOpen ? 0 : 1, transition: 'opacity 0.2s' }} />
+            <span style={{ display: 'block', width: '22px', height: '1px', background: drawerOpen ? p.gold : p.text, transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(-6px) rotate(-45deg)' : 'none' }} />
+          </button>
         </div>
         <Rule color={p.border} />
+        {drawerOpen && (
+          <div style={{ borderTop: `1px solid ${p.border}`, padding: '28px 32px', background: p.navBg, display: 'flex', flexDirection: 'column', gap: '28px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+                <a key={id} href={`#lx-${id}`} className="lx-nav-link" onClick={() => setDrawerOpen(false)}>{label}</a>
+              ))}
+              <a href="mailto:mike@flat7.design" className="lx-nav-link" style={{ color: p.gold }}>LET'S TALK</a>
+            </div>
+            <Rule color={p.border} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <span style={{ fontFamily: mono, fontSize: '8px', color: p.textFaint, letterSpacing: '0.35em' }}>THEME</span>
+              <ThemeTabBar wrap />
+            </div>
+            <button onClick={toggleColorScheme} style={{ alignSelf: 'flex-start', background: 'transparent', border: `1px solid ${p.borderMid}`, color: p.textMuted, fontFamily: mono, fontSize: '8px', letterSpacing: '0.25em', padding: '6px 16px', cursor: 'pointer' }}>
+              {dark ? '○ LIGHT MODE' : '● DARK MODE'}
+            </button>
+          </div>
+        )}
       </nav>
 
       {/* ── Hero ──────────────────────────────────────────────────────────────── */}
