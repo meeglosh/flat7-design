@@ -135,6 +135,13 @@ export function MySpacePage() {
 
   return (
     <div style={{ background: p.pageBg, minHeight: '100vh', fontFamily: font }}>
+      <style>{`
+        @media (max-width: 640px) {
+          .ms-main-cols { flex-direction: column !important; }
+          .ms-left-col { width: 100% !important; flex-shrink: 1 !important; }
+          .ms-friends-td { width: 50% !important; }
+        }
+      `}</style>
 
       {/* ── Meta bar: theme switcher ──────────────────────────────────────── */}
       <div style={{ background: '#222222', borderBottom: '1px solid #444', padding: '5px 8px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', ['--fg' as string]: '255 255 255' }}>
@@ -198,10 +205,10 @@ export function MySpacePage() {
           </div>
 
           {/* Two-column layout */}
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          <div className="ms-main-cols" style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
             {/* ── LEFT COLUMN ─────────────────────────────────────────────── */}
-            <div style={{ width: '240px', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div className="ms-left-col" style={{ width: '240px', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
 
               {/* Photo + info */}
               <table style={{ width: '100%', borderCollapse: 'collapse', border: `1px solid ${p.cellBorder}` }}>
@@ -397,7 +404,7 @@ export function MySpacePage() {
                   </tr>
                   <tr>
                     {PROJECTS.slice(0, 4).map(proj => (
-                      <td key={proj.name} style={{ ...cell, background: p.row2, textAlign: 'center', width: '25%', borderTop: `1px solid ${p.cellBorder}` }}>
+                      <td key={proj.name} className="ms-friends-td" style={{ ...cell, background: p.row2, textAlign: 'center', width: '25%', borderTop: `1px solid ${p.cellBorder}` }}>
                         <div>
                           {proj.url
                             ? <a href={proj.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
@@ -420,7 +427,7 @@ export function MySpacePage() {
                   </tr>
                   <tr>
                     {PROJECTS.slice(4).map(proj => (
-                      <td key={proj.name} style={{ ...cell, background: p.row1, textAlign: 'center', width: '25%', borderTop: `1px solid ${p.cellBorder}` }}>
+                      <td key={proj.name} className="ms-friends-td" style={{ ...cell, background: p.row1, textAlign: 'center', width: '25%', borderTop: `1px solid ${p.cellBorder}` }}>
                         {proj.url
                           ? <a href={proj.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                               <div style={{ width: '80px', height: '80px', margin: '0 auto', background: proj.color, border: `1px solid ${p.friendBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Arial Black", sans-serif', fontSize: '22px', color: '#fff' }}>
