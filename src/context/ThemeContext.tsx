@@ -8,6 +8,7 @@ export type StyleTheme  = 'noir' | 'midcentury' | 'bauhaus' | 'genz' | 'myspace'
 const THEME_COLOR_DEFAULTS: Partial<Record<StyleTheme, ColorScheme>> = {
   myspace:    'light',
   midcentury: 'light',
+  bauhaus:    'light',
 };
 
 const schemeKey = (t: StyleTheme) => `colorScheme_${t}`;
