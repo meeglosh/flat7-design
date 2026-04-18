@@ -340,22 +340,6 @@ export function GenZPage() {
                 <p><strong><em>The AI space has a slop problem.</em></strong> Speed-to-market pressure pushes teams to accept whatever the model generates. I help teams move beyond that. Design isn't a layer you apply at the end  -  it's the difference between an output you settled for and <span style={{ color: p.text, fontWeight: 700 }}>one you sculpted.</span></p>
               </div>
 
-              {/* Fun stat cards */}
-              <div style={{ display: 'flex', gap: '12px', marginTop: '36px', flexWrap: 'wrap' }}>
-                {[
-                  { stat: '3', label: 'Continents', color: 'mint' },
-                  { stat: '10+', label: 'Years shipping', color: 'coral' },
-                  { stat: 'AI-native', label: 'by design', color: 'lavender' },
-                ].map(({ stat, label, color }) => {
-                  const [bg, fg] = pastelBg(color);
-                  return (
-                    <div key={label} style={{ background: p.cardBg, borderRadius: '16px', border: `1.5px solid ${p.borderCard}`, padding: '20px 24px', flex: 1, minWidth: '100px', boxShadow: p.shadowSm }}>
-                      <div style={{ fontFamily: font, fontWeight: 800, fontSize: '1.8rem', letterSpacing: '-0.03em', color: fg, marginBottom: '4px' }}>{stat}</div>
-                      <div style={{ fontFamily: font, fontSize: '12px', color: p.textFaint, fontWeight: 500 }}>{label}</div>
-                    </div>
-                  );
-                })}
-              </div>
             </div>
           </div>
         </div>
