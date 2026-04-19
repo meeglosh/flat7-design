@@ -71,16 +71,16 @@ function usePalette(dark: boolean) {
 }
 
 const PROJECTS = [
-  { name: 'Onix',        cat: 'Health AI',     url: 'https://onix.life',                    color: '#cc3344', initials: 'Ox' },
-  { name: 'Soluna',      cat: 'Mental Health', url: 'https://solunaapp.com',                color: '#7733aa', initials: 'Sl' },
-  { name: 'Wingman',     cat: 'Productivity',  url: 'https://wingman.design',  color: '#449933', initials: 'Wm' },
-  { name: 'Woltspace',   cat: 'AI Infra',      url: 'https://woltspace.com',                color: '#885511', initials: 'Ws' },
-  { name: 'Signal Desk', cat: 'Audio Tools',   url: 'https://signaldeskpro.com',            color: '#116677', initials: 'SD' },
-  { name: 'Decathlon',   cat: 'E-Commerce',   url: 'https://www.decathlon.ca/en',           color: '#005580', initials: 'Dc' },
-  { name: 'Hololabs',    cat: 'AR/VR',        url: 'https://hololabs.org/',                 color: '#660066', initials: 'Hl' },
-  { name: 'Bandsintown', cat: 'Music Tech',   url: 'https://www.artist.bandsintown.com/',   color: '#883300', initials: 'Bt' },
-  { name: 'Flashtract',  cat: 'Const. Tech',  url: 'https://flashtract.com/',               color: '#336600', initials: 'Ft' },
-  { name: 'Estateably',  cat: 'LegalTech',    url: 'https://www.estateably.com/',           color: '#554400', initials: 'Es' },
+  { name: 'Onix',        cat: 'Health AI',     url: 'https://onix.life',                    color: '#cc3344', initials: 'Ox', thumb: '/thumbnails/myspace/onix.png' },
+  { name: 'Soluna',      cat: 'Mental Health', url: 'https://solunaapp.com',                color: '#7733aa', initials: 'Sl', thumb: '/thumbnails/myspace/soluna.png' },
+  { name: 'Wingman',     cat: 'Productivity',  url: 'https://wingman.design',               color: '#449933', initials: 'Wm', thumb: '/thumbnails/myspace/wingman.png' },
+  { name: 'Woltspace',   cat: 'AI Infra',      url: 'https://woltspace.com',                color: '#885511', initials: 'Ws', thumb: '/thumbnails/myspace/woltspace.png' },
+  { name: 'Signal Desk', cat: 'Audio Tools',   url: 'https://signaldeskpro.com',            color: '#116677', initials: 'SD', thumb: '/thumbnails/myspace/signal-desk.png' },
+  { name: 'Decathlon',   cat: 'E-Commerce',    url: 'https://www.decathlon.ca/en',          color: '#005580', initials: 'Dc', thumb: '/thumbnails/myspace/decathlon.png' },
+  { name: 'Hololabs',    cat: 'AR/VR',         url: 'https://hololabs.org/',                color: '#660066', initials: 'Hl', thumb: '/thumbnails/myspace/hololabs.png' },
+  { name: 'Bandsintown', cat: 'Music Tech',    url: 'https://www.artist.bandsintown.com/',  color: '#883300', initials: 'Bt', thumb: '/thumbnails/myspace/bandsintown.png' },
+  { name: 'Flashtract',  cat: 'Const. Tech',   url: 'https://flashtract.com/',              color: '#336600', initials: 'Ft', thumb: '/thumbnails/myspace/flashtract.png' },
+  { name: 'Estateably',  cat: 'LegalTech',     url: 'https://www.estateably.com/',          color: '#554400', initials: 'Es', thumb: '/thumbnails/myspace/estateably.png' },
 ];
 
 const SERVICES = [
@@ -402,54 +402,34 @@ export function MySpacePage() {
                       </span>
                     </td>
                   </tr>
-                  <tr>
-                    {PROJECTS.slice(0, 4).map(proj => (
-                      <td key={proj.name} className="ms-friends-td" style={{ ...cell, background: p.row2, textAlign: 'center', width: '25%', borderTop: `1px solid ${p.cellBorder}` }}>
-                        <div>
-                          {proj.url
-                            ? <a href={proj.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                                <div style={{ width: '80px', height: '80px', margin: '0 auto', background: proj.color, border: `1px solid ${p.friendBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Arial Black", sans-serif', fontSize: '22px', color: '#fff' }}>
-                                  {proj.initials}
-                                </div>
-                                <div style={{ marginTop: '3px', ...link, textDecoration: 'none', fontWeight: 'bold', textAlign: 'center', display: 'block' }}>{proj.name}</div>
-                              </a>
-                            : <>
-                                <div style={{ width: '80px', height: '80px', margin: '0 auto', background: proj.color, border: `1px solid ${p.friendBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Arial Black", sans-serif', fontSize: '22px', color: '#fff', opacity: 0.7 }}>
-                                  {proj.initials}
-                                </div>
-                                <div style={{ marginTop: '3px', fontFamily: font, fontSize: '11px', fontWeight: 'bold', color: p.mutedText, textAlign: 'center' }}>{proj.name}</div>
-                              </>
-                          }
-                          <div style={{ fontFamily: font, fontSize: '10px', color: p.mutedText }}>{proj.cat}</div>
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
-                  <tr>
-                    {PROJECTS.slice(4).map(proj => (
-                      <td key={proj.name} className="ms-friends-td" style={{ ...cell, background: p.row1, textAlign: 'center', width: '25%', borderTop: `1px solid ${p.cellBorder}` }}>
-                        {proj.url
-                          ? <a href={proj.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                              <div style={{ width: '80px', height: '80px', margin: '0 auto', background: proj.color, border: `1px solid ${p.friendBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Arial Black", sans-serif', fontSize: '22px', color: '#fff' }}>
-                                {proj.initials}
-                              </div>
-                              <div style={{ marginTop: '3px', ...link, textDecoration: 'none', fontWeight: 'bold', textAlign: 'center', display: 'block' }}>{proj.name}</div>
-                            </a>
-                          : <>
-                              <div style={{ width: '80px', height: '80px', margin: '0 auto', background: proj.color, border: `1px solid ${p.friendBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Arial Black", sans-serif', fontSize: '22px', color: '#fff', opacity: 0.7 }}>
-                                {proj.initials}
-                              </div>
-                              <div style={{ marginTop: '3px', fontFamily: font, fontSize: '11px', fontWeight: 'bold', color: p.mutedText, textAlign: 'center' }}>{proj.name}</div>
-                            </>
-                        }
-                        <div style={{ fontFamily: font, fontSize: '10px', color: p.mutedText }}>{proj.cat}</div>
-                      </td>
-                    ))}
-                    {/* Empty padding cells */}
-                    {Array.from({ length: 4 - PROJECTS.slice(4).length }).map((_, i) => (
-                      <td key={`empty-${i}`} style={{ ...cell, background: p.row1, borderTop: `1px solid ${p.cellBorder}` }} />
-                    ))}
-                  </tr>
+                  {Array.from({ length: Math.ceil(PROJECTS.length / 4) }).map((_, rowIdx) => {
+                    const rowProjects = PROJECTS.slice(rowIdx * 4, rowIdx * 4 + 4);
+                    const rowBg = rowIdx % 2 === 0 ? p.row2 : p.row1;
+                    return (
+                      <tr key={rowIdx}>
+                        {rowProjects.map(proj => (
+                          <td key={proj.name} className="ms-friends-td" style={{ ...cell, background: rowBg, textAlign: 'center', width: '25%', borderTop: `1px solid ${p.cellBorder}` }}>
+                            <div>
+                              {proj.url
+                                ? <a href={proj.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                                    <img src={proj.thumb} alt={proj.name} style={{ width: '80px', height: '80px', margin: '0 auto', display: 'block', objectFit: 'cover', border: `1px solid ${p.friendBorder}` }} />
+                                    <div style={{ marginTop: '3px', ...link, textDecoration: 'none', fontWeight: 'bold', textAlign: 'center', display: 'block' }}>{proj.name}</div>
+                                  </a>
+                                : <>
+                                    <img src={proj.thumb} alt={proj.name} style={{ width: '80px', height: '80px', margin: '0 auto', display: 'block', objectFit: 'cover', border: `1px solid ${p.friendBorder}`, opacity: 0.7 }} />
+                                    <div style={{ marginTop: '3px', fontFamily: font, fontSize: '11px', fontWeight: 'bold', color: p.mutedText, textAlign: 'center' }}>{proj.name}</div>
+                                  </>
+                              }
+                              <div style={{ fontFamily: font, fontSize: '10px', color: p.mutedText }}>{proj.cat}</div>
+                            </div>
+                          </td>
+                        ))}
+                        {Array.from({ length: 4 - rowProjects.length }).map((_, i) => (
+                          <td key={`empty-${i}`} style={{ ...cell, background: rowBg, borderTop: `1px solid ${p.cellBorder}` }} />
+                        ))}
+                      </tr>
+                    );
+                  })}
                   <tr>
                     <td colSpan={4} style={{ ...cell, background: p.row2, textAlign: 'right', borderTop: `1px solid ${p.cellBorder}` }}>
                       <a href="#" style={{ ...link, color: p.orangeAccent, fontWeight: 'bold' }}>View All of Mike's Projects</a>

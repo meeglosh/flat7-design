@@ -40,25 +40,25 @@ function usePalette(dark: boolean) {
 }
 
 const PROJECTS = [
-  { id: '01', name: 'Onix',        cat: 'Health AI · iOS',         url: 'https://onix.life',                   accent: 'terra',
+  { id: '01', name: 'Onix',        cat: 'Health AI · iOS',         url: 'https://onix.life',                   accent: 'terra',   thumb: '/thumbnails/midcentury/onix.png',
     desc: "Expert-trained AI health companions built on a privacy-first architecture. 16 renowned specialists encode their life's work, not public internet knowledge." },
-  { id: '02', name: 'Soluna',      cat: 'Mental Health AI · iOS',  url: 'https://solunaapp.com',               accent: 'teal',
+  { id: '02', name: 'Soluna',      cat: 'Mental Health AI · iOS',  url: 'https://solunaapp.com',               accent: 'teal',    thumb: '/thumbnails/midcentury/soluna.png',
     desc: 'High-stakes UX where gentleness is a feature. Mental health support for young people, designed at the intersection of clinical rigor and human warmth.' },
-  { id: '03', name: 'Wingman',     cat: 'Productivity AI · Web',   url: 'https://wingman.design', accent: 'mustard',
+  { id: '03', name: 'Wingman',     cat: 'Productivity AI · Web',   url: 'https://wingman.design',              accent: 'mustard', thumb: '/thumbnails/midcentury/wingman.png',
     desc: 'From prompt to polished presentation. AI-driven slide generation with real themes, real typography, audio visualization, and export.' },
-  { id: '04', name: 'Woltspace',   cat: 'AI Infrastructure · Web', url: 'https://woltspace.com',               accent: 'olive',
+  { id: '04', name: 'Woltspace',   cat: 'AI Infrastructure · Web', url: 'https://woltspace.com',               accent: 'olive',   thumb: '/thumbnails/midcentury/woltspace.png',
     desc: 'Persistent workspaces for AI agents with memory, identity, and autonomy that survive across sessions. Designing for non-human collaborators.' },
-  { id: '06', name: 'Signal Desk', cat: 'Audio Tools · iOS',       url: 'https://signaldeskpro.com',           accent: 'mustard',
+  { id: '06', name: 'Signal Desk', cat: 'Audio Tools · iOS',       url: 'https://signaldeskpro.com',           accent: 'mustard', thumb: '/thumbnails/midcentury/signal-desk.png',
     desc: "Professional mix reference for producers and engineers. 12 console modes, 8 calibrated meters, speaker simulation, and export." },
-  { id: '07', name: 'Decathlon',   cat: 'E-Commerce · Web & App',  url: 'https://www.decathlon.ca/en',         accent: 'teal',
+  { id: '07', name: 'Decathlon',   cat: 'E-Commerce · Web & App',  url: 'https://www.decathlon.ca/en',         accent: 'teal',    thumb: '/thumbnails/midcentury/decathlon.png',
     desc: "Large-scale retail UX for one of the world's biggest sports brands. Accessible gear discovery across 15+ sport categories for millions of recreational athletes." },
-  { id: '08', name: 'Hololabs',    cat: 'Spatial Computing · AR/VR', url: 'https://hololabs.org/',             accent: 'terra',
+  { id: '08', name: 'Hololabs',    cat: 'Spatial Computing · AR/VR', url: 'https://hololabs.org/',             accent: 'terra',   thumb: '/thumbnails/midcentury/hololabs.png',
     desc: 'Immersive experience design for entertainment venues and theme parks. UX that lives beyond the screen  -  spatial, embodied, and physical-first.' },
-  { id: '09', name: 'Bandsintown', cat: 'Music Tech · Web',         url: 'https://www.artist.bandsintown.com/', accent: 'olive',
+  { id: '09', name: 'Bandsintown', cat: 'Music Tech · Web',         url: 'https://www.artist.bandsintown.com/', accent: 'olive',  thumb: '/thumbnails/midcentury/bandsintown.png',
     desc: 'Tour promotion and fan engagement for 700,000+ artists. Streamlining complex multi-platform logistics  -  ticketing, fan outreach, tour dates  -  into a single coherent workflow.' },
-  { id: '10', name: 'Flashtract',  cat: 'Construction Tech · Web',  url: 'https://flashtract.com/',            accent: 'mustard',
+  { id: '10', name: 'Flashtract',  cat: 'Construction Tech · Web',  url: 'https://flashtract.com/',            accent: 'mustard', thumb: '/thumbnails/midcentury/flashtract.png',
     desc: 'Billing and payment automation for the construction industry. Designing for highly regulated, multi-party financial workflows where the stakes are compliance, not convenience.' },
-  { id: '11', name: 'Estateably',  cat: 'LegalTech · Web',          url: 'https://www.estateably.com/',        accent: 'terra',
+  { id: '11', name: 'Estateably',  cat: 'LegalTech · Web',          url: 'https://www.estateably.com/',        accent: 'terra',   thumb: '/thumbnails/midcentury/estateably.png',
     desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists in high-stakes legal work.' },
 ];
 
@@ -156,7 +156,7 @@ export function MidCenturyPage() {
           .mc-two-col { flex-direction: column !important; }
           .mc-service-grid { grid-template-columns: 1fr !important; }
           .mc-project-layout { flex-direction: column !important; }
-          .mc-project-img { width: 100% !important; height: 220px !important; }
+          .mc-project-img { width: 100% !important; height: 220px !important; object-fit: cover !important; }
           .mc-meta-bar { display: none !important; }
           .mc-nav-links { display: none !important; }
           .mc-hamburger { display: flex !important; }
@@ -280,8 +280,8 @@ export function MidCenturyPage() {
                   </h3>
                   <p style={{ fontFamily: sans, fontSize: '15px', color: p.textMuted, lineHeight: 1.7, maxWidth: '520px' }}>{proj.desc}</p>
                 </div>
-                {/* Color band */}
-                <div className="mc-project-img" style={{ width: '120px', height: '80px', flexShrink: 0, background: accent, opacity: 0.15, borderRadius: '2px' }} />
+                {/* Thumbnail */}
+                <img className="mc-project-img" src={proj.thumb} alt={proj.name} style={{ width: '240px', height: '150px', flexShrink: 0, objectFit: 'cover', borderRadius: '2px', display: 'block' }} />
               </div>
             );
           })}
