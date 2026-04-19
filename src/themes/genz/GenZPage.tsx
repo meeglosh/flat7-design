@@ -5,52 +5,60 @@ import { ThemeTabBar } from '../../components/ThemeTabBar';
 // ─── Palette ──────────────────────────────────────────────────────────────────
 function usePalette(dark: boolean) {
   return dark ? {
-    pageBg:    '#070412',
-    pageBg2:   '#0D0820',
-    cardBg:    '#110D24',
-    cardBg2:   '#0F0B1E',
-    text:      '#F0EAFF',
-    textMuted: 'rgba(240,234,255,0.6)',
-    textFaint: 'rgba(240,234,255,0.35)',
-    magenta:   '#FF00E8',
-    lavender:  '#B44FFF',
-    mint:      '#00FFB0',
-    yellow:    '#FFE600',
-    coral:     '#FF2D55',
-    sky:       '#00D4FF',
-    border:    'rgba(240,234,255,0.1)',
-    borderCard:'rgba(240,234,255,0.14)',
-    navBg:     'rgba(7,4,18,0.94)',
-    shadow:    '0 4px 32px rgba(0,0,0,0.6)',
-    shadowSm:  '0 2px 16px rgba(0,0,0,0.4)',
+    pageBg:    '#0E0630',
+    pageBg2:   '#130850',
+    cardBg:    '#1A0F58',
+    text:      '#FFF8E6',
+    textMuted: 'rgba(255,248,230,0.65)',
+    textFaint: 'rgba(255,248,230,0.38)',
+    orange:    '#FF7A1A',
+    lavender:  '#AA66FF',
+    mint:      '#22D470',
+    yellow:    '#FFD60A',
+    coral:     '#FF3355',
+    sky:       '#2299FF',
+    border:    'rgba(255,248,230,0.1)',
+    borderCard:'rgba(255,248,230,0.15)',
+    navBg:     'rgba(14,6,48,0.95)',
+    shadow:    '0 4px 32px rgba(0,0,0,0.5)',
+    shadowSm:  '0 2px 16px rgba(0,0,0,0.35)',
   } : {
-    pageBg:    '#FBF7FF',
-    pageBg2:   '#EEE4FF',
+    pageBg:    '#FFFBEE',
+    pageBg2:   '#FFF3CC',
     cardBg:    '#FFFFFF',
-    cardBg2:   '#F3EAFF',
-    text:      '#0A0614',
-    textMuted: 'rgba(10,6,20,0.58)',
-    textFaint: 'rgba(10,6,20,0.38)',
-    magenta:   '#CC00A3',
-    lavender:  '#6600EE',
-    mint:      '#009960',
-    yellow:    '#CC8800',
-    coral:     '#E8002A',
-    sky:       '#0077DD',
-    border:    'rgba(10,6,20,0.08)',
-    borderCard:'rgba(10,6,20,0.11)',
-    navBg:     'rgba(251,247,255,0.92)',
-    shadow:    '0 4px 32px rgba(102,0,238,0.14)',
-    shadowSm:  '0 2px 16px rgba(102,0,238,0.09)',
+    text:      '#0A0814',
+    textMuted: 'rgba(10,8,20,0.62)',
+    textFaint: 'rgba(10,8,20,0.38)',
+    orange:    '#F06500',
+    lavender:  '#7B2FBE',
+    mint:      '#1DAF5E',
+    yellow:    '#D9920A',
+    coral:     '#CC2040',
+    sky:       '#0066CC',
+    border:    'rgba(10,8,20,0.08)',
+    borderCard:'rgba(10,8,20,0.12)',
+    navBg:     'rgba(255,251,238,0.95)',
+    shadow:    '0 4px 32px rgba(240,101,0,0.1)',
+    shadowSm:  '0 2px 16px rgba(240,101,0,0.07)',
   };
 }
+
+// Vivid solid card backgrounds
+const VIVID: Record<string, { bg: string; text: string }> = {
+  mint:     { bg: '#1DAF5E', text: '#fff' },
+  yellow:   { bg: '#FFD60A', text: '#0A0814' },
+  lavender: { bg: '#7B2FBE', text: '#fff' },
+  coral:    { bg: '#CC2040', text: '#fff' },
+  magenta:  { bg: '#F06500', text: '#fff' },
+  sky:      { bg: '#0066CC', text: '#fff' },
+};
 
 const PROJECTS = [
   { no: '01', name: 'Onix',        cat: 'Health AI · iOS',         url: 'https://onix.life',                   pastel: 'mint',   size: 'big',
     desc: 'Expert-trained AI health companions. 16 renowned specialists encode their life\'s work  -  not public internet knowledge.' },
   { no: '02', name: 'Soluna',      cat: 'Mental Health AI · iOS',  url: 'https://solunaapp.com',               pastel: 'coral',  size: 'small',
     desc: 'Mental health support for young people. Gentleness is a feature, not an afterthought.' },
-  { no: '03', name: 'Wingman',     cat: 'Productivity AI · Web',   url: 'https://wingman.design', pastel: 'yellow', size: 'small',
+  { no: '03', name: 'Wingman',     cat: 'Productivity AI · Web',   url: 'https://wingman.design',              pastel: 'yellow', size: 'small',
     desc: 'From prompt to polished presentation. AI-driven slides with real themes and real typography.' },
   { no: '04', name: 'Woltspace',   cat: 'AI Infrastructure',       url: 'https://woltspace.com',               pastel: 'lavender', size: 'medium',
     desc: 'Persistent workspaces for AI agents with memory, identity, and autonomy across sessions.' },
@@ -122,22 +130,10 @@ export function GenZPage() {
   const dark = colorScheme === 'dark';
   const p = usePalette(dark);
 
-  const font = "'Plus Jakarta Sans', system-ui, sans-serif";
-  const mono = "'IBM Plex Mono', monospace";
+  const font    = "'Plus Jakarta Sans', system-ui, sans-serif";
+  const display = "'Syne', system-ui, sans-serif";
+  const mono    = "'IBM Plex Mono', monospace";
 
-  const pastelBg = (key: string, alpha = 1) => {
-    const map: Record<string, [string, string]> = {
-      mint:     dark ? [`rgba(0,255,176,${alpha * 0.22})`, '#00FFB0']    : [`rgba(0,153,96,${alpha * 0.15})`, '#006640'],
-      sky:      dark ? [`rgba(0,212,255,${alpha * 0.22})`, '#00D4FF']    : [`rgba(0,119,221,${alpha * 0.14})`, '#004A99'],
-      yellow:   dark ? [`rgba(255,230,0,${alpha * 0.22})`, '#FFE600']    : [`rgba(204,136,0,${alpha * 0.16})`, '#7A4A00'],
-      lavender: dark ? [`rgba(180,79,255,${alpha * 0.28})`, '#B44FFF']   : [`rgba(102,0,238,${alpha * 0.15})`, '#4400AA'],
-      coral:    dark ? [`rgba(255,45,85,${alpha * 0.25})`, '#FF2D55']    : [`rgba(232,0,42,${alpha * 0.13})`, '#99001A'],
-      magenta:  dark ? [`rgba(255,0,232,${alpha * 0.25})`, '#FF00E8']    : [`rgba(204,0,163,${alpha * 0.14})`, '#880070'],
-    };
-    return map[key] ?? map['lavender'];
-  };
-
-  const [bgColor, textColor] = pastelBg('lavender');
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -145,14 +141,14 @@ export function GenZPage() {
       <style>{`
         .gz-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${font}; font-size: 13px; font-weight: 600; transition: color 0.15s; }
         .gz-nav-link:hover { color: ${p.text}; }
-        .gz-proj-card { transition: transform 0.22s ease, box-shadow 0.22s ease; }
-        .gz-proj-card:hover { transform: translateY(-3px); box-shadow: ${dark ? '0 8px 32px rgba(0,0,0,0.5)' : '0 8px 32px rgba(100,80,200,0.14)'} !important; }
-        .gz-svc-card { transition: transform 0.22s ease; }
-        .gz-svc-card:hover { transform: translateY(-3px); }
+        .gz-proj-card { transition: transform 0.22s ease, box-shadow 0.22s ease; cursor: pointer; }
+        .gz-proj-card:hover { transform: translateY(-4px) rotate(-0.5deg); box-shadow: 0 16px 40px rgba(0,0,0,0.25) !important; }
+        .gz-svc-card { transition: transform 0.22s ease, box-shadow 0.22s ease; }
+        .gz-svc-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.2) !important; }
         .gz-cta-btn { transition: transform 0.15s ease, box-shadow 0.15s ease; }
-        .gz-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(217,70,166,0.35) !important; }
-        .gz-grad-hero { background: linear-gradient(120deg, ${p.magenta} 0%, ${p.lavender} 45%, ${p.sky} 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .gz-grad-contact { background: linear-gradient(120deg, ${p.yellow} 0%, ${p.coral} 40%, ${p.magenta} 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gz-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,101,0,0.4) !important; }
+        .gz-grad-hero { background: linear-gradient(120deg, ${p.orange} 0%, ${dark ? '#FFD60A' : '#CC2040'} 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gz-grad-contact { background: linear-gradient(120deg, #FFD60A 0%, #F06500 40%, #CC2040 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         @media (max-width: 768px) {
           .gz-hero-inner { flex-direction: column !important; }
           .gz-bento { grid-template-columns: 1fr !important; }
@@ -166,19 +162,19 @@ export function GenZPage() {
         @media (min-width: 769px) { .gz-hamburger { display: none !important; } }
       `}</style>
 
-      {/* ── Meta bar (desktop only) ───────────────────────────────────────────── */}
-      <div className="gz-meta-bar" style={{ background: dark ? `linear-gradient(90deg, rgba(180,79,255,0.9), rgba(255,0,232,0.85))` : `linear-gradient(90deg, ${p.lavender}, ${p.magenta})`, padding: '6px 24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', ['--fg' as string]: '255 255 255' }}>
-        <span style={{ fontFamily: mono, fontSize: '9px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.3em', flexShrink: 0 }}>THEME</span>
+      {/* ── Meta bar ─────────────────────────────────────────────────────────── */}
+      <div className="gz-meta-bar" style={{ background: `linear-gradient(90deg, ${p.orange}, ${dark ? '#FFD60A' : '#CC2040'})`, padding: '6px 24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+        <span style={{ fontFamily: mono, fontSize: '9px', color: 'rgba(255,255,255,0.6)', letterSpacing: '0.3em', flexShrink: 0 }}>THEME</span>
         <ThemeTabBar />
-        <button onClick={toggleColorScheme} style={{ marginLeft: 'auto', background: 'rgba(255,255,255,0.2)', border: 'none', color: 'rgba(255,255,255,0.9)', fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '5px 12px', borderRadius: '999px', cursor: 'pointer', flexShrink: 0 }}>
+        <button onClick={toggleColorScheme} style={{ marginLeft: 'auto', background: 'rgba(255,255,255,0.2)', border: 'none', color: '#fff', fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '5px 12px', borderRadius: '999px', cursor: 'pointer', flexShrink: 0 }}>
           {dark ? '☀ light' : '☾ dark'}
         </button>
       </div>
 
-      {/* ── Nav ───────────────────────────────────────────────────────────────── */}
+      {/* ── Nav ──────────────────────────────────────────────────────────────── */}
       <nav style={{ position: 'sticky', top: 0, zIndex: 40, background: p.navBg, backdropFilter: 'blur(16px)', borderBottom: `1px solid ${p.border}` }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 16px 0 32px', display: 'flex', alignItems: 'center', height: '56px', gap: '28px' }}>
-          <span style={{ fontFamily: font, fontWeight: 800, fontSize: '16px', color: p.text, marginRight: 'auto', letterSpacing: '-0.02em' }}>
+          <span style={{ fontFamily: display, fontWeight: 800, fontSize: '16px', color: p.text, marginRight: 'auto', letterSpacing: '-0.01em' }}>
             Mike Jerugim
           </span>
           <div className="gz-nav-links" style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
@@ -187,9 +183,9 @@ export function GenZPage() {
             ))}
           </div>
           <button className="gz-hamburger" onClick={() => setDrawerOpen(o => !o)} style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', gap: '5px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 'auto' }}>
-            <span style={{ display: 'block', width: '22px', height: '2px', background: drawerOpen ? p.magenta : p.text, borderRadius: '2px', transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
-            <span style={{ display: 'block', width: '22px', height: '2px', background: p.magenta, borderRadius: '2px', opacity: drawerOpen ? 0 : 1, transition: 'opacity 0.2s' }} />
-            <span style={{ display: 'block', width: '22px', height: '2px', background: drawerOpen ? p.magenta : p.text, borderRadius: '2px', transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+            <span style={{ display: 'block', width: '22px', height: '2px', background: drawerOpen ? p.orange : p.text, borderRadius: '2px', transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+            <span style={{ display: 'block', width: '22px', height: '2px', background: p.orange, borderRadius: '2px', opacity: drawerOpen ? 0 : 1, transition: 'opacity 0.2s' }} />
+            <span style={{ display: 'block', width: '22px', height: '2px', background: drawerOpen ? p.orange : p.text, borderRadius: '2px', transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
           </button>
         </div>
         {drawerOpen && (
@@ -211,28 +207,26 @@ export function GenZPage() {
         )}
       </nav>
 
-      {/* ── Hero ──────────────────────────────────────────────────────────────── */}
+      {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section style={{ maxWidth: '1100px', margin: '0 auto', padding: '64px 32px 56px' }}>
-        {/* Pill badge */}
         <div style={{ marginBottom: '24px' }}>
-          <Pill label="✦ Product Designer and Builder · Available" bg={dark ? 'rgba(232,121,249,0.15)' : 'rgba(217,70,166,0.1)'} fg={p.magenta} size="md" />
+          <Pill label="✦ Product Designer and Builder · Available" bg={dark ? 'rgba(255,122,26,0.2)' : 'rgba(240,101,0,0.1)'} fg={p.orange} size="md" />
         </div>
 
-        {/* Headline */}
-        <h1 style={{ fontFamily: font, fontWeight: 800, fontSize: 'clamp(2.8rem, 6.5vw, 6.5rem)', lineHeight: 1.0, letterSpacing: '-0.035em', color: p.text, marginBottom: '28px', maxWidth: '820px' }}>
-          Making product design make sense in an{' '}
-          <span className="gz-grad-hero">
-            AI world.
-          </span>
-        </h1>
+        <div style={{ position: 'relative' }}>
+          <span style={{ position: 'absolute', top: '-12px', right: '0', fontFamily: display, fontSize: '3rem', color: p.orange, opacity: 0.5, userSelect: 'none' }}>✦</span>
+          <h1 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(2.8rem, 6.5vw, 6.5rem)', lineHeight: 1.0, letterSpacing: '-0.02em', color: p.text, marginBottom: '28px', maxWidth: '820px' }}>
+            Making product design make sense in an{' '}
+            <span className="gz-grad-hero">AI world.</span>
+          </h1>
+        </div>
 
-        {/* Subhead + CTA row */}
         <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap', marginBottom: '48px' }}>
           <p style={{ fontFamily: font, fontSize: '16px', color: p.textMuted, lineHeight: 1.7, maxWidth: '480px', flex: 1, minWidth: '260px' }}>
             Modern teams are shipping at a previously unimaginable velocity. I embed directly with cross-functional teams of builders to make sure design craft keeps pace.
           </p>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <a href="#gz-work" className="gz-cta-btn" style={{ display: 'inline-block', background: p.magenta, color: '#fff', fontFamily: font, fontWeight: 700, fontSize: '14px', padding: '14px 28px', borderRadius: '999px', textDecoration: 'none', boxShadow: `0 4px 16px rgba(217,70,166,0.25)` }}>
+            <a href="#gz-work" className="gz-cta-btn" style={{ display: 'inline-block', background: p.orange, color: '#fff', fontFamily: display, fontWeight: 800, fontSize: '14px', padding: '14px 28px', borderRadius: '999px', textDecoration: 'none', boxShadow: `0 4px 16px rgba(240,101,0,0.3)` }}>
               See my work ↓
             </a>
             <a href="mailto:mike@flat7.design" style={{ display: 'inline-block', background: 'transparent', color: p.text, fontFamily: font, fontWeight: 600, fontSize: '14px', padding: '14px 28px', borderRadius: '999px', textDecoration: 'none', border: `1.5px solid ${p.borderCard}` }}>
@@ -241,33 +235,33 @@ export function GenZPage() {
           </div>
         </div>
 
-        {/* Mini bento preview blocks */}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           {[
-            { label: 'AI-native', color: 'magenta' },
-            { label: 'UX strategy', color: 'lavender' },
-            { label: 'Design systems', color: 'mint' },
-            { label: 'Shipped products', color: 'sky' },
-            { label: 'Seed to hypergrowth', color: 'yellow' },
-          ].map(({ label, color }) => {
-            const [bg, fg] = pastelBg(color, 1);
-            return <Pill key={label} label={label} bg={bg} fg={fg} />;
-          })}
+            { label: 'AI-native',           color: p.orange },
+            { label: 'UX strategy',         color: p.lavender },
+            { label: 'Design systems',      color: p.mint },
+            { label: 'Shipped products',    color: p.sky },
+            { label: 'Seed to hypergrowth', color: p.coral },
+          ].map(({ label, color }) => (
+            <Pill key={label} label={label}
+              bg={dark ? `${color}26` : `${color}18`}
+              fg={color} />
+          ))}
         </div>
       </section>
 
-      {/* ── Work ──────────────────────────────────────────────────────────────── */}
+      {/* ── Work ─────────────────────────────────────────────────────────────── */}
       <section id="gz-work" style={{ padding: '0 32px 80px', maxWidth: '1100px', margin: '0 auto' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
-          <h2 style={{ fontFamily: font, fontWeight: 800, fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '-0.03em', color: p.text, margin: 0 }}>Selected work</h2>
-          <span style={{ fontFamily: mono, fontSize: '10px', color: p.textFaint, letterSpacing: '0.15em' }}>06 projects</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
+          <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '-0.02em', color: p.text, margin: 0 }}>Selected work</h2>
+          <span style={{ color: p.orange, fontSize: '1.4rem' }}>✦</span>
+          <span style={{ fontFamily: mono, fontSize: '10px', color: p.textFaint, letterSpacing: '0.15em' }}>10 projects</span>
         </div>
 
-        {/* Bento grid */}
         <div className="gz-bento" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', gridAutoRows: 'auto' }}>
           {PROJECTS.map((proj, i) => {
             const { ref, visible } = useReveal();
-            const [bg, fg] = pastelBg(proj.pastel);
+            const vivid = VIVID[proj.pastel] ?? VIVID['mint'];
             const isBig = proj.size === 'big';
             return (
               <div
@@ -276,9 +270,9 @@ export function GenZPage() {
                 className="gz-proj-card"
                 style={{
                   gridColumn: isBig ? 'span 2' : 'span 1',
-                  background: p.cardBg,
+                  background: vivid.bg,
                   borderRadius: '20px',
-                  border: `1.5px solid ${p.borderCard}`,
+                  border: 'none',
                   padding: isBig ? '36px' : '28px',
                   boxShadow: p.shadowSm,
                   opacity: visible ? 1 : 0,
@@ -289,24 +283,29 @@ export function GenZPage() {
                   flexDirection: isBig ? 'row' : 'column',
                   gap: isBig ? '48px' : '16px',
                   alignItems: isBig ? 'center' : 'flex-start',
+                  position: 'relative',
+                  overflow: 'hidden',
                 }}
               >
-                {/* Color blob */}
-                <div style={{ width: isBig ? '100px' : '52px', height: isBig ? '100px' : '52px', borderRadius: '50%', background: bg, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: mono, fontSize: '10px', color: fg, fontWeight: 600, opacity: 0.8 }}>{proj.no}</span>
+                {/* Decorative asterisk */}
+                <span style={{ position: 'absolute', top: '12px', right: '16px', fontFamily: display, fontSize: '1.8rem', color: vivid.text, opacity: 0.2, userSelect: 'none', lineHeight: 1 }}>✦</span>
+
+                {/* Number badge */}
+                <div style={{ width: isBig ? '64px' : '44px', height: isBig ? '64px' : '44px', borderRadius: '50%', background: 'rgba(255,255,255,0.22)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontFamily: mono, fontSize: isBig ? '14px' : '11px', color: vivid.text, fontWeight: 600 }}>{proj.no}</span>
                 </div>
 
                 <div style={{ flex: 1 }}>
                   <div style={{ marginBottom: '12px' }}>
-                    <Pill label={proj.cat} bg={bg} fg={fg} />
+                    <Pill label={proj.cat} bg="rgba(255,255,255,0.28)" fg={vivid.text} />
                   </div>
-                  <h3 style={{ fontFamily: font, fontWeight: 800, fontSize: isBig ? '2.2rem' : '1.5rem', letterSpacing: '-0.025em', color: p.text, lineHeight: 1.05, marginBottom: '10px' }}>
+                  <h3 style={{ fontFamily: display, fontWeight: 800, fontSize: isBig ? '2.2rem' : '1.5rem', letterSpacing: '-0.02em', color: vivid.text, lineHeight: 1.05, marginBottom: '10px' }}>
                     {proj.url
-                      ? <a href={proj.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{proj.name} <span style={{ fontSize: '0.45em', color: p.textFaint, verticalAlign: 'middle' }}>↗</span></a>
+                      ? <a href={proj.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{proj.name} <span style={{ fontSize: '0.45em', opacity: 0.7, verticalAlign: 'middle' }}>↗</span></a>
                       : proj.name
                     }
                   </h3>
-                  <p style={{ fontFamily: font, fontSize: isBig ? '15px' : '13px', color: p.textMuted, lineHeight: 1.65, maxWidth: isBig ? '520px' : 'none' }}>{proj.desc}</p>
+                  <p style={{ fontFamily: font, fontSize: isBig ? '15px' : '13px', color: vivid.text, opacity: 0.82, lineHeight: 1.65, maxWidth: isBig ? '520px' : 'none' }}>{proj.desc}</p>
                 </div>
               </div>
             );
@@ -314,92 +313,90 @@ export function GenZPage() {
         </div>
       </section>
 
-      {/* ── About ─────────────────────────────────────────────────────────────── */}
+      {/* ── About ────────────────────────────────────────────────────────────── */}
       <section id="gz-about" style={{ background: p.pageBg2, padding: '80px 32px' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="gz-about-cols" style={{ display: 'flex', gap: '64px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-            {/* Left */}
             <div style={{ flex: '0 0 380px', minWidth: '260px' }}>
-              <Pill label="about me" bg={dark ? 'rgba(167,139,250,0.15)' : 'rgba(139,92,246,0.1)'} fg={p.lavender} size="md" />
-              <h2 style={{ fontFamily: font, fontWeight: 800, fontSize: 'clamp(2rem, 4.5vw, 3.8rem)', letterSpacing: '-0.03em', lineHeight: 1.05, color: p.text, margin: '20px 0 28px' }}>
+              <Pill label="about me" bg={dark ? 'rgba(255,122,26,0.2)' : 'rgba(240,101,0,0.1)'} fg={p.orange} size="md" />
+              <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(2rem, 4.5vw, 3.8rem)', letterSpacing: '-0.02em', lineHeight: 1.05, color: p.text, margin: '20px 0 28px' }}>
                 I've been designing products since before "AI" was the answer to every question.
               </h2>
-              {/* Skills pills */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {SKILLS.map(skill => (
-                  <Pill key={skill} label={skill} bg={dark ? 'rgba(244,240,255,0.07)' : 'rgba(13,13,20,0.06)'} fg={p.textMuted} />
+                  <Pill key={skill} label={skill} bg={dark ? 'rgba(255,248,230,0.08)' : 'rgba(10,8,20,0.07)'} fg={p.textMuted} />
                 ))}
               </div>
             </div>
 
-            {/* Right */}
             <div style={{ flex: 1, minWidth: '260px', paddingTop: '8px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', fontFamily: font, fontSize: '15px', color: p.textMuted, lineHeight: 1.75 }}>
                 <p>My work lives at the intersection of AI capability and human judgment. I've designed health intelligence platforms, legal AI tools, agentic infrastructure, and mental wellness apps across three continents.</p>
                 <p>Before that: film post-production, a record deal with Interscope, a web studio, and a decade of shipping products from seed to hypergrowth.</p>
                 <p><strong><em>The AI space has a slop problem.</em></strong> Speed-to-market pressure pushes teams to accept whatever the model generates. I help teams move beyond that. Design isn't a layer you apply at the end  -  it's the difference between an output you settled for and <span style={{ color: p.text, fontWeight: 700 }}>one you sculpted.</span></p>
               </div>
-
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Services ──────────────────────────────────────────────────────────── */}
+      {/* ── Services ─────────────────────────────────────────────────────────── */}
       <section id="gz-services" style={{ padding: '80px 32px', maxWidth: '1100px', margin: '0 auto' }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginBottom: '32px', flexWrap: 'wrap' }}>
-          <h2 style={{ fontFamily: font, fontWeight: 800, fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '-0.03em', color: p.text, margin: 0 }}>Ways of working</h2>
-          <Pill label="pick your format" bg={dark ? 'rgba(252,211,77,0.12)' : 'rgba(245,158,11,0.1)'} fg={p.yellow} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px', flexWrap: 'wrap' }}>
+          <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '-0.02em', color: p.text, margin: 0 }}>Ways of working</h2>
+          <span style={{ color: p.orange, fontSize: '1.4rem' }}>✦</span>
+          <Pill label="pick your format" bg={dark ? 'rgba(255,214,10,0.15)' : 'rgba(217,146,10,0.12)'} fg={p.yellow} />
         </div>
 
         <div className="gz-svc-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
           {SERVICES.map((svc) => {
             const { ref, visible } = useReveal();
-            const [bg, fg] = pastelBg(svc.pastel);
+            const vivid = VIVID[svc.pastel] ?? VIVID['mint'];
             return (
-              <div key={svc.name} ref={ref} className="gz-svc-card" style={{ background: p.cardBg, borderRadius: '20px', border: `1.5px solid ${p.borderCard}`, padding: '32px', boxShadow: p.shadowSm, opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(16px)', transition: 'opacity 0.6s ease, transform 0.6s ease' }}>
+              <div key={svc.name} ref={ref} className="gz-svc-card" style={{ background: vivid.bg, borderRadius: '20px', border: 'none', padding: '32px', boxShadow: p.shadowSm, opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(16px)', transition: 'opacity 0.6s ease, transform 0.6s ease', position: 'relative', overflow: 'hidden' }}>
+                <span style={{ position: 'absolute', top: '12px', right: '16px', fontFamily: display, fontSize: '1.6rem', color: vivid.text, opacity: 0.2, userSelect: 'none' }}>✦</span>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '8px' }}>
-                  <Pill label={svc.sub} bg={bg} fg={fg} />
-                  <Pill label={svc.tag} bg={dark ? 'rgba(244,240,255,0.06)' : 'rgba(13,13,20,0.05)'} fg={p.textFaint} />
+                  <Pill label={svc.sub} bg="rgba(255,255,255,0.28)" fg={vivid.text} />
+                  <Pill label={svc.tag} bg="rgba(255,255,255,0.15)" fg={vivid.text} />
                 </div>
-                <h3 style={{ fontFamily: font, fontWeight: 800, fontSize: '1.8rem', letterSpacing: '-0.025em', color: p.text, lineHeight: 1.05, marginBottom: '14px' }}>{svc.name}</h3>
-                <p style={{ fontFamily: font, fontSize: '13px', color: p.textMuted, lineHeight: 1.7 }}>{svc.desc}</p>
+                <h3 style={{ fontFamily: display, fontWeight: 800, fontSize: '1.8rem', letterSpacing: '-0.02em', color: vivid.text, lineHeight: 1.05, marginBottom: '14px' }}>{svc.name}</h3>
+                <p style={{ fontFamily: font, fontSize: '13px', color: vivid.text, opacity: 0.82, lineHeight: 1.7 }}>{svc.desc}</p>
               </div>
             );
           })}
         </div>
       </section>
 
-      {/* ── Contact ───────────────────────────────────────────────────────────── */}
+      {/* ── Contact ──────────────────────────────────────────────────────────── */}
       <section id="gz-contact" style={{ padding: '0 32px 80px', maxWidth: '1100px', margin: '0 auto' }}>
-        <div style={{ background: dark ? `linear-gradient(135deg, rgba(180,79,255,0.22) 0%, rgba(255,0,232,0.18) 50%, rgba(255,45,85,0.15) 100%)` : `linear-gradient(135deg, rgba(102,0,238,0.1) 0%, rgba(204,0,163,0.1) 50%, rgba(232,0,42,0.08) 100%)`, borderRadius: '28px', border: `1.5px solid ${dark ? 'rgba(180,79,255,0.3)' : 'rgba(102,0,238,0.15)'}`, padding: 'clamp(40px, 6vw, 80px)', boxShadow: p.shadow, textAlign: 'center' }}>
-          <Pill label="let's work together" bg={dark ? 'rgba(232,121,249,0.14)' : 'rgba(217,70,166,0.1)'} fg={p.magenta} size="md" />
-          <h2 style={{ fontFamily: font, fontWeight: 800, fontSize: 'clamp(2.5rem, 7vw, 6rem)', letterSpacing: '-0.04em', lineHeight: 1, margin: '24px 0 20px' }}>
+        <div style={{ background: VIVID['magenta'].bg, borderRadius: '28px', padding: 'clamp(40px, 6vw, 80px)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+          <span style={{ position: 'absolute', top: '24px', left: '32px', fontFamily: display, fontSize: '3rem', color: '#fff', opacity: 0.15, userSelect: 'none' }}>✦</span>
+          <span style={{ position: 'absolute', bottom: '24px', right: '32px', fontFamily: display, fontSize: '4rem', color: '#fff', opacity: 0.1, userSelect: 'none' }}>✦</span>
+          <Pill label="let's work together" bg="rgba(255,255,255,0.25)" fg="#fff" size="md" />
+          <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(2.5rem, 7vw, 6rem)', letterSpacing: '-0.03em', lineHeight: 1, margin: '24px 0 20px', color: '#fff' }}>
             Ready to move beyond{' '}
-            <span className="gz-grad-contact">
-              AI slop?
-            </span>
+            <span className="gz-grad-contact">AI slop?</span>
           </h2>
-          <p style={{ fontFamily: font, fontSize: '16px', color: p.textMuted, lineHeight: 1.7, maxWidth: '480px', margin: '0 auto 36px' }}>
+          <p style={{ fontFamily: font, fontSize: '16px', color: 'rgba(255,255,255,0.82)', lineHeight: 1.7, maxWidth: '480px', margin: '0 auto 36px' }}>
             When your team is ready to move beyond what the model generates and start sculpting something worth shipping  -  that's the work I do.
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="mailto:mike@flat7.design" className="gz-cta-btn" style={{ display: 'inline-block', background: p.magenta, color: '#fff', fontFamily: font, fontWeight: 700, fontSize: '15px', padding: '16px 36px', borderRadius: '999px', textDecoration: 'none', boxShadow: `0 4px 20px rgba(217,70,166,0.3)` }}>
+            <a href="mailto:mike@flat7.design" className="gz-cta-btn" style={{ display: 'inline-block', background: '#fff', color: VIVID['magenta'].bg, fontFamily: display, fontWeight: 800, fontSize: '15px', padding: '16px 36px', borderRadius: '999px', textDecoration: 'none' }}>
               Let's talk ↗
             </a>
-            <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: 'transparent', color: p.text, fontFamily: font, fontWeight: 600, fontSize: '15px', padding: '16px 36px', borderRadius: '999px', textDecoration: 'none', border: `1.5px solid ${p.borderCard}` }}>
+            <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: 'rgba(255,255,255,0.2)', color: '#fff', fontFamily: font, fontWeight: 600, fontSize: '15px', padding: '16px 36px', borderRadius: '999px', textDecoration: 'none' }}>
               LinkedIn
             </a>
           </div>
-          <p style={{ fontFamily: mono, fontSize: '10px', color: p.textFaint, letterSpacing: '0.2em', marginTop: '28px', textTransform: 'uppercase' }}>US · Canada · EU</p>
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'rgba(255,255,255,0.5)', letterSpacing: '0.2em', marginTop: '28px', textTransform: 'uppercase' }}>US · Canada · EU</p>
         </div>
       </section>
 
-      {/* ── Footer ────────────────────────────────────────────────────────────── */}
+      {/* ── Footer ───────────────────────────────────────────────────────────── */}
       <footer style={{ borderTop: `1px solid ${p.border}`, padding: '24px 32px' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-          <span style={{ fontFamily: font, fontWeight: 800, fontSize: '14px', letterSpacing: '-0.02em', color: p.text }}>
-            flat7<span style={{ color: p.magenta }}>.</span>design
+          <span style={{ fontFamily: display, fontWeight: 800, fontSize: '14px', color: p.text }}>
+            flat7<span style={{ color: p.orange }}>.</span>design
           </span>
           <span style={{ fontFamily: mono, fontSize: '9px', color: p.textFaint, letterSpacing: '0.2em' }}>© {new Date().getFullYear()} Mike Jerugim</span>
           <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: font, fontWeight: 600, fontSize: '12px', color: p.textMuted, textDecoration: 'none' }}>LinkedIn ↗</a>
