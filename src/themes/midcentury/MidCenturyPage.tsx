@@ -151,12 +151,14 @@ export function MidCenturyPage() {
         .mc-project-row { transition: opacity 0.3s; }
         .mc-project-row:hover .mc-project-name { color: ${p.terra}; }
         .mc-service-card:hover { background: ${dark ? '#2A1A0C' : '#EDE0C8'} !important; }
+        .mc-project-thumb { display: block; flex-shrink: 0; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .mc-project-thumb:hover { transform: scale(1.04); box-shadow: 0 12px 32px rgba(0,0,0,0.22); }
         @media (max-width: 768px) {
           .mc-hero-text { padding: 20px !important; }
           .mc-two-col { flex-direction: column !important; }
           .mc-service-grid { grid-template-columns: 1fr !important; }
           .mc-project-layout { flex-direction: column !important; }
-          .mc-project-img { width: 100% !important; height: 220px !important; object-fit: cover !important; }
+          .mc-project-img { width: 100% !important; height: 220px !important; object-fit: cover !important; border-radius: 5px !important; }
           .mc-meta-bar { display: none !important; }
           .mc-nav-links { display: none !important; }
           .mc-hamburger { display: flex !important; }
@@ -281,7 +283,9 @@ export function MidCenturyPage() {
                   <p style={{ fontFamily: sans, fontSize: '15px', color: p.textMuted, lineHeight: 1.7, maxWidth: '520px' }}>{proj.desc}</p>
                 </div>
                 {/* Thumbnail */}
-                <img className="mc-project-img" src={proj.thumb} alt={proj.name} style={{ width: '240px', height: '150px', flexShrink: 0, objectFit: 'cover', borderRadius: '2px', display: 'block' }} />
+                <a href={proj.url} target="_blank" rel="noopener noreferrer" className="mc-project-thumb">
+                  <img className="mc-project-img" src={proj.thumb} alt={proj.name} style={{ width: '240px', height: '150px', objectFit: 'cover', borderRadius: '5px', display: 'block' }} />
+                </a>
               </div>
             );
           })}

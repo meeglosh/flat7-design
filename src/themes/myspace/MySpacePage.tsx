@@ -215,10 +215,10 @@ export function MySpacePage() {
                 <tbody>
                   <tr>
                     <td style={{ padding: '8px', background: p.row1 }}>
-                      {/* Photo placeholder */}
+                      {/* Profile photo */}
                       <div style={{ float: 'left', marginRight: '10px', marginBottom: '6px' }}>
-                        <div style={{ width: '100px', height: '100px', background: dark ? '#223344' : '#ddeeff', border: `1px solid ${p.cellBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Arial Black", sans-serif', fontSize: '28px', fontWeight: 'bold', color: p.linkColor }}>
-                          MJ
+                        <div style={{ width: '100px', height: '100px', border: `1px solid ${p.cellBorder}`, overflow: 'hidden' }}>
+                          <img src="/profile.png" alt="Mike Jerugim" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                         </div>
                         <div style={{ marginTop: '3px', textAlign: 'center' }}>
                           <span style={link}><small>View more pics</small></span>
