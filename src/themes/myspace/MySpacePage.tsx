@@ -229,8 +229,6 @@ export function MySpacePage() {
                           "Sculpting outputs,<br />not accepting them."
                         </div>
                         <div style={{ fontFamily: font, fontSize: '11px', color: p.bodyText, lineHeight: '1.7' }}>
-                          Male<br />
-                          Age undisclosed<br />
                           US · Canada · EU
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', margin: '5px 0 2px' }}>
