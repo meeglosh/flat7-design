@@ -9,7 +9,7 @@ const THEME_COLOR_DEFAULTS: Partial<Record<StyleTheme, ColorScheme>> = {
   myspace:    'light',
   midcentury: 'light',
   bauhaus:    'light',
-  genz:       'light',
+  genz:       'dark',
 };
 
 const schemeKey = (t: StyleTheme) => `colorScheme_${t}`;

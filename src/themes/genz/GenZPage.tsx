@@ -215,7 +215,7 @@ export function GenZPage() {
 
         <div style={{ position: 'relative' }}>
           <span style={{ position: 'absolute', top: '-12px', right: '0', fontFamily: display, fontSize: '3rem', color: p.orange, opacity: 0.5, userSelect: 'none' }}>✦</span>
-          <h1 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(2.8rem, 6.5vw, 6.5rem)', lineHeight: 1.0, letterSpacing: '-0.02em', color: p.text, marginBottom: '28px', maxWidth: '820px' }}>
+          <h1 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(2rem, 4.5vw, 4rem)', lineHeight: 1.0, letterSpacing: '-0.02em', color: p.text, marginBottom: '28px', maxWidth: '820px' }}>
             Making product design make sense in an{' '}
             <span className="gz-grad-hero">AI world.</span>
           </h1>
@@ -253,7 +253,7 @@ export function GenZPage() {
       {/* ── Work ─────────────────────────────────────────────────────────────── */}
       <section id="gz-work" style={{ padding: '0 32px 80px', maxWidth: '1100px', margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
-          <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '-0.02em', color: p.text, margin: 0 }}>Selected work</h2>
+          <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(1.4rem, 3vw, 2.2rem)', letterSpacing: '-0.02em', color: p.text, margin: 0 }}>Selected work</h2>
           <span style={{ color: p.orange, fontSize: '1.4rem' }}>✦</span>
           <span style={{ fontFamily: mono, fontSize: '10px', color: p.textFaint, letterSpacing: '0.15em' }}>10 projects</span>
         </div>
@@ -299,7 +299,7 @@ export function GenZPage() {
                   <div style={{ marginBottom: '12px' }}>
                     <Pill label={proj.cat} bg="rgba(255,255,255,0.28)" fg={vivid.text} />
                   </div>
-                  <h3 style={{ fontFamily: display, fontWeight: 800, fontSize: isBig ? '2.2rem' : '1.5rem', letterSpacing: '-0.02em', color: vivid.text, lineHeight: 1.05, marginBottom: '10px' }}>
+                  <h3 style={{ fontFamily: display, fontWeight: 800, fontSize: isBig ? '1.6rem' : '1.2rem', letterSpacing: '-0.02em', color: vivid.text, lineHeight: 1.05, marginBottom: '10px' }}>
                     {proj.url
                       ? <a href={proj.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{proj.name} <span style={{ fontSize: '0.45em', opacity: 0.7, verticalAlign: 'middle' }}>↗</span></a>
                       : proj.name
@@ -319,7 +319,7 @@ export function GenZPage() {
           <div className="gz-about-cols" style={{ display: 'flex', gap: '64px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
             <div style={{ flex: '0 0 380px', minWidth: '260px' }}>
               <Pill label="about me" bg={dark ? 'rgba(255,122,26,0.2)' : 'rgba(240,101,0,0.1)'} fg={p.orange} size="md" />
-              <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(2rem, 4.5vw, 3.8rem)', letterSpacing: '-0.02em', lineHeight: 1.05, color: p.text, margin: '20px 0 28px' }}>
+              <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(1.6rem, 3.5vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.05, color: p.text, margin: '20px 0 28px' }}>
                 I've been designing products since before "AI" was the answer to every question.
               </h2>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
@@ -343,7 +343,7 @@ export function GenZPage() {
       {/* ── Services ─────────────────────────────────────────────────────────── */}
       <section id="gz-services" style={{ padding: '80px 32px', maxWidth: '1100px', margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px', flexWrap: 'wrap' }}>
-          <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '-0.02em', color: p.text, margin: 0 }}>Ways of working</h2>
+          <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(1.4rem, 3vw, 2.2rem)', letterSpacing: '-0.02em', color: p.text, margin: 0 }}>Ways of working</h2>
           <span style={{ color: p.orange, fontSize: '1.4rem' }}>✦</span>
           <Pill label="pick your format" bg={dark ? 'rgba(255,214,10,0.15)' : 'rgba(217,146,10,0.12)'} fg={p.yellow} />
         </div>
@@ -359,7 +359,7 @@ export function GenZPage() {
                   <Pill label={svc.sub} bg="rgba(255,255,255,0.28)" fg={vivid.text} />
                   <Pill label={svc.tag} bg="rgba(255,255,255,0.15)" fg={vivid.text} />
                 </div>
-                <h3 style={{ fontFamily: display, fontWeight: 800, fontSize: '1.8rem', letterSpacing: '-0.02em', color: vivid.text, lineHeight: 1.05, marginBottom: '14px' }}>{svc.name}</h3>
+                <h3 style={{ fontFamily: display, fontWeight: 800, fontSize: '1.3rem', letterSpacing: '-0.02em', color: vivid.text, lineHeight: 1.05, marginBottom: '14px' }}>{svc.name}</h3>
                 <p style={{ fontFamily: font, fontSize: '13px', color: vivid.text, opacity: 0.82, lineHeight: 1.7 }}>{svc.desc}</p>
               </div>
             );
@@ -373,7 +373,7 @@ export function GenZPage() {
           <span style={{ position: 'absolute', top: '24px', left: '32px', fontFamily: display, fontSize: '3rem', color: '#fff', opacity: 0.15, userSelect: 'none' }}>✦</span>
           <span style={{ position: 'absolute', bottom: '24px', right: '32px', fontFamily: display, fontSize: '4rem', color: '#fff', opacity: 0.1, userSelect: 'none' }}>✦</span>
           <Pill label="let's work together" bg="rgba(255,255,255,0.25)" fg="#fff" size="md" />
-          <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(2.5rem, 7vw, 6rem)', letterSpacing: '-0.03em', lineHeight: 1, margin: '24px 0 20px', color: '#fff' }}>
+          <h2 style={{ fontFamily: display, fontWeight: 800, fontSize: 'clamp(1.8rem, 4.5vw, 3.8rem)', letterSpacing: '-0.03em', lineHeight: 1, margin: '24px 0 20px', color: '#fff' }}>
             Ready to move beyond{' '}
             <span className="gz-grad-contact">AI slop?</span>
           </h2>
