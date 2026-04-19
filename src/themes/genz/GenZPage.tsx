@@ -210,7 +210,7 @@ export function GenZPage() {
         .gz-cta-btn { transition: transform 0.15s ease, box-shadow 0.15s ease; }
         .gz-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,101,0,0.4) !important; }
         .gz-grad-hero { background: linear-gradient(120deg, ${p.orange} 0%, ${dark ? '#FFD60A' : '#CC2040'} 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .gz-grad-contact { background: linear-gradient(120deg, #FFD60A 0%, #F06500 40%, #CC2040 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gz-grad-contact { background: linear-gradient(120deg, #ffffff 0%, #FFE87A 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         @media (max-width: 768px) {
           .gz-hero-inner { flex-direction: column !important; }
           .gz-bento { grid-template-columns: 1fr !important; }
