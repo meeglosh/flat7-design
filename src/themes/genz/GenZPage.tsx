@@ -439,7 +439,7 @@ export function GenZPage() {
             When your team is ready to move beyond what the model generates and start sculpting something worth shipping  -  that's the work I do.
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="mailto:mike@flat7.design" className="gz-cta-btn" style={{ display: 'inline-block', background: '#fff', color: VIVID['magenta'].bg, fontFamily: display, fontWeight: 800, fontSize: '15px', padding: '16px 36px', borderRadius: '999px', textDecoration: 'none' }}>
+            <a href="mailto:mike@flat7.design" className="gz-cta-btn" style={{ display: 'inline-block', background: '#fff', color: '#0A0814', fontFamily: display, fontWeight: 800, fontSize: '15px', padding: '16px 36px', borderRadius: '999px', textDecoration: 'none' }}>
               Let's talk ↗
             </a>
             <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: 'rgba(255,255,255,0.2)', color: '#fff', fontFamily: font, fontWeight: 600, fontSize: '15px', padding: '16px 36px', borderRadius: '999px', textDecoration: 'none' }}>
