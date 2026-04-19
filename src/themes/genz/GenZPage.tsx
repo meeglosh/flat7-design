@@ -137,8 +137,70 @@ export function GenZPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <div style={{ background: p.pageBg, color: p.text, fontFamily: font, minHeight: '100vh' }}>
+    <div style={{ background: p.pageBg, color: p.text, fontFamily: font, minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
+
+      {/* ── Animated gradient blobs ───────────────────────────────────────────── */}
+      <div aria-hidden style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+        <div className="gz-blob gz-blob-1" />
+        <div className="gz-blob gz-blob-2" />
+        <div className="gz-blob gz-blob-3" />
+        <div className="gz-blob gz-blob-4" />
+      </div>
+      <div style={{ position: 'relative', zIndex: 1 }}>
+
       <style>{`
+        @keyframes gz-drift-1 {
+          0%   { transform: translate(0,    0)    scale(1);    }
+          33%  { transform: translate(120px, -80px) scale(1.15); }
+          66%  { transform: translate(-60px, 100px) scale(0.9); }
+          100% { transform: translate(0,    0)    scale(1);    }
+        }
+        @keyframes gz-drift-2 {
+          0%   { transform: translate(0,    0)    scale(1);    }
+          33%  { transform: translate(-140px, 60px)  scale(1.2);  }
+          66%  { transform: translate(80px,  -120px) scale(0.85); }
+          100% { transform: translate(0,    0)    scale(1);    }
+        }
+        @keyframes gz-drift-3 {
+          0%   { transform: translate(0,    0)    scale(1);    }
+          50%  { transform: translate(100px, 140px) scale(1.25); }
+          100% { transform: translate(0,    0)    scale(1);    }
+        }
+        @keyframes gz-drift-4 {
+          0%   { transform: translate(0,    0)    scale(1);    }
+          40%  { transform: translate(-90px, -110px) scale(1.1); }
+          80%  { transform: translate(60px,  60px)  scale(0.9); }
+          100% { transform: translate(0,    0)    scale(1);    }
+        }
+        .gz-blob {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(90px);
+        }
+        .gz-blob-1 {
+          width: 600px; height: 600px;
+          top: -100px; left: -150px;
+          background: ${dark ? 'rgba(255,122,26,0.35)' : 'rgba(240,101,0,0.2)'};
+          animation: gz-drift-1 18s ease-in-out infinite;
+        }
+        .gz-blob-2 {
+          width: 700px; height: 700px;
+          top: 30%; right: -200px;
+          background: ${dark ? 'rgba(123,47,190,0.45)' : 'rgba(123,47,190,0.18)'};
+          animation: gz-drift-2 22s ease-in-out infinite;
+        }
+        .gz-blob-3 {
+          width: 500px; height: 500px;
+          bottom: 10%; left: 20%;
+          background: ${dark ? 'rgba(29,175,94,0.35)' : 'rgba(29,175,94,0.15)'};
+          animation: gz-drift-3 26s ease-in-out infinite;
+        }
+        .gz-blob-4 {
+          width: 450px; height: 450px;
+          top: 55%; right: 10%;
+          background: ${dark ? 'rgba(255,211,10,0.25)' : 'rgba(217,146,10,0.12)'};
+          animation: gz-drift-4 20s ease-in-out infinite;
+        }
         .gz-nav-link { color: ${p.textMuted}; text-decoration: none; font-family: ${font}; font-size: 13px; font-weight: 600; transition: color 0.15s; }
         .gz-nav-link:hover { color: ${p.text}; }
         .gz-proj-card { transition: transform 0.22s ease, box-shadow 0.22s ease; cursor: pointer; }
@@ -397,6 +459,7 @@ export function GenZPage() {
           <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: font, fontWeight: 600, fontSize: '12px', color: p.textMuted, textDecoration: 'none' }}>LinkedIn ↗</a>
         </div>
       </footer>
+      </div>
     </div>
   );
 }
