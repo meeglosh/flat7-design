@@ -229,7 +229,7 @@ export function GenZPage() {
       <div className="gz-meta-bar" style={{ background: `linear-gradient(90deg, ${p.orange}, ${dark ? '#FFD60A' : '#CC2040'})`, padding: '6px 24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
         <span style={{ fontFamily: mono, fontSize: '9px', color: 'rgba(255,255,255,0.6)', letterSpacing: '0.3em', flexShrink: 0 }}>THEME</span>
         <ThemeTabBar />
-        <button onClick={toggleColorScheme} style={{ marginLeft: 'auto', background: 'rgba(0,0,0,0.18)', border: 'none', color: '#0A0814', fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '5px 12px', borderRadius: '999px', cursor: 'pointer', flexShrink: 0 }}>
+        <button onClick={toggleColorScheme} style={{ marginLeft: 'auto', background: dark ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.25)', border: 'none', color: dark ? '#0A0814' : '#fff', fontFamily: mono, fontSize: '9px', letterSpacing: '0.2em', padding: '5px 12px', borderRadius: '999px', cursor: 'pointer', flexShrink: 0 }}>
           {dark ? '☀ light' : '☾ dark'}
         </button>
       </div>
