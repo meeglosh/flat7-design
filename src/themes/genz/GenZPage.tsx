@@ -211,7 +211,7 @@ export function GenZPage() {
         .gz-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,101,0,0.4) !important; }
         .gz-grad-hero { background: linear-gradient(120deg, ${p.orange} 0%, ${dark ? '#FFD60A' : '#CC2040'} 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         @keyframes gz-shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .gz-grad-contact { background: linear-gradient(120deg, #ffffff, #FFB3E6, #ffffff, #FF69C0, #ffffff); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gz-shimmer 3s ease infinite; }
+        .gz-grad-contact { background: linear-gradient(120deg, #ffffff, #FFB3E6, #ffffff, #FF69C0, #ffffff); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gz-shimmer 6s ease infinite; }
         @media (max-width: 768px) {
           .gz-hero-inner { flex-direction: column !important; }
           .gz-bento { grid-template-columns: 1fr !important; }
