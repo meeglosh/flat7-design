@@ -38,7 +38,7 @@ const PROJECTS = [
     desc: 'Expert-trained AI health companions built on a privacy-first architecture. 16 renowned specialists encode their life\'s work, not public internet knowledge.' },
   { no: '02', name: 'Soluna',      cat: 'Mental Health AI · iOS',    url: 'https://solunaapp.com',
     desc: 'High-stakes UX where gentleness is a feature. Mental health support for young people, designed at the intersection of clinical rigor and human warmth.' },
-  { no: '03', name: 'Wingman',     cat: 'Productivity AI · Web',     url: 'https://wingman-3g7a.onrender.com/',
+  { no: '03', name: 'Wingman',     cat: 'Productivity AI · Web',     url: 'https://wingman.design',
     desc: 'From prompt to polished presentation. AI-driven slide generation with real themes, real typography, audio visualization, and export.' },
   { no: '04', name: 'Woltspace',   cat: 'AI Infrastructure · Web',   url: 'https://woltspace.com',
     desc: 'Persistent workspaces for AI agents with memory, identity, and autonomy that survive across sessions. Designing for non-human collaborators.' },

@@ -50,7 +50,7 @@ const PROJECTS = [
     desc: 'Expert-trained AI health companions. 16 renowned specialists encode their life\'s work  -  not public internet knowledge.' },
   { no: '02', name: 'Soluna',      cat: 'Mental Health AI · iOS',  url: 'https://solunaapp.com',               pastel: 'coral',  size: 'small',
     desc: 'Mental health support for young people. Gentleness is a feature, not an afterthought.' },
-  { no: '03', name: 'Wingman',     cat: 'Productivity AI · Web',   url: 'https://wingman-3g7a.onrender.com/', pastel: 'yellow', size: 'small',
+  { no: '03', name: 'Wingman',     cat: 'Productivity AI · Web',   url: 'https://wingman.design', pastel: 'yellow', size: 'small',
     desc: 'From prompt to polished presentation. AI-driven slides with real themes and real typography.' },
   { no: '04', name: 'Woltspace',   cat: 'AI Infrastructure',       url: 'https://woltspace.com',               pastel: 'lavender', size: 'medium',
     desc: 'Persistent workspaces for AI agents with memory, identity, and autonomy across sessions.' },

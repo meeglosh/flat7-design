@@ -73,7 +73,7 @@ function usePalette(dark: boolean) {
 const PROJECTS = [
   { name: 'Onix',        cat: 'Health AI',     url: 'https://onix.life',                    color: '#cc3344', initials: 'Ox' },
   { name: 'Soluna',      cat: 'Mental Health', url: 'https://solunaapp.com',                color: '#7733aa', initials: 'Sl' },
-  { name: 'Wingman',     cat: 'Productivity',  url: 'https://wingman-3g7a.onrender.com/',  color: '#449933', initials: 'Wm' },
+  { name: 'Wingman',     cat: 'Productivity',  url: 'https://wingman.design',  color: '#449933', initials: 'Wm' },
   { name: 'Woltspace',   cat: 'AI Infra',      url: 'https://woltspace.com',                color: '#885511', initials: 'Ws' },
   { name: 'Signal Desk', cat: 'Audio Tools',   url: 'https://signaldeskpro.com',            color: '#116677', initials: 'SD' },
   { name: 'Decathlon',   cat: 'E-Commerce',   url: 'https://www.decathlon.ca/en',           color: '#005580', initials: 'Dc' },
@@ -100,10 +100,10 @@ const SERVICES = [
 
 const INTERESTS = [
   ['General',     'AI product design, human-computer interaction, making AI outputs worth shipping, first-principles thinking, the intersection of velocity and craft'],
-  ['Music',       "Had a record deal with Interscope. That's all I'll say."],
+  ['Music',       "Miles Davis, Aphex Twin, Pink Floyd and music discovery - I'll listen to anything once."],
   ['Movies',      'Blade Runner (1982), 2049, anything about people who built things'],
   ['Television',  'Black Mirror (early seasons), Halt and Catch Fire, anything that explains why humans do the things they do'],
-  ['Books',       'The Design of Everyday Things, Thinking Fast and Slow, anything about why humans make the decisions they make'],
+  ['Books',       'Breakfast of Champions, Dune, The Design of Everyday Things, His Dark Materials, Harry Potter, Lord of the Rings, Silo - too many to list'],
   ['Heroes',      "Every engineer who said 'we can't do that' and then figured out how to do it anyway"],
   ['Groups',      'Product Designers and Builders, Founders Building in Public, Design Leaders Network'],
 ];
