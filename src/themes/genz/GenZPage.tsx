@@ -262,50 +262,45 @@ export function GenZPage() {
           {PROJECTS.map((proj, i) => {
             const { ref, visible } = useReveal();
             const vivid = VIVID[proj.pastel] ?? VIVID['mint'];
-            const isBig = proj.size === 'big';
             return (
               <div
                 key={proj.no}
                 ref={ref}
                 className="gz-proj-card"
                 style={{
-                  gridColumn: isBig ? 'span 2' : 'span 1',
                   background: vivid.bg,
                   borderRadius: '20px',
                   border: 'none',
-                  padding: isBig ? '36px' : '28px',
+                  padding: '28px',
                   boxShadow: p.shadowSm,
                   opacity: visible ? 1 : 0,
                   transform: visible ? 'translateY(0)' : 'translateY(16px)',
                   transition: 'opacity 0.6s ease, transform 0.6s ease',
                   transitionDelay: `${(i % 3) * 60}ms`,
                   display: 'flex',
-                  flexDirection: isBig ? 'row' : 'column',
-                  gap: isBig ? '48px' : '16px',
-                  alignItems: isBig ? 'center' : 'flex-start',
+                  flexDirection: 'column',
+                  gap: '16px',
                   position: 'relative',
                   overflow: 'hidden',
                 }}
               >
-                {/* Decorative asterisk */}
                 <span style={{ position: 'absolute', top: '12px', right: '16px', fontFamily: display, fontSize: '1.8rem', color: vivid.text, opacity: 0.2, userSelect: 'none', lineHeight: 1 }}>✦</span>
 
-                {/* Number badge */}
-                <div style={{ width: isBig ? '64px' : '44px', height: isBig ? '64px' : '44px', borderRadius: '50%', background: 'rgba(255,255,255,0.22)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: mono, fontSize: isBig ? '14px' : '11px', color: vivid.text, fontWeight: 600 }}>{proj.no}</span>
+                <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'rgba(255,255,255,0.22)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontFamily: mono, fontSize: '11px', color: vivid.text, fontWeight: 600 }}>{proj.no}</span>
                 </div>
 
                 <div style={{ flex: 1 }}>
                   <div style={{ marginBottom: '12px' }}>
                     <Pill label={proj.cat} bg="rgba(255,255,255,0.28)" fg={vivid.text} />
                   </div>
-                  <h3 style={{ fontFamily: display, fontWeight: 800, fontSize: isBig ? '1.6rem' : '1.2rem', letterSpacing: '-0.02em', color: vivid.text, lineHeight: 1.05, marginBottom: '10px' }}>
+                  <h3 style={{ fontFamily: display, fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.02em', color: vivid.text, lineHeight: 1.05, marginBottom: '10px' }}>
                     {proj.url
                       ? <a href={proj.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{proj.name} <span style={{ fontSize: '0.45em', opacity: 0.7, verticalAlign: 'middle' }}>↗</span></a>
                       : proj.name
                     }
                   </h3>
-                  <p style={{ fontFamily: font, fontSize: isBig ? '15px' : '13px', color: vivid.text, opacity: 0.82, lineHeight: 1.65, maxWidth: isBig ? '520px' : 'none' }}>{proj.desc}</p>
+                  <p style={{ fontFamily: font, fontSize: '13px', color: vivid.text, opacity: 0.82, lineHeight: 1.65 }}>{proj.desc}</p>
                 </div>
               </div>
             );
