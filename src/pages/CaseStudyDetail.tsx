@@ -177,11 +177,11 @@ export function CaseStudyDetail() {
       </nav>
 
       {/* Hero image */}
-      <div style={{ width: '100%', maxHeight: '520px', overflow: 'hidden' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '32px 32px 0', background: t.pageBg2 }}>
         <img
           src={cs.heroImage}
           alt={cs.title}
-          style={{ width: '100%', height: '520px', objectFit: 'cover', display: 'block' }}
+          style={{ maxWidth: '1024px', width: '100%', height: 'auto', display: 'block' }}
         />
       </div>
 
