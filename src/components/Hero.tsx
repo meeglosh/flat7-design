@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme, type StyleTheme } from '../context/ThemeContext';
 import { ThemeTabBar } from './ThemeTabBar';
 
@@ -140,10 +141,16 @@ export function Hero() {
           </div>
 
           {/* Bottom tagline */}
-          <div className="text-center">
+          <div className="text-center flex flex-col items-center gap-4">
             <p className="font-mono text-[11px] text-fg/35 tracking-[0.35em] uppercase">
               Human craft at machine speed.
             </p>
+            <Link
+              to="/case-studies"
+              className="font-mono text-[10px] text-fg/45 tracking-[0.3em] uppercase hover:text-fg/75 transition-colors duration-300 border border-fg/15 hover:border-fg/35 px-4 py-2"
+            >
+              Case Studies →
+            </Link>
           </div>
         </div>
       </section>

@@ -187,10 +187,11 @@ export function MidCenturyPage() {
           </a>
           {/* Desktop nav links */}
           <div className="mc-nav-links" style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-            {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+            {[['Work','work'],['About','about'],['Ways of working','services']].map(([label, id]) => (
               <a key={id} href={`#mc-${id}`} className="mc-nav-link">{label}</a>
             ))}
             <Link to="/case-studies" className="mc-nav-link">Case Studies</Link>
+            <a href="#mc-contact" className="mc-nav-link">Contact</a>
           </div>
           {/* Hamburger (mobile only) */}
           <button className="mc-hamburger" onClick={() => setDrawerOpen(o => !o)} style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', gap: '5px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 'auto' }}>
@@ -205,10 +206,11 @@ export function MidCenturyPage() {
           <div style={{ borderTop: `1px solid ${p.border}`, padding: '24px', display: 'flex', flexDirection: 'column', gap: '28px', background: p.navBg }}>
             {/* Nav links */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-              {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+              {[['Work','work'],['About','about'],['Ways of working','services']].map(([label, id]) => (
                 <a key={id} href={`#mc-${id}`} className="mc-nav-link" onClick={() => setDrawerOpen(false)}>{label}</a>
               ))}
               <Link to="/case-studies" className="mc-nav-link" onClick={() => setDrawerOpen(false)}>Case Studies</Link>
+              <a href="#mc-contact" className="mc-nav-link" onClick={() => setDrawerOpen(false)}>Contact</a>
             </div>
             {/* Divider */}
             <div style={{ height: '1px', background: p.border }} />

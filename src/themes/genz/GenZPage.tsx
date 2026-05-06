@@ -242,10 +242,11 @@ export function GenZPage() {
             Mike Jerugim
           </span>
           <div className="gz-nav-links" style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
-            {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+            {[['Work','work'],['About','about'],['Ways of working','services']].map(([label, id]) => (
               <a key={id} href={`#gz-${id}`} className="gz-nav-link">{label}</a>
             ))}
             <Link to="/case-studies" className="gz-nav-link">Case Studies</Link>
+            <a href="#gz-contact" className="gz-nav-link">Contact</a>
           </div>
           <button className="gz-hamburger" onClick={() => setDrawerOpen(o => !o)} style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', gap: '5px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 'auto' }}>
             <span style={{ display: 'block', width: '22px', height: '2px', background: drawerOpen ? p.orange : p.text, borderRadius: '2px', transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
@@ -256,10 +257,11 @@ export function GenZPage() {
         {drawerOpen && (
           <div style={{ borderTop: `1px solid ${p.border}`, padding: '24px 32px', background: p.navBg, display: 'flex', flexDirection: 'column', gap: '24px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
+              {[['Work','work'],['About','about'],['Ways of working','services']].map(([label, id]) => (
                 <a key={id} href={`#gz-${id}`} className="gz-nav-link" onClick={() => setDrawerOpen(false)}>{label}</a>
               ))}
               <Link to="/case-studies" className="gz-nav-link" onClick={() => setDrawerOpen(false)}>Case Studies</Link>
+              <a href="#gz-contact" className="gz-nav-link" onClick={() => setDrawerOpen(false)}>Contact</a>
             </div>
             <div style={{ height: '1px', background: p.border }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
