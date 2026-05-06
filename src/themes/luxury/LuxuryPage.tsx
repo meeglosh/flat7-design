@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -152,6 +153,7 @@ export function LuxuryPage() {
             {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
               <a key={id} href={`#lx-${id}`} className="lx-nav-link">{label}</a>
             ))}
+            <Link to="/case-studies" className="lx-nav-link">Case Studies</Link>
           </div>
           <a href="mailto:mike@flat7.design" className="lx-cta-btn" style={{ fontFamily: mono, fontSize: '8px', letterSpacing: '0.25em', color: p.text, textDecoration: 'none', border: `1px solid ${p.borderMid}`, padding: '7px 18px', borderRadius: '999px', transition: 'background 0.2s' }}>
             LET'S TALK
@@ -169,6 +171,7 @@ export function LuxuryPage() {
               {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
                 <a key={id} href={`#lx-${id}`} className="lx-nav-link" onClick={() => setDrawerOpen(false)}>{label}</a>
               ))}
+              <Link to="/case-studies" className="lx-nav-link" onClick={() => setDrawerOpen(false)}>Case Studies</Link>
               <a href="mailto:mike@flat7.design" className="lx-nav-link" style={{ color: p.gold }}>LET'S TALK</a>
             </div>
             <Rule color={p.border} />

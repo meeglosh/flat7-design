@@ -1,3 +1,4 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { DefaultPage } from './themes/DefaultPage';
 import { MySpacePage } from './themes/myspace/MySpacePage';
@@ -5,6 +6,8 @@ import { MidCenturyPage } from './themes/midcentury/MidCenturyPage';
 import { BauhausPage } from './themes/bauhaus/BauhausPage';
 import { GenZPage } from './themes/genz/GenZPage';
 import { LuxuryPage } from './themes/luxury/LuxuryPage';
+import { CaseStudiesGallery } from './pages/CaseStudiesGallery';
+import { CaseStudyDetail } from './pages/CaseStudyDetail';
 
 function PageRouter() {
   const { styleTheme } = useTheme();
@@ -20,8 +23,14 @@ function PageRouter() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <PageRouter />
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider>
+        <Routes>
+          <Route path="/" element={<PageRouter />} />
+          <Route path="/case-studies" element={<CaseStudiesGallery />} />
+          <Route path="/case-studies/:slug" element={<CaseStudyDetail />} />
+        </Routes>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }

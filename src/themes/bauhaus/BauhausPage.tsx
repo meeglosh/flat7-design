@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -156,6 +157,7 @@ export function BauhausPage() {
             {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
               <a key={id} href={`#bh-${id}`} className="bh-nav-link">{label}</a>
             ))}
+            <Link to="/case-studies" className="bh-nav-link">Case Studies</Link>
           </div>
           <button className="bh-hamburger" onClick={() => setDrawerOpen(o => !o)} style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', gap: '5px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 'auto' }}>
             <span style={{ display: 'block', width: '22px', height: '2px', background: drawerOpen ? p.red : p.text, transition: 'transform 0.2s', transform: drawerOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
@@ -169,6 +171,7 @@ export function BauhausPage() {
               {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
                 <a key={id} href={`#bh-${id}`} className="bh-nav-link" onClick={() => setDrawerOpen(false)}>{label}</a>
               ))}
+              <Link to="/case-studies" className="bh-nav-link" onClick={() => setDrawerOpen(false)}>Case Studies</Link>
             </div>
             <div style={{ height: '2px', background: p.text, opacity: 0.15 }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

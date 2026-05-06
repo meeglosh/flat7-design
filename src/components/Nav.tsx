@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 
 function ThemeToggle() {
@@ -47,6 +48,12 @@ export function Nav() {
         <div className="flex-1 h-px bg-fg/[0.1]" />
       </div>
       <div className="flex items-center gap-4 shrink-0">
+        <Link
+          to="/case-studies"
+          className="font-mono text-[10px] text-fg/45 tracking-[0.3em] uppercase hover:text-fg/75 transition-colors duration-300"
+        >
+          Case Studies
+        </Link>
         <ThemeToggle />
         <a
           href="#contact"

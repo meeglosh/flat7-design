@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -183,12 +184,16 @@ export function MySpacePage() {
         </div>
 
         {/* ── Nav bar ─────────────────────────────────────────────────────── */}
-        <div style={{ background: p.navBg, padding: '4px 10px', display: 'flex', gap: '0', flexWrap: 'wrap', borderBottom: `1px solid ${dark ? '#334477' : '#3366aa'}` }}>
+        <div style={{ background: p.navBg, padding: '4px 10px', display: 'flex', gap: '0', flexWrap: 'wrap', borderBottom: `1px solid ${dark ? '#334477' : '#3366aa'}`, alignItems: 'center' }}>
           {['Home', 'Browse', 'Search', 'Invite', 'Rank', 'Mail', 'Blog', 'Favorites', 'Forum', 'Groups', 'Events', 'Games', 'Music', 'Classifieds'].map((item, i, arr) => (
             <span key={item} style={{ fontFamily: font, fontSize: '11px', color: p.navText, padding: '2px 6px', whiteSpace: 'nowrap' }}>
               {item}{i < arr.length - 1 && <span style={{ color: dark ? '#445577' : '#88aacc', marginLeft: '6px' }}>|</span>}
             </span>
           ))}
+          <span style={{ color: dark ? '#445577' : '#88aacc', padding: '2px 0 2px 6px' }}>|</span>
+          <Link to="/case-studies" style={{ fontFamily: font, fontSize: '11px', color: dark ? '#ffcc66' : '#ffcc00', fontWeight: 'bold', padding: '2px 6px', whiteSpace: 'nowrap', textDecoration: 'none' }}>
+            Case Studies
+          </Link>
         </div>
 
         {/* ── Main content area ────────────────────────────────────────────── */}

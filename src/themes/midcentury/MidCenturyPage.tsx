@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -189,6 +190,7 @@ export function MidCenturyPage() {
             {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
               <a key={id} href={`#mc-${id}`} className="mc-nav-link">{label}</a>
             ))}
+            <Link to="/case-studies" className="mc-nav-link">Case Studies</Link>
           </div>
           {/* Hamburger (mobile only) */}
           <button className="mc-hamburger" onClick={() => setDrawerOpen(o => !o)} style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', gap: '5px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 'auto' }}>
@@ -206,6 +208,7 @@ export function MidCenturyPage() {
               {[['Work','work'],['About','about'],['Ways of working','services'],['Contact','contact']].map(([label, id]) => (
                 <a key={id} href={`#mc-${id}`} className="mc-nav-link" onClick={() => setDrawerOpen(false)}>{label}</a>
               ))}
+              <Link to="/case-studies" className="mc-nav-link" onClick={() => setDrawerOpen(false)}>Case Studies</Link>
             </div>
             {/* Divider */}
             <div style={{ height: '1px', background: p.border }} />
