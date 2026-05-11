@@ -75,11 +75,19 @@ const SERVICES = [
 function CircleCluster({ colors, size = 200, dark }: { colors: string[]; size?: number; dark: boolean }) {
   const r = size / 2;
   return (
-    <svg width={size * 1.6} height={size * 1.4} viewBox={`0 0 ${size * 1.6} ${size * 1.4}`} style={{ overflow: 'visible', opacity: dark ? 0.7 : 0.55 }}>
-      <circle cx={r * 0.7} cy={r * 0.7} r={r * 0.78} fill={colors[0]} />
-      <circle cx={r * 1.6} cy={r * 0.6} r={r * 0.62} fill={colors[1]} />
-      <circle cx={r * 1.1} cy={r * 1.5} r={r * 0.52} fill={colors[2]} />
-    </svg>
+    <>
+      <style>{`
+        @keyframes bh-breathe {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.10); }
+        }
+      `}</style>
+      <svg width={size * 1.6} height={size * 1.4} viewBox={`0 0 ${size * 1.6} ${size * 1.4}`} style={{ overflow: 'visible', opacity: dark ? 0.7 : 0.55 }}>
+        <circle cx={r * 0.7} cy={r * 0.7} r={r * 0.78} fill={colors[0]} style={{ transformBox: 'fill-box', transformOrigin: 'center', animation: 'bh-breathe 9s ease-in-out infinite' }} />
+        <circle cx={r * 1.6} cy={r * 0.6} r={r * 0.62} fill={colors[1]} style={{ transformBox: 'fill-box', transformOrigin: 'center', animation: 'bh-breathe 13s ease-in-out infinite 3s' }} />
+        <circle cx={r * 1.1} cy={r * 1.5} r={r * 0.52} fill={colors[2]} style={{ transformBox: 'fill-box', transformOrigin: 'center', animation: 'bh-breathe 7s ease-in-out infinite 5s' }} />
+      </svg>
+    </>
   );
 }
 
@@ -119,6 +127,18 @@ export function BauhausPage() {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const aboutRef = useRef<HTMLElement>(null);
+  const [aboutBgY, setAboutBgY] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      if (!aboutRef.current) return;
+      const rect = aboutRef.current.getBoundingClientRect();
+      setAboutBgY(rect.top * 0.18);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: body, minHeight: '100vh' }}>
       <style>{`
@@ -136,6 +156,10 @@ export function BauhausPage() {
           .bh-nav-link { font-size: 22px; letter-spacing: 0.08em; }
         }
         @media (min-width: 769px) { .bh-hamburger { display: none !important; } }
+        @keyframes bh-pulse {
+          0% { transform: scale(1); opacity: 0.35; }
+          100% { transform: scale(2.5); opacity: 0; }
+        }
       `}</style>
 
       {/* ── Meta bar (desktop only) ───────────────────────────────────────────── */}
@@ -277,13 +301,15 @@ export function BauhausPage() {
       </section>
 
       {/* ── About ─────────────────────────────────────────────────────────────── */}
-      <section id="bh-about" style={{ padding: '80px 40px', position: 'relative', overflow: 'hidden' }}>
+      <section ref={aboutRef} id="bh-about" style={{ padding: '80px 40px', position: 'relative', overflow: 'hidden' }}>
         {/* Background geometry */}
-        <div style={{ position: 'absolute', left: '-80px', bottom: '-60px', pointerEvents: 'none', zIndex: 0, opacity: dark ? 0.18 : 0.1 }}>
-          <svg width="400" height="400" viewBox="0 0 400 400">
-            <circle cx="200" cy="200" r="180" fill="none" stroke={p.teal} strokeWidth="3" />
-            <circle cx="200" cy="200" r="130" fill="none" stroke={p.blue} strokeWidth="2" />
-            <circle cx="200" cy="200" r="80" fill={p.yellow} />
+        <div style={{ position: 'absolute', left: '-80px', bottom: '-60px', pointerEvents: 'none', zIndex: 0, transform: `translateY(${aboutBgY}px)`, willChange: 'transform' }}>
+          <svg width="400" height="400" viewBox="0 0 400 400" style={{ overflow: 'visible' }}>
+            {[0, 1, 2].map(i => (
+              <circle key={i} cx="200" cy="200" r="80" fill="none" stroke={p.teal} strokeWidth="2"
+                style={{ transformBox: 'fill-box', transformOrigin: 'center', animation: `bh-pulse 7.5s ease-out infinite ${(i * 2.5).toFixed(1)}s` }} />
+            ))}
+            <circle cx="200" cy="200" r="80" fill={p.yellow} opacity={dark ? 0.18 : 0.12} />
           </svg>
         </div>
 
