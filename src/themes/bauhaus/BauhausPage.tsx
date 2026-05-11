@@ -127,18 +127,6 @@ export function BauhausPage() {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const aboutRef = useRef<HTMLElement>(null);
-  const [aboutBgY, setAboutBgY] = useState(0);
-  useEffect(() => {
-    const onScroll = () => {
-      if (!aboutRef.current) return;
-      const rect = aboutRef.current.getBoundingClientRect();
-      setAboutBgY(rect.top * 0.18);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   return (
     <div style={{ background: p.pageBg, color: p.text, fontFamily: body, minHeight: '100vh' }}>
       <style>{`
@@ -301,9 +289,9 @@ export function BauhausPage() {
       </section>
 
       {/* ── About ─────────────────────────────────────────────────────────────── */}
-      <section ref={aboutRef} id="bh-about" style={{ padding: '80px 40px', position: 'relative', overflow: 'hidden' }}>
+      <section id="bh-about" style={{ padding: '80px 40px', position: 'relative', overflow: 'hidden' }}>
         {/* Background geometry */}
-        <div style={{ position: 'absolute', left: '-80px', bottom: '-60px', pointerEvents: 'none', zIndex: 0, transform: `translateY(${aboutBgY}px)`, willChange: 'transform' }}>
+        <div style={{ position: 'absolute', left: '-80px', bottom: '-60px', pointerEvents: 'none', zIndex: 0 }}>
           <svg width="400" height="400" viewBox="0 0 400 400" style={{ overflow: 'visible' }}>
             {[0, 1, 2].map(i => (
               <circle key={i} cx="200" cy="200" r="80" fill="none" stroke={p.teal} strokeWidth="2"
