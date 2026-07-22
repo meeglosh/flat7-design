@@ -57,6 +57,8 @@ const PROJECTS = [
     desc: 'Billing and payment automation for the construction industry. Designing for highly regulated, multi-party financial workflows where the stakes are compliance, not convenience.' },
   { no: '11', name: 'Estateably',  cat: 'LegalTech · Web',          url: 'https://www.estateably.com/',        color: 'teal',
     desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists in high-stakes legal work.' },
+  { no: '12', name: 'SPASynth',   cat: 'Audio Software · VST/AU',  url: 'https://spasynth.com/',               color: 'blue',
+    desc: 'A software synthesizer that turns 11,474 professional sound-effects recordings into playable instruments. Granular, wavetable, and convolution synthesis built from real-world Foley and ambient audio.' },
 ];
 
 const SERVICES = [

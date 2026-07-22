@@ -82,6 +82,7 @@ const PROJECTS = [
   { name: 'Bandsintown', cat: 'Music Tech',    url: 'https://www.artist.bandsintown.com/',  color: '#883300', initials: 'Bt', thumb: '/thumbnails/myspace/bandsintown.png' },
   { name: 'Flashtract',  cat: 'Const. Tech',   url: 'https://flashtract.com/',              color: '#336600', initials: 'Ft', thumb: '/thumbnails/myspace/flashtract.png' },
   { name: 'Estateably',  cat: 'LegalTech',     url: 'https://www.estateably.com/',          color: '#554400', initials: 'Es', thumb: '/thumbnails/myspace/estateably.png' },
+  { name: 'SPASynth',    cat: 'Audio Software', url: 'https://spasynth.com/',               color: '#0088aa', initials: 'Sp', thumb: '/thumbnails/myspace/spasynth.png' },
 ];
 
 const SERVICES = [

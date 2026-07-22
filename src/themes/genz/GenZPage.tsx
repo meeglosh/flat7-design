@@ -75,6 +75,8 @@ const PROJECTS = [
     desc: 'Billing and payment automation for construction. Designing for regulated, multi-party financial workflows where stakes are compliance.' },
   { no: '11', name: 'Estateably',  cat: 'LegalTech · Web',          url: 'https://www.estateably.com/',        pastel: 'lavender', size: 'small',
     desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms and fiduciary accounting.' },
+  { no: '12', name: 'SPASynth',    cat: 'Audio Software',           url: 'https://spasynth.com/',               pastel: 'sky',      size: 'small',
+    desc: 'Turns 11,474 real-world sound recordings into playable synth engines  -  granular, wavetable, and convolution synthesis with a one-button patch randomizer.' },
 ];
 
 const SERVICES = [

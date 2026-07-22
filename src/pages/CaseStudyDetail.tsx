@@ -1,22 +1,30 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { ThemeTabBar } from '../components/ThemeTabBar';
+import { Lightbox } from '../components/Lightbox';
 import { useThemeTokens } from '../hooks/useThemeTokens';
 import { getCaseStudy, CASE_STUDIES, type CaseStudySection, type MediaItem } from '../data/caseStudies';
 
-function MediaBlock({ item, t }: { item: MediaItem; t: ReturnType<typeof useThemeTokens> }) {
+// For an 'image' item this is the single lightbox index; for a 'span' item it's one index per image, in order; video items carry no index.
+type MediaIndex = number | number[] | null;
+
+function MediaBlock({ item, t, mediaIndex, onOpen }: { item: MediaItem; t: ReturnType<typeof useThemeTokens>; mediaIndex: MediaIndex; onOpen: (index: number) => void }) {
   if (item.type === 'image') {
+    const idx = mediaIndex as number;
     return (
       <img
         src={item.src}
         alt={item.alt}
-        style={{ width: '100%', display: 'block', borderRadius: '4px', marginTop: '32px' }}
+        onClick={() => onOpen(idx)}
+        className="cs-media-img"
+        style={{ width: '100%', display: 'block', borderRadius: '4px', marginTop: '32px', cursor: 'zoom-in' }}
       />
     );
   }
 
   if (item.type === 'span') {
+    const indices = mediaIndex as number[];
     return (
       <div style={{ display: 'flex', gap: '8px', marginTop: '32px', flexWrap: 'wrap' }}>
         {item.images.map((img, i) => (
@@ -24,7 +32,9 @@ function MediaBlock({ item, t }: { item: MediaItem; t: ReturnType<typeof useThem
             key={i}
             src={img.src}
             alt={img.alt}
-            style={{ flex: '1 1 0', minWidth: '120px', objectFit: 'cover', borderRadius: '4px', display: 'block' }}
+            onClick={() => onOpen(indices[i])}
+            className="cs-media-img"
+            style={{ flex: '1 1 0', minWidth: '120px', objectFit: 'cover', borderRadius: '4px', display: 'block', cursor: 'zoom-in' }}
           />
         ))}
       </div>
@@ -51,7 +61,7 @@ function MediaBlock({ item, t }: { item: MediaItem; t: ReturnType<typeof useThem
   return null;
 }
 
-function Section({ sec, t }: { sec: CaseStudySection; t: ReturnType<typeof useThemeTokens> }) {
+function Section({ sec, t, mediaIndices, onOpen }: { sec: CaseStudySection; t: ReturnType<typeof useThemeTokens>; mediaIndices: MediaIndex[]; onOpen: (index: number) => void }) {
   const bodyLines = sec.body ? sec.body.split('\n\n') : [];
 
   return (
@@ -91,7 +101,7 @@ function Section({ sec, t }: { sec: CaseStudySection; t: ReturnType<typeof useTh
         </p>
       )}
       {sec.media?.map((item, i) => (
-        <MediaBlock key={i} item={item} t={t} />
+        <MediaBlock key={i} item={item} t={t} mediaIndex={mediaIndices[i]} onOpen={onOpen} />
       ))}
     </div>
   );
@@ -102,8 +112,35 @@ export function CaseStudyDetail() {
   const { colorScheme, toggleColorScheme } = useTheme();
   const t = useThemeTokens();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const cs = getCaseStudy(slug ?? '');
+
+  // Built once, in the same order the page renders images: hero first, then each section's media
+  // in order. Precomputing indices here (rather than mutating a counter during render) keeps the
+  // component tree pure - a shared mutable counter breaks under React's dev double-invocation.
+  const { flatImages, sectionMediaIndices } = useMemo(() => {
+    if (!cs) return { flatImages: [] as { src: string; alt: string }[], sectionMediaIndices: [] as MediaIndex[][] };
+    const arr: { src: string; alt: string }[] = [{ src: cs.heroImage, alt: cs.title }];
+    let next = 1;
+    const perSection: MediaIndex[][] = cs.sections.map(sec =>
+      (sec.media ?? []).map(item => {
+        if (item.type === 'image') {
+          arr.push({ src: item.src, alt: item.alt });
+          return next++;
+        }
+        if (item.type === 'span') {
+          return item.images.map(img => {
+            arr.push({ src: img.src, alt: img.alt });
+            return next++;
+          });
+        }
+        return null;
+      })
+    );
+    return { flatImages: arr, sectionMediaIndices: perSection };
+  }, [cs]);
+
   if (!cs) return <Navigate to="/case-studies" replace />;
 
   const others = CASE_STUDIES.filter(c => c.slug !== cs.slug).slice(0, 3);
@@ -119,6 +156,8 @@ export function CaseStudyDetail() {
         .cs-nav-link:hover { color: ${t.text}; }
         .cs-related-card { border: 1px solid ${t.border}; background: ${t.cardBg}; overflow: hidden; text-decoration: none; display: block; transition: transform 0.22s ease, box-shadow 0.22s ease; }
         .cs-related-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.14); }
+        .cs-media-img { transition: opacity 0.15s ease; }
+        .cs-media-img:hover { opacity: 0.88; }
         @media (max-width: 768px) {
           .cs-meta-bar { display: none !important; }
           .cs-nav-links { display: none !important; }
@@ -181,7 +220,9 @@ export function CaseStudyDetail() {
         <img
           src={cs.heroImage}
           alt={cs.title}
-          style={{ maxWidth: '1024px', width: '100%', height: 'auto', display: 'block' }}
+          onClick={() => setLightboxIndex(0)}
+          className="cs-media-img"
+          style={{ maxWidth: '1024px', width: '100%', height: 'auto', display: 'block', cursor: 'zoom-in' }}
         />
       </div>
 
@@ -209,7 +250,7 @@ export function CaseStudyDetail() {
 
         {/* Sections */}
         {cs.sections.map((sec, i) => (
-          <Section key={i} sec={sec} t={t} />
+          <Section key={i} sec={sec} t={t} mediaIndices={sectionMediaIndices[i]} onOpen={setLightboxIndex} />
         ))}
       </div>
 
@@ -244,6 +285,15 @@ export function CaseStudyDetail() {
           <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: t.mono, fontSize: '9px', color: t.textMuted, textDecoration: 'none', letterSpacing: '0.2em' }}>LinkedIn ↗</a>
         </div>
       </footer>
+
+      {lightboxIndex !== null && (
+        <Lightbox
+          images={flatImages}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onIndexChange={setLightboxIndex}
+        />
+      )}
     </div>
   );
 }

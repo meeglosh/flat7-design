@@ -101,6 +101,15 @@ const projects: Project[] = [
     url: 'https://www.estateably.com/',
     accent: '#00C8FF',
   },
+  {
+    id: '12',
+    name: 'SPASynth',
+    category: 'Audio Software · VST/AU',
+    description:
+      'A software synthesizer that turns 11,474 professional sound-effects recordings into playable instruments. Granular, wavetable, and convolution synthesis built from real-world Foley and ambient audio, with a one-button patch randomizer for instant sound design.',
+    url: 'https://spasynth.com/',
+    accent: '#A8FF3E',
+  },
 ];
 
 function ProjectItem({ project, index }: { project: Project; index: number }) {
