@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -191,10 +190,6 @@ export function MySpacePage() {
               {item}{i < arr.length - 1 && <span style={{ color: dark ? '#445577' : '#88aacc', marginLeft: '6px' }}>|</span>}
             </span>
           ))}
-          <span style={{ color: dark ? '#445577' : '#88aacc', padding: '2px 0 2px 6px' }}>|</span>
-          <Link to="/case-studies" style={{ fontFamily: font, fontSize: '11px', color: dark ? '#ffcc66' : '#ffcc00', fontWeight: 'bold', padding: '2px 6px', whiteSpace: 'nowrap', textDecoration: 'none' }}>
-            Case Studies
-          </Link>
         </div>
 
         {/* ── Main content area ────────────────────────────────────────────── */}

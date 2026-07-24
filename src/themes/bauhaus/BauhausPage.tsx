@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -171,7 +170,6 @@ export function BauhausPage() {
             {[['Work','work'],['About','about'],['Ways of working','services']].map(([label, id]) => (
               <a key={id} href={`#bh-${id}`} className="bh-nav-link">{label}</a>
             ))}
-            <Link to="/case-studies" className="bh-nav-link">Case Studies</Link>
             <a href="#bh-contact" className="bh-nav-link">Contact</a>
           </div>
           <button className="bh-hamburger" onClick={() => setDrawerOpen(o => !o)} style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', gap: '5px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 'auto' }}>
@@ -186,7 +184,6 @@ export function BauhausPage() {
               {[['Work','work'],['About','about'],['Ways of working','services']].map(([label, id]) => (
                 <a key={id} href={`#bh-${id}`} className="bh-nav-link" onClick={() => setDrawerOpen(false)}>{label}</a>
               ))}
-              <Link to="/case-studies" className="bh-nav-link" onClick={() => setDrawerOpen(false)}>Case Studies</Link>
               <a href="#bh-contact" className="bh-nav-link" onClick={() => setDrawerOpen(false)}>Contact</a>
             </div>
             <div style={{ height: '2px', background: p.text, opacity: 0.15 }} />

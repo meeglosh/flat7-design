@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -192,7 +191,6 @@ export function MidCenturyPage() {
             {[['Work','work'],['About','about'],['Ways of working','services']].map(([label, id]) => (
               <a key={id} href={`#mc-${id}`} className="mc-nav-link">{label}</a>
             ))}
-            <Link to="/case-studies" className="mc-nav-link">Case Studies</Link>
             <a href="#mc-contact" className="mc-nav-link">Contact</a>
           </div>
           {/* Hamburger (mobile only) */}
@@ -211,7 +209,6 @@ export function MidCenturyPage() {
               {[['Work','work'],['About','about'],['Ways of working','services']].map(([label, id]) => (
                 <a key={id} href={`#mc-${id}`} className="mc-nav-link" onClick={() => setDrawerOpen(false)}>{label}</a>
               ))}
-              <Link to="/case-studies" className="mc-nav-link" onClick={() => setDrawerOpen(false)}>Case Studies</Link>
               <a href="#mc-contact" className="mc-nav-link" onClick={() => setDrawerOpen(false)}>Contact</a>
             </div>
             {/* Divider */}
