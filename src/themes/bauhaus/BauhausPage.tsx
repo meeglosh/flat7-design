@@ -44,8 +44,8 @@ const PROJECTS = [
     desc: 'From prompt to polished presentation. AI-driven slide generation with real themes, real typography, audio visualization, and export.' },
   { no: '04', name: 'Woltspace',   cat: 'AI Infrastructure · Web', url: 'https://woltspace.com',               color: 'red',
     desc: 'Persistent workspaces for AI agents with memory, identity, and autonomy that survive across sessions. Designing for non-human collaborators.' },
-  { no: '06', name: 'Signal Desk', cat: 'Audio Tools · iOS',       url: 'https://signaldeskpro.com',           color: 'blue',
-    desc: 'Professional mix reference for producers and engineers. 12 console modes, 8 calibrated meters, speaker simulation, and export.' },
+  { no: '06', name: 'SPASynth',   cat: 'Audio Software · VST/AU',  url: 'https://spasynth.com/',               color: 'blue',
+    desc: 'A software synthesizer that turns 11,474 professional sound-effects recordings into playable instruments. Granular, wavetable, and convolution synthesis built from real-world Foley and ambient audio.' },
   { no: '07', name: 'Decathlon',   cat: 'E-Commerce · Web & App',  url: 'https://www.decathlon.ca/en',         color: 'teal',
     desc: "Large-scale retail UX for one of the world's biggest sports brands. Accessible gear discovery across 15+ sport categories for millions of recreational athletes." },
   { no: '08', name: 'Hololabs',    cat: 'Spatial Computing · AR/VR', url: 'https://hololabs.org/',             color: 'red',
@@ -56,8 +56,6 @@ const PROJECTS = [
     desc: 'Billing and payment automation for the construction industry. Designing for highly regulated, multi-party financial workflows where the stakes are compliance, not convenience.' },
   { no: '11', name: 'Estateably',  cat: 'LegalTech · Web',          url: 'https://www.estateably.com/',        color: 'teal',
     desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists in high-stakes legal work.' },
-  { no: '12', name: 'SPASynth',   cat: 'Audio Software · VST/AU',  url: 'https://spasynth.com/',               color: 'blue',
-    desc: 'A software synthesizer that turns 11,474 professional sound-effects recordings into playable instruments. Granular, wavetable, and convolution synthesis built from real-world Foley and ambient audio.' },
 ];
 
 const SERVICES = [

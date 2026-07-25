@@ -48,8 +48,8 @@ const PROJECTS = [
     desc: 'From prompt to polished presentation. AI-driven slide generation with real themes, real typography, audio visualization, and export.' },
   { id: '04', name: 'Woltspace',   cat: 'AI Infrastructure · Web', url: 'https://woltspace.com',               accent: 'olive',   thumb: '/thumbnails/midcentury/woltspace.png',
     desc: 'Persistent workspaces for AI agents with memory, identity, and autonomy that survive across sessions. Designing for non-human collaborators.' },
-  { id: '06', name: 'Signal Desk', cat: 'Audio Tools · iOS',       url: 'https://signaldeskpro.com',           accent: 'mustard', thumb: '/thumbnails/midcentury/signal-desk.png',
-    desc: "Professional mix reference for producers and engineers. 12 console modes, 8 calibrated meters, speaker simulation, and export." },
+  { id: '06', name: 'SPASynth',    cat: 'Audio Software · VST/AU',  url: 'https://spasynth.com/',               accent: 'teal',    thumb: '/thumbnails/midcentury/spasynth.png',
+    desc: 'A software synthesizer that turns 11,474 professional sound-effects recordings into playable instruments. Granular, wavetable, and convolution synthesis built from real-world Foley and ambient audio.' },
   { id: '07', name: 'Decathlon',   cat: 'E-Commerce · Web & App',  url: 'https://www.decathlon.ca/en',         accent: 'teal',    thumb: '/thumbnails/midcentury/decathlon.png',
     desc: "Large-scale retail UX for one of the world's biggest sports brands. Accessible gear discovery across 15+ sport categories for millions of recreational athletes." },
   { id: '08', name: 'Hololabs',    cat: 'Spatial Computing · AR/VR', url: 'https://hololabs.org/',             accent: 'terra',   thumb: '/thumbnails/midcentury/hololabs.png',
@@ -60,8 +60,6 @@ const PROJECTS = [
     desc: 'Billing and payment automation for the construction industry. Designing for highly regulated, multi-party financial workflows where the stakes are compliance, not convenience.' },
   { id: '11', name: 'Estateably',  cat: 'LegalTech · Web',          url: 'https://www.estateably.com/',        accent: 'terra',   thumb: '/thumbnails/midcentury/estateably.png',
     desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists in high-stakes legal work.' },
-  { id: '12', name: 'SPASynth',    cat: 'Audio Software · VST/AU',  url: 'https://spasynth.com/',               accent: 'teal',    thumb: '/thumbnails/midcentury/spasynth.png',
-    desc: 'A software synthesizer that turns 11,474 professional sound-effects recordings into playable instruments. Granular, wavetable, and convolution synthesis built from real-world Foley and ambient audio.' },
 ];
 
 const SERVICES = [

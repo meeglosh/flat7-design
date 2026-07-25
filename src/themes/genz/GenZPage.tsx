@@ -62,8 +62,8 @@ const PROJECTS = [
     desc: 'From prompt to polished presentation. AI-driven slides with real themes and real typography.' },
   { no: '04', name: 'Woltspace',   cat: 'AI Infrastructure',       url: 'https://woltspace.com',               pastel: 'lavender', size: 'medium',
     desc: 'Persistent workspaces for AI agents with memory, identity, and autonomy across sessions.' },
-  { no: '06', name: 'Signal Desk', cat: 'Audio Tools · iOS',       url: 'https://signaldeskpro.com',           pastel: 'magenta', size: 'small',
-    desc: '12 console modes, 8 calibrated meters, speaker simulation. Mix reference done right.' },
+  { no: '06', name: 'SPASynth',    cat: 'Audio Software',           url: 'https://spasynth.com/',               pastel: 'sky',      size: 'small',
+    desc: 'Turns 11,474 real-world sound recordings into playable synth engines  -  granular, wavetable, and convolution synthesis with a one-button patch randomizer.' },
   { no: '07', name: 'Decathlon',   cat: 'E-Commerce · Web & App',  url: 'https://www.decathlon.ca/en',         pastel: 'sky',     size: 'small',
     desc: "Large-scale retail UX for one of the world's biggest sports brands. Accessible gear discovery across 15+ sport categories." },
   { no: '08', name: 'Hololabs',    cat: 'Spatial Computing · AR/VR', url: 'https://hololabs.org/',             pastel: 'coral',   size: 'small',
@@ -74,8 +74,6 @@ const PROJECTS = [
     desc: 'Billing and payment automation for construction. Designing for regulated, multi-party financial workflows where stakes are compliance.' },
   { no: '11', name: 'Estateably',  cat: 'LegalTech · Web',          url: 'https://www.estateably.com/',        pastel: 'lavender', size: 'small',
     desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms and fiduciary accounting.' },
-  { no: '12', name: 'SPASynth',    cat: 'Audio Software',           url: 'https://spasynth.com/',               pastel: 'sky',      size: 'small',
-    desc: 'Turns 11,474 real-world sound recordings into playable synth engines  -  granular, wavetable, and convolution synthesis with a one-button patch randomizer.' },
 ];
 
 const SERVICES = [

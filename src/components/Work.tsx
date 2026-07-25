@@ -49,11 +49,11 @@ const projects: Project[] = [
   },
   {
     id: '06',
-    name: 'Signal Desk Pro',
-    category: 'Audio Tools · iOS',
+    name: 'SPASynth',
+    category: 'Audio Software · VST/AU',
     description:
-      "Professional mix reference for producers and engineers. 12 console modes, 8 calibrated meters, speaker simulation, and export. The tools you need when you're away from the studio.",
-    url: 'https://signaldeskpro.com',
+      'A software synthesizer that turns 11,474 professional sound-effects recordings into playable instruments. Granular, wavetable, and convolution synthesis built from real-world Foley and ambient audio, with a one-button patch randomizer for instant sound design.',
+    url: 'https://spasynth.com/',
     accent: '#A8FF3E',
   },
   {
@@ -100,15 +100,6 @@ const projects: Project[] = [
       'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists navigating high-stakes legal and tax requirements.',
     url: 'https://www.estateably.com/',
     accent: '#00C8FF',
-  },
-  {
-    id: '12',
-    name: 'SPASynth',
-    category: 'Audio Software · VST/AU',
-    description:
-      'A software synthesizer that turns 11,474 professional sound-effects recordings into playable instruments. Granular, wavetable, and convolution synthesis built from real-world Foley and ambient audio, with a one-button patch randomizer for instant sound design.',
-    url: 'https://spasynth.com/',
-    accent: '#A8FF3E',
   },
 ];
 
