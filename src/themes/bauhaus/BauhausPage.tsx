@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -402,7 +403,10 @@ export function BauhausPage() {
         <div style={{ maxWidth: '1140px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           <span style={{ fontFamily: display, fontWeight: 700, fontSize: '14px', letterSpacing: '0.12em', color: p.pageBg }}>FLAT7.DESIGN</span>
           <span style={{ fontFamily: mono, fontSize: '9px', color: dark ? 'rgba(17,17,17,0.5)' : 'rgba(245,240,232,0.5)', letterSpacing: '0.2em' }}>© {new Date().getFullYear()} MIKE JERUGIM</span>
-          <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: mono, fontSize: '9px', color: dark ? 'rgba(17,17,17,0.7)' : 'rgba(245,240,232,0.7)', letterSpacing: '0.2em', textDecoration: 'none' }}>LINKEDIN ↗</a>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <Link to="/case-studies" style={{ fontFamily: mono, fontSize: '9px', color: dark ? 'rgba(17,17,17,0.7)' : 'rgba(245,240,232,0.7)', letterSpacing: '0.2em', textDecoration: 'none' }}>CASE STUDIES</Link>
+            <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: mono, fontSize: '9px', color: dark ? 'rgba(17,17,17,0.7)' : 'rgba(245,240,232,0.7)', letterSpacing: '0.2em', textDecoration: 'none' }}>LINKEDIN ↗</a>
+          </span>
         </div>
       </footer>
     </div>

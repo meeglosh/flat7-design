@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -346,7 +347,10 @@ export function LuxuryPage() {
         <div style={{ maxWidth: '1300px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           <span style={{ fontFamily: display, fontStyle: 'italic', fontWeight: 400, fontSize: '15px', color: p.textMuted, letterSpacing: '0.03em' }}>flat7.design</span>
           <span style={{ fontFamily: mono, fontSize: '8px', color: p.textFaint, letterSpacing: '0.2em' }}>© {new Date().getFullYear()} MIKE JERUGIM</span>
-          <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: mono, fontSize: '8px', color: p.textMuted, letterSpacing: '0.2em', textDecoration: 'none', textTransform: 'uppercase' }}>LinkedIn ↗</a>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <Link to="/case-studies" style={{ fontFamily: mono, fontSize: '8px', color: p.textMuted, letterSpacing: '0.2em', textDecoration: 'none', textTransform: 'uppercase' }}>Case Studies</Link>
+            <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: mono, fontSize: '8px', color: p.textMuted, letterSpacing: '0.2em', textDecoration: 'none', textTransform: 'uppercase' }}>LinkedIn ↗</a>
+          </span>
         </div>
       </footer>
     </div>

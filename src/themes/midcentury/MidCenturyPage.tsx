@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -380,7 +381,10 @@ export function MidCenturyPage() {
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           <span style={{ fontFamily: serif, fontSize: '14px', fontStyle: 'italic', color: p.textMuted }}>flat7.design</span>
           <span style={{ fontFamily: mono, fontSize: '9px', color: p.textFaint, letterSpacing: '0.2em' }}>© {new Date().getFullYear()} Mike Jerugim</span>
-          <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: mono, fontSize: '9px', color: p.textMuted, letterSpacing: '0.2em', textDecoration: 'none' }}>LinkedIn ↗</a>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <Link to="/case-studies" style={{ fontFamily: mono, fontSize: '9px', color: p.textMuted, letterSpacing: '0.2em', textDecoration: 'none' }}>Case Studies</Link>
+            <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: mono, fontSize: '9px', color: p.textMuted, letterSpacing: '0.2em', textDecoration: 'none' }}>LinkedIn ↗</a>
+          </span>
         </div>
       </footer>
     </div>

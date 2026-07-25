@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -484,12 +485,13 @@ export function MySpacePage() {
         {/* ── Footer ──────────────────────────────────────────────────────── */}
         <div style={{ background: p.footerBg, borderTop: `1px solid ${dark ? '#334477' : '#3366aa'}`, padding: '6px 10px', textAlign: 'center' }}>
           <div style={{ fontFamily: font, fontSize: '10px', color: dark ? '#aabbdd' : '#ffffff', marginBottom: '3px' }}>
-            {['Home', 'Browse', 'Search', 'Invite', 'Mail', 'Blog', 'Privacy', 'Safety Tips', 'Contact'].map((item, i, arr) => (
+            {['Home', 'Browse', 'Search', 'Invite', 'Mail', 'Blog', 'Privacy', 'Safety Tips', 'Contact'].map((item) => (
               <span key={item}>
                 <span style={{ cursor: 'pointer', textDecoration: 'underline' }}>{item}</span>
-                {i < arr.length - 1 && <span style={{ margin: '0 4px', opacity: 0.5 }}>|</span>}
+                <span style={{ margin: '0 4px', opacity: 0.5 }}>|</span>
               </span>
             ))}
+            <Link to="/case-studies" style={{ color: 'inherit', textDecoration: 'underline' }}>Case Studies</Link>
           </div>
           <div style={{ fontFamily: font, fontSize: '10px', color: dark ? '#6677aa' : '#cce0ff' }}>
             © {new Date().getFullYear()} flat7.design · US · Canada · EU

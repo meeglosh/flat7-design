@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ThemeTabBar } from '../../components/ThemeTabBar';
 
@@ -459,7 +460,10 @@ export function GenZPage() {
             flat7<span style={{ color: p.orange }}>.</span>design
           </span>
           <span style={{ fontFamily: mono, fontSize: '9px', color: p.textFaint, letterSpacing: '0.2em' }}>© {new Date().getFullYear()} Mike Jerugim</span>
-          <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: font, fontWeight: 600, fontSize: '12px', color: p.textMuted, textDecoration: 'none' }}>LinkedIn ↗</a>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <Link to="/case-studies" style={{ fontFamily: font, fontWeight: 600, fontSize: '12px', color: p.textMuted, textDecoration: 'none' }}>Case Studies</Link>
+            <a href="https://linkedin.com/in/mikejerugim/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: font, fontWeight: 600, fontSize: '12px', color: p.textMuted, textDecoration: 'none' }}>LinkedIn ↗</a>
+          </span>
         </div>
       </footer>
       </div>

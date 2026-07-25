@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useInView } from '../hooks/useInView';
 
 export function Contact() {
@@ -36,14 +37,22 @@ export function Contact() {
           <span className="font-mono text-[10px] text-fg/25">
             © {new Date().getFullYear()} Mike Jerugim · US · Canada · EU
           </span>
-          <a
-            href="https://linkedin.com/in/mikejerugim/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-[10px] text-fg/35 hover:text-fg/65 transition-colors duration-300 tracking-wider"
-          >
-            LinkedIn ↗
-          </a>
+          <span className="flex items-center gap-4">
+            <Link
+              to="/case-studies"
+              className="font-mono text-[10px] text-fg/35 hover:text-fg/65 transition-colors duration-300 tracking-wider"
+            >
+              Case Studies
+            </Link>
+            <a
+              href="https://linkedin.com/in/mikejerugim/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[10px] text-fg/35 hover:text-fg/65 transition-colors duration-300 tracking-wider"
+            >
+              LinkedIn ↗
+            </a>
+          </span>
         </div>
       </div>
     </section>
