@@ -41,6 +41,69 @@ function MediaBlock({ item, t, mediaIndex, onOpen }: { item: MediaItem; t: Retur
     );
   }
 
+  if (item.type === 'quotes') {
+    return (
+      <div style={{ marginTop: '32px', background: t.cardBg, border: `1px solid ${t.border}`, borderRadius: '4px', padding: 'clamp(24px, 5vw, 48px)' }}>
+        <p style={{ fontFamily: t.mono, fontSize: '10px', color: t.textFaint, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '16px' }}>
+          {item.eyebrow}
+        </p>
+        <h3 style={{ fontFamily: t.display, fontWeight: t.isSerif ? 400 : 700, fontStyle: t.isSerif ? 'italic' : 'normal', fontSize: 'clamp(1.3rem, 3vw, 1.8rem)', color: t.text, lineHeight: 1.15, marginBottom: '32px', letterSpacing: t.isSerif ? '0.01em' : '-0.01em' }}>
+          {item.heading}
+        </h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+          {item.items.map((q, i) => (
+            <div key={i} style={{ borderLeft: `3px solid ${t.border}`, paddingLeft: '20px' }}>
+              <p style={{ fontFamily: t.body, fontSize: '16px', color: t.text, lineHeight: 1.6, marginBottom: '10px' }}>
+                {q.quote}
+              </p>
+              <p style={{ fontFamily: t.mono, fontSize: '10px', color: t.textFaint, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                {q.source}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (item.type === 'ideation') {
+    return (
+      <div style={{ marginTop: '32px', background: t.cardBg, border: `1px solid ${t.border}`, borderRadius: '4px', padding: 'clamp(24px, 5vw, 48px)' }}>
+        <p style={{ fontFamily: t.mono, fontSize: '10px', color: t.textFaint, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '16px' }}>
+          {item.eyebrow}
+        </p>
+        <h3 style={{ fontFamily: t.display, fontWeight: t.isSerif ? 400 : 700, fontStyle: t.isSerif ? 'italic' : 'normal', fontSize: 'clamp(1.2rem, 2.8vw, 1.7rem)', color: t.text, lineHeight: 1.2, marginBottom: '8px', letterSpacing: t.isSerif ? '0.01em' : '-0.01em' }}>
+          {item.heading}
+        </h3>
+        <p style={{ fontFamily: t.mono, fontSize: '11px', color: t.textFaint, letterSpacing: '0.05em', marginBottom: '28px' }}>
+          {item.meta}
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px' }}>
+          {item.cards.map((c, i) => (
+            <div
+              key={i}
+              style={{
+                background: t.pageBg2,
+                border: c.selected ? `1.5px solid ${t.accent}` : `1px solid ${t.border}`,
+                borderRadius: '4px',
+                padding: '18px',
+              }}
+            >
+              {c.selected && (
+                <span style={{ display: 'inline-block', fontFamily: t.mono, fontSize: '9px', color: t.accent, background: t.accentDim, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '3px', marginBottom: '10px' }}>
+                  Selected
+                </span>
+              )}
+              <p style={{ fontFamily: t.body, fontSize: '14px', color: t.text, lineHeight: 1.55, margin: 0 }}>
+                {c.text}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   if (item.type === 'video') {
     return (
       <div style={{ marginTop: '32px', borderRadius: '4px', overflow: 'hidden', background: '#000' }}>

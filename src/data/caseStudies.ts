@@ -1,7 +1,9 @@
 export type MediaItem =
   | { type: 'image'; src: string; alt: string }
   | { type: 'span'; images: Array<{ src: string; alt: string }> }
-  | { type: 'video'; src: string };
+  | { type: 'video'; src: string }
+  | { type: 'quotes'; eyebrow: string; heading: string; items: Array<{ quote: string; source: string }> }
+  | { type: 'ideation'; eyebrow: string; heading: string; meta: string; cards: Array<{ text: string; selected?: boolean }> };
 
 export interface CaseStudySection {
   heading?: string;
@@ -42,13 +44,44 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         heading: 'The Problem',
         body: 'Practitioners were spending significant time preparing for each coaching session by manually searching for relevant context across multiple internal tools and documents. This fragmented workflow reduced efficiency and made it harder to consistently arrive fully prepared for live sessions with young service users.',
-        media: [{ type: 'image', src: '/case-studies/img/soluna/02.jpg', alt: 'Research' }],
+        media: [
+          {
+            type: 'quotes',
+            eyebrow: 'Review Research',
+            heading: 'Quotes on SU history review',
+            items: [
+              { quote: "People nowadays are used to a quick response and when we don't respond as quickly as possible, they disengage.", source: 'Peer support specialist' },
+              { quote: 'For drop ins, it’s harder to reference old chats while still trying to be engaged.', source: 'Peer support specialist' },
+              { quote: 'We have 10 seconds to assess what happened last time.', source: 'Peer support specialist' },
+              { quote: 'I do kind of a pre-screen of everyone I have on the schedule for the day… you can see old chats, messages that have been sent, goals, journaling, I always review that stuff prior to a visit.', source: 'Licensed counselor' },
+            ],
+          },
+        ],
       },
       {
         heading: 'The Opportunity',
         body: 'Through clinician and stakeholder interviews, we identified pre-session preparation as the highest-impact opportunity for AI assistance. After multiple ideation rounds, we aligned on a focused solution: Automatically generated case note summaries available ahead of each session.',
         highlight: 'This directly addressed the largest time sink while preserving clinical oversight and safety.',
-        media: [{ type: 'image', src: '/case-studies/img/soluna/03.jpg', alt: 'Research synthesis' }],
+        media: [
+          {
+            type: 'ideation',
+            eyebrow: 'Ideation',
+            heading: 'How might we make the practitioner well prepared for a chat, in 30 seconds or less?',
+            meta: '10 ideas · 2 selected for exploration',
+            cards: [
+              { text: 'Also include list of previous coaches, so the next one can contact them to share info/ideas' },
+              { text: 'Quick reference “face sheet” with all pertinent info available at a glance', selected: true },
+              { text: 'Improved SU profile inclusive of risk profile, presenting issues, etc. (snapshot)' },
+              { text: 'AI chat summary created' },
+              { text: 'Sentiment analysis of previous chats to get an idea of the user’s mood and concerns' },
+              { text: 'Key themes as a word cloud sized by frequency' },
+              { text: 'Data-summary dashboard that is scannable' },
+              { text: 'Bring all user data to one screen: usage, demographics, sessions, risk flags, goals, chat summary', selected: true },
+              { text: 'Previous case note summaries by LLMs (with feedback)' },
+              { text: 'Key themes from past chats, content, tools, etc. for each SU' },
+            ],
+          },
+        ],
       },
       {
         heading: 'My Role & Design Focus',
