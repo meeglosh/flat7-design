@@ -17,7 +17,7 @@ const projects: Project[] = [
     category: 'Health AI · iOS',
     description:
       "Expert-trained AI health companions built on a privacy-first architecture. 16 renowned specialists encode their life's work, not public internet knowledge. Every conversation encrypted on-device, never leaving the user's vault.",
-    url: 'https://onix.life',
+    url: '/onix/',
     accent: '#FF3D5A',
   },
   {

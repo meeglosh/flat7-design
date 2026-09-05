@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Onix &middot; five surfaces, four months</title>
+<meta name="description" content="A case study in the Onix design system: five surfaces, four months, one system, zero to one.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111111'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;1,7..72,400&family=Inter:wght@400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  :root {
+    --sc-canvas:      #FCFAF9;
+    --sc-surface:     #F3EAE0;
+    --sc-ink:         #111111;
+    --sc-ink-soft:    #4A443D;
+    --sc-accent:      #111111;
+    --sc-accent-ink:  #FCFAF9;
+    --sc-hairline:        #E8E4E0;
+    --sc-hairline-strong: #D8D2C8;
+    --sc-font-display: "Literata", Georgia, serif;
+    --sc-font-text:    "Inter", system-ui, sans-serif;
+    --sc-font-mono:    "DM Mono", ui-monospace, monospace;
+    --sc-measure: 66ch;
+
+    /* Onix / Anvil surfaces, on top of the six-role floor */
+    --onix-base:    #FCFAF9;
+    --onix-default: #F3EAE0;
+    --onix-raised:  #EDE4D8;
+    --onix-inset:   #E8DFCF;
+
+    --rail-w: 3.4rem;
+    --rail-gutter: 5.5rem;
+    --case-section: clamp(2.5rem, 4vw, 5rem);
+  }
+
+  body { background: var(--sc-canvas); }
+  ::selection { background: var(--sc-ink); color: var(--sc-canvas); }
+  .sc-display { margin-bottom: 0.42em; }
+
+  /* ---- layout shells ---------------------------------------------------- */
+  .chapter { position: relative; background: var(--sc-canvas); padding-left: var(--rail-gutter); }
+  .chapter--sand { background: var(--sc-surface); }
+  .chapter__wrap { max-width: 76rem; margin-inline: auto; padding-inline: var(--sc-gutter); }
+
+  .eyebrow {
+    display: block; font-family: var(--sc-font-mono); font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--sc-ink-soft);
+    margin-bottom: var(--sc-3);
+  }
+
+  .cue-line { margin: 0; }
+
+  /* ======================================================= act 0 · title == */
+  .title-act {
+    padding-left: var(--rail-gutter);
+    min-height: 100svh; min-height: 100vh;
+    display: flex; align-items: center;
+    background: var(--sc-canvas);
+  }
+  .title-act__wrap { max-width: 62rem; margin-inline: auto; padding-inline: var(--sc-gutter); width: 100%; }
+  .title-act__meta {
+    font-family: var(--sc-font-mono); font-size: 0.75rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--sc-ink-soft); margin: 0 0 var(--sc-6);
+  }
+  .title-act__h1 {
+    font-family: var(--sc-font-display); font-weight: 400;
+    font-size: var(--sc-t-4xl);
+    line-height: var(--sc-leading-tight); letter-spacing: var(--sc-track-tight);
+    text-wrap: balance; margin: 0 0 var(--sc-6); max-width: 18ch;
+  }
+  .title-act__sub {
+    font-size: var(--sc-t-lg); color: var(--sc-ink-soft); max-width: 46ch;
+    margin: 0 0 var(--sc-7); text-wrap: pretty;
+  }
+  .title-act__rule { width: 8rem; }
+  @media (max-width: 700px) {
+    .title-act__h1 { font-size: var(--sc-t-2xl); }
+  }
+
+  /* ======================================================== act 1 · brief = */
+  .brief { padding-block: var(--case-section); }
+  .brief__grid {
+    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .brief__lede { font-family: var(--sc-font-display); font-weight: 400; font-size: var(--sc-t-2xl); line-height: var(--sc-leading-tight); text-wrap: balance; margin: 0 0 var(--sc-6); }
+  .brief__col p { margin: 0 0 var(--sc-4); max-width: var(--sc-measure); color: var(--sc-ink-soft); }
+  .brief__col p:last-child { margin-bottom: 0; }
+
+  .surfaces { list-style: none; margin: 0 0 var(--sc-7); padding: 0; border-top: 1px solid var(--sc-hairline); }
+  .surfaces li { display: flex; gap: var(--sc-4); padding: var(--sc-4) 0; border-bottom: 1px solid var(--sc-hairline); }
+  .surfaces .n { font-family: var(--sc-font-mono); font-size: 0.78rem; color: var(--sc-ink-soft); padding-top: 0.2em; flex: 0 0 1.6rem; }
+  .surfaces h3 { font-family: var(--sc-font-display); font-weight: 400; font-size: 1.15rem; margin: 0 0 0.2em; }
+  .surfaces p { margin: 0; font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
+
+  .constraint { font-size: var(--sc-t-base); color: var(--sc-ink); margin: 0 0 var(--sc-6); padding-top: var(--sc-6); border-top: 1px solid var(--sc-hairline-strong); }
+
+  .stats { display: flex; flex-wrap: wrap; gap: clamp(1.5rem, 4vw, 3.5rem); }
+  .stat { min-width: 8rem; }
+  .stat__n { font-family: var(--sc-font-display); font-weight: 400; font-size: var(--sc-t-2xl); line-height: 1; display: block; }
+  .stat__l { font-family: var(--sc-font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sc-ink-soft); display: block; margin-top: 0.4em; }
+
+  /* ========================================================= act 2 · app = */
+  .app-stage { background: var(--sc-surface); }
+  .app-stage__inner {
+    height: 100%; display: flex; align-items: center; padding-left: var(--rail-gutter);
+  }
+  .app-stage__grid {
+    max-width: 76rem; margin-inline: auto; padding-inline: var(--sc-gutter); width: 100%;
+    display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(2rem, 6vw, 5rem); align-items: center;
+  }
+  .app-stage__media { display: flex; flex-direction: column; align-items: center; gap: var(--sc-4); }
+  .phone-frame {
+    position: relative; width: min(300px, 62vw); aspect-ratio: 532 / 1080;
+    border-radius: 22px; background: #161513; padding: 8px;
+    box-shadow: 0 24px 48px -20px rgba(20,15,10,0.35), 0 4px 12px -4px rgba(20,15,10,0.25);
+  }
+  .phone-frame__screen { position: relative; width: 100%; height: 100%; border-radius: 14px; overflow: hidden; background: #000; }
+  .phone-frame__screen img, .phone-frame__screen video {
+    display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center;
+  }
+  .app-stage__caption { font-family: var(--sc-font-mono); font-size: 0.7rem; color: var(--sc-ink-soft); text-align: center; max-width: 22rem; margin: 0; }
+  .app-stage__copy .sc-lede {
+    font-family: var(--sc-font-display); font-weight: 400; font-size: clamp(1.3rem, 1rem + 1.6vw, 1.9rem);
+    line-height: 1.32; max-width: 26ch; margin: 0 0 1.6rem; text-wrap: balance;
+  }
+
+  .app-strip { padding-block: clamp(2rem, 3.5vw, 3.5rem); background: var(--sc-canvas); }
+  .app-strip__row { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sc-6); }
+  .app-strip figure { margin: 0; }
+  .app-strip .phone-frame { width: 100%; max-width: 12rem; margin-inline: auto; aspect-ratio: 720 / 1460; border-radius: 14px; padding: 5px; }
+  .app-strip .phone-frame__screen { border-radius: 9px; }
+  .app-strip figcaption {
+    margin-top: var(--sc-3); font-size: var(--sc-t-sm); color: var(--sc-ink-soft); text-align: center;
+  }
+
+  /* =================================================== act 3 · creator === */
+  .creator { padding-block: var(--case-section); }
+  .creator__grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+  .creator__media { position: relative; height: clamp(35rem, 42vw, 40rem); }
+  .plate-stack { position: relative; width: 100%; height: 100%; }
+  .plate {
+    position: absolute; left: 0; width: 78%; min-width: 16rem; padding: var(--sc-4) var(--sc-5);
+    background: var(--onix-raised); border: 1px solid var(--sc-hairline-strong);
+    border-radius: var(--sc-r-md);
+    box-shadow: 6px 10px 20px -8px rgba(58,48,32,0.22);
+  }
+  .plate h4 { font-family: var(--sc-font-display); font-weight: 400; font-size: 1.1rem; margin: 0 0 0.25em; white-space: nowrap; }
+  .plate p { margin: 0; font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
+  .plate--1 { top: 0;      left: 0%;  z-index: 5; }
+  .plate--2 { top: 7.4rem; left: 14%; z-index: 4; }
+  .plate--3 { top: 14.8rem; left: 5%;  z-index: 3; }
+  .plate--4 { top: 22.2rem; left: 16%; z-index: 2; }
+  .plate--5 { top: 29.6rem; left: 6%;  z-index: 1; }
+  .creator__caption { font-family: var(--sc-font-mono); font-size: 0.7rem; color: var(--sc-ink-soft); margin-top: var(--sc-4); }
+  .creator__copy h2 { margin-top: 0; }
+  .creator__copy p { max-width: var(--sc-measure); color: var(--sc-ink-soft); margin: 0 0 var(--sc-4); }
+  .revenue-line { font-family: var(--sc-font-display); font-size: var(--sc-t-xl); margin: var(--sc-6) 0 0; }
+
+  /* ================================================ act 4 · sites/system = */
+  .system { padding-block: var(--case-section); }
+  .browser-pair { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 2.5rem); margin: var(--sc-6) 0 var(--sc-7); width: 100%; }
+  .browser-frame { border-radius: var(--sc-r-md); overflow: hidden; border: 1px solid var(--sc-hairline-strong); background: var(--onix-base); box-shadow: 0 18px 40px -20px rgba(30,24,16,0.28); }
+  .browser-frame__bar { display: flex; align-items: center; gap: var(--sc-3); padding: 0.6rem 0.9rem; background: var(--onix-raised); border-bottom: 1px solid var(--sc-hairline-strong); }
+  .browser-frame__dots { display: flex; gap: 0.35rem; }
+  .browser-frame__dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--sc-hairline-strong); }
+  .browser-frame__url { font-family: var(--sc-font-mono); font-size: 0.72rem; color: var(--sc-ink-soft); }
+  .browser-frame img { width: 100%; height: auto; display: block; }
+
+  .tokens { margin-top: var(--sc-6); }
+  .tokens__caption { font-family: var(--sc-font-mono); font-size: 0.75rem; color: var(--sc-ink-soft); margin: var(--sc-5) 0 0; }
+  .specimen {
+    border-top: 1px solid var(--sc-hairline); padding-top: var(--sc-5); margin-bottom: var(--sc-6);
+    columns: 2; column-gap: var(--sc-6);
+  }
+  .specimen__row { display: flex; align-items: baseline; gap: var(--sc-4); padding: 0.4rem 0; border-bottom: 1px solid var(--sc-hairline); break-inside: avoid; }
+  .specimen__label { font-family: var(--sc-font-mono); font-size: 0.64rem; color: var(--sc-ink-soft); width: 5.4rem; flex: 0 0 5.4rem; }
+  .anvil-h1 { font-family: var(--sc-font-display); font-size: 40px; line-height: 44px; letter-spacing: -0.8px; margin: 0; }
+  .anvil-h2 { font-family: var(--sc-font-display); font-size: 32px; line-height: 36px; letter-spacing: -0.64px; margin: 0; }
+  .anvil-h3 { font-family: var(--sc-font-display); font-size: 24px; line-height: 32px; letter-spacing: -0.56px; margin: 0; }
+  .anvil-h4 { font-family: var(--sc-font-display); font-size: 18px; line-height: 24px; letter-spacing: -0.32px; margin: 0; }
+  .anvil-body-lg { font-family: var(--sc-font-text); font-size: 18px; line-height: 28px; letter-spacing: -0.24px; margin: 0; }
+  .anvil-body-md { font-family: var(--sc-font-text); font-size: 15px; line-height: 24px; letter-spacing: -0.16px; margin: 0; }
+  .anvil-body-sm { font-family: var(--sc-font-text); font-size: 13px; line-height: 20px; letter-spacing: -0.08px; margin: 0; }
+  .anvil-mono { font-family: var(--sc-font-mono); font-size: 13px; line-height: 20px; margin: 0; }
+
+  .swatches-radii { display: flex; flex-wrap: wrap; gap: clamp(1.5rem, 4vw, 3rem); margin-bottom: var(--sc-6); align-items: flex-start; }
+  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sc-3); flex: 1 1 20rem; }
+  .swatch { border-radius: var(--sc-r-sm); border: 1px solid var(--sc-hairline-strong); overflow: hidden; }
+  .swatch__fill { height: 3rem; }
+  .swatch__label { font-family: var(--sc-font-mono); font-size: 0.62rem; padding: 0.35rem 0.5rem; color: var(--sc-ink-soft); background: var(--onix-base); }
+
+  .radii { display: flex; align-items: flex-end; gap: var(--sc-4); flex-wrap: wrap; flex: 1 1 16rem; }
+  .radius-chip { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+  .radius-chip__box { width: 2.6rem; height: 2.6rem; background: var(--onix-raised); border: 1px solid var(--sc-hairline-strong); }
+  .radius-chip__l { font-family: var(--sc-font-mono); font-size: 0.62rem; color: var(--sc-ink-soft); }
+
+  .storybook-pair { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); margin-top: var(--sc-6); max-width: 40rem; }
+  .storybook-pair figure { margin: 0; }
+  .storybook-pair img { width: 100%; height: auto; border-radius: var(--sc-r-sm); border: 1px solid var(--sc-hairline-strong); }
+  .storybook-pair figcaption { font-family: var(--sc-font-mono); font-size: 0.7rem; color: var(--sc-ink-soft); margin-top: var(--sc-2); }
+
+  .brand-note { max-width: var(--sc-measure); color: var(--sc-ink-soft); margin-top: var(--sc-6); padding-top: var(--sc-5); border-top: 1px solid var(--sc-hairline); }
+
+  /* ====================================================== act 5 · research */
+  .research { padding-block: var(--case-section); background: var(--sc-surface); }
+  .research__intro { max-width: var(--sc-measure); margin: 0 0 var(--sc-5); }
+  .research__stats { display: flex; flex-wrap: wrap; gap: clamp(1.5rem, 4vw, 3rem); margin-bottom: var(--sc-6); }
+  .research__grid { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  .ledger { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--sc-hairline-strong); }
+  .ledger li { padding: var(--sc-4) 0; border-bottom: 1px solid var(--sc-hairline-strong); }
+  .ledger p { margin: 0; font-size: var(--sc-t-base); }
+  .ledger cite { display: block; font-style: normal; font-family: var(--sc-font-mono); font-size: 0.7rem; color: var(--sc-ink-soft); margin-top: 0.4em; }
+  .research__images { display: flex; flex-direction: column; gap: var(--sc-4); max-width: 14rem; margin-inline: auto; }
+  .research__images figure { margin: 0; }
+  .research__images img { width: 100%; height: auto; border: 1px solid var(--sc-hairline-strong); border-radius: var(--sc-r-sm); }
+  .research__images figcaption { font-family: var(--sc-font-mono); font-size: 0.68rem; color: var(--sc-ink-soft); margin-top: var(--sc-2); }
+
+  /* ==================================================== act 6 · silence == */
+  .silence { min-height: 42vh; display: flex; align-items: center; justify-content: flex-start; background: var(--sc-surface); }
+  .silence__line { font-family: var(--sc-font-display); font-weight: 400; font-style: italic; font-size: clamp(1.8rem, 1.4rem + 2.4vw, 3rem); margin: 0; max-width: 18ch; }
+
+  /* ======================================================== act 7 · peak = */
+  .assembly { background: var(--sc-canvas); }
+  .assembly__inner { height: 100%; display: flex; flex-direction: column; justify-content: center; padding-left: var(--rail-gutter); }
+  .assembly__wrap { max-width: 84rem; margin-inline: auto; padding-inline: var(--sc-gutter); width: 100%; }
+  .assembly__how { margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .assembly__how p {
+    font-family: var(--sc-font-display); font-size: var(--sc-t-lg); margin: 0 0 0.6em; max-width: 40ch;
+  }
+  .assembly__stage { position: relative; height: clamp(19rem, 32vw, 24rem); margin-bottom: clamp(2rem, 6vw, 4rem); }
+  .assembly__hairline {
+    position: absolute; left: 4%; right: 4%; top: 50%; height: 1px; background: var(--sc-hairline-strong);
+    opacity: clamp(0, calc(var(--sc-p, 0) / 0.7), 1); transform: translateY(-50%);
+  }
+  .assembly__row { position: relative; height: 100%; display: flex; align-items: center; justify-content: center; gap: clamp(0.75rem, 1.4vw, 1.4rem); }
+  .plate-card {
+    --sx: 0; --sy: 0; --sr: 0;
+    position: relative; width: 19%; min-width: 9.6rem; background: var(--onix-raised);
+    border: 1px solid var(--sc-hairline-strong); border-radius: var(--sc-r-md);
+    box-shadow: 6px 10px 22px -10px rgba(40,32,20,0.3);
+    transform:
+      translate(
+        calc(var(--sx) * (1 - clamp(0, calc(var(--sc-p, 0) / 0.7), 1))),
+        calc(var(--sy) * (1 - clamp(0, calc(var(--sc-p, 0) / 0.7), 1)))
+      )
+      rotate(calc(var(--sr) * (1 - clamp(0, calc(var(--sc-p, 0) / 0.7), 1))));
+    padding: 0.6rem;
+  }
+  .plate-card--1 { --sx: -70px; --sy: -60px; --sr: -9deg; }
+  .plate-card--2 { --sx: 40px;  --sy: -90px; --sr: 6deg; }
+  .plate-card--3 { --sx: -30px; --sy: 80px;  --sr: 5deg; }
+  .plate-card--4 { --sx: 90px;  --sy: 40px;  --sr: -6deg; }
+  .plate-card--5 { --sx: -60px; --sy: 70px;  --sr: 8deg; }
+  .plate-card img { width: 100%; height: 7.8rem; object-fit: cover; object-position: top; border-radius: var(--sc-r-sm); display: block; }
+  .plate-card .mini-swatches { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; height: 7.8rem; border-radius: var(--sc-r-sm); overflow: hidden; }
+  .plate-card .mini-swatches span { display: block; height: 100%; }
+  .plate-card .mini-stack { position: relative; height: 7.8rem; }
+  .plate-card .mini-stack__layer { position: absolute; left: 0; right: 8%; height: 1.3rem; background: var(--onix-inset); border: 1px solid var(--sc-hairline-strong); border-radius: 4px; }
+  .plate-card .mini-browser { height: 7.8rem; display: flex; flex-direction: column; }
+  .plate-card .mini-browser__bar { display: flex; gap: 3px; padding: 0.3rem; background: var(--onix-inset); }
+  .plate-card .mini-browser__bar span { width: 5px; height: 5px; border-radius: 50%; background: var(--sc-hairline-strong); }
+  .plate-card .mini-browser img { flex: 1; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .plate-card__label { display: block; margin-top: 0.5rem; font-family: var(--sc-font-mono); font-size: 0.62rem; text-align: center; color: var(--sc-ink-soft); }
+
+  .assembly__peak {
+    font-family: var(--sc-font-display); font-weight: 400;
+    font-size: clamp(4rem, 3rem + 8vw, 9rem); line-height: 0.94; letter-spacing: var(--sc-track-tight);
+    margin: 0;
+  }
+
+  /* ===================================================== act 8 · colophon */
+  .colophon { padding-block: var(--case-section); background: var(--sc-canvas); }
+  .colophon__cols { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sc-6); border-top: 1px solid var(--sc-hairline-strong); border-bottom: 1px solid var(--sc-hairline-strong); padding-block: var(--sc-5); margin-bottom: var(--sc-6); }
+  .colophon__cols dt { font-family: var(--sc-font-mono); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sc-ink-soft); margin: 0 0 0.5em; }
+  .colophon__cols dd { margin: 0; font-size: var(--sc-t-sm); }
+  .colophon__cta { font-size: var(--sc-t-base); color: var(--sc-ink-soft); max-width: 50ch; margin: 0 0 var(--sc-7); }
+  .colophon__cta a { color: var(--sc-ink); }
+  .colophon__foot { display: flex; align-items: center; gap: var(--sc-3); font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
+  .colophon__foot img { width: 22px; height: 22px; }
+
+  /* ================================================== signature: the rail = */
+  .rail {
+    position: fixed; left: 0; top: 0; bottom: 0; width: var(--rail-gutter);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 50; padding: 1.5rem 0;
+  }
+  .rail__track { position: relative; display: flex; flex-direction: column; width: 3px; height: min(46vh, 26rem); background: var(--sc-hairline-strong); border-radius: 3px; overflow: visible; }
+  .rail__bands { position: relative; display: flex; flex-direction: column; width: 100%; height: 100%; }
+  .rail__band {
+    flex: 1 1 20%; position: relative; display: block; width: 100%;
+    outline-offset: 4px;
+  }
+  .rail__band::before {
+    content: ""; position: absolute; inset: 1px; background: var(--sc-ink);
+    transform: scaleY(0); transform-origin: top; transition: transform 520ms var(--sc-ease-out);
+    border-radius: 2px;
+  }
+  .rail__band.is-filled::before { transform: scaleY(1); }
+  .rail__ticks { position: absolute; inset: 0; pointer-events: none; }
+  .rail__tick { position: absolute; left: -3px; width: 9px; height: 1px; background: var(--sc-canvas); opacity: 0.9; }
+  .rail__tick-label {
+    position: absolute; left: 12px; top: -0.55em; font-family: var(--sc-font-mono);
+    font-size: 0.58rem; color: var(--sc-ink-soft); white-space: nowrap;
+  }
+  .rail__caption {
+    writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);
+    margin-top: 1.4rem; font-family: var(--sc-font-mono); font-size: 0.6rem;
+    letter-spacing: 0.04em; color: var(--sc-ink-soft); max-height: 14rem;
+  }
+  .rail__band:focus-visible { outline: 2px solid var(--sc-ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rail__band::before { transform: scaleY(1) !important; transition: none !important; }
+  }
+
+  /* ============================================================ mobile === */
+  @media (max-width: 860px) {
+    :root { --rail-gutter: 0px; }
+    .chapter, .title-act, .app-stage__inner, .assembly__inner { padding-left: 0; }
+    .chapter__wrap, .title-act__wrap { padding-bottom: 3.2rem; }
+
+    .rail {
+      left: 0; right: 0; top: auto; bottom: 0; width: 100%; height: 3.6rem;
+      flex-direction: row; padding: 0 1rem;
+    }
+    .rail__track { flex-direction: row; width: 100%; height: 3px; }
+    .rail__bands { flex-direction: row; }
+    .rail__band::before { transform-origin: left; transform: scaleX(0); }
+    .rail__band.is-filled::before { transform: scaleX(1); }
+    .rail__ticks { display: none; }
+    .rail__caption { writing-mode: horizontal-tb; transform: none; margin: 0 0 0 0.8rem; margin-top:0; max-height: none; display: none; }
+
+    body { padding-bottom: 3.6rem; }
+
+    .title-act__h1 { font-size: var(--sc-t-2xl); }
+
+    .brief__grid, .creator__grid, .research__grid { grid-template-columns: 1fr; }
+    .app-stage__grid { grid-template-columns: 1fr; text-align: center; gap: 0.85rem; }
+    .app-stage__media { gap: 0.7rem; }
+    .app-stage__copy { position: relative; min-height: 6.8rem; }
+    .app-stage__copy .sc-lede {
+      max-width: none; margin: 0; position: absolute; inset: 0 0 auto 0;
+      font-size: 1.15rem; line-height: 1.3;
+    }
+    .phone-frame { width: 70vw; margin-inline: auto; }
+    .app-strip__row { grid-template-columns: repeat(2, 1fr); }
+    .creator__media { order: -1; height: 36rem; margin-bottom: 1.5rem; }
+    .plate { width: 82%; min-width: 0; }
+    .plate--2 { left: 10%; }
+    .plate--4 { left: 11%; }
+    .browser-pair, .storybook-pair { grid-template-columns: 1fr; }
+    .swatches { grid-template-columns: repeat(2, 1fr); }
+
+    .assembly__stage { overflow-x: clip; }
+    .assembly__row { flex-wrap: wrap; justify-content: center; }
+    .plate-card { width: 40%; }
+    .plate-card--1, .plate-card--2 { width: 44%; }
+    .plate-card--1 { --sx: -11px; --sy: -14px; --sr: -2deg; }
+    .plate-card--2 { --sx: 9px;   --sy: -20px; --sr: 2deg; }
+    .plate-card--3 { --sx: -7px;  --sy: 18px;  --sr: 2deg; }
+    .plate-card--4 { --sx: 10px;  --sy: 10px;  --sr: -2deg; }
+    .plate-card--5 { --sx: -9px;  --sy: 14px;  --sr: 2deg; }
+
+    .colophon__cols { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<a class="sc-skip" href="#chapter-1" style="position:absolute;left:-999px;top:0;background:#111;color:#fff;padding:0.6em 1em;z-index:100;">Skip to case study</a>
+
+<nav class="rail" aria-label="Four-month build sequence, chapter navigation" data-sc-verify-state="bands:0">
+  <div class="rail__track">
+    <div class="rail__bands" id="railBands">
+      <a class="rail__band" data-band="1" href="#chapter-1" aria-label="Jump to chapter 1, the brief"></a>
+      <a class="rail__band" data-band="2" href="#chapter-2" aria-label="Jump to chapter 2, the iOS app"></a>
+      <a class="rail__band" data-band="3" href="#chapter-3" aria-label="Jump to chapter 3, Creator Space"></a>
+      <a class="rail__band" data-band="4" href="#chapter-4" aria-label="Jump to chapter 4, sites and design system"></a>
+      <a class="rail__band" data-band="5" href="#chapter-5" aria-label="Jump to chapter 5, research"></a>
+    </div>
+    <div class="rail__ticks" id="railTicks" aria-hidden="true"></div>
+  </div>
+  <p class="rail__caption">Sequence, not schedule. Surfaces overlapped.</p>
+</nav>
+
+<main id="top">
+
+  <!-- ============================================================ ACT 0 == -->
+  <section class="title-act" data-sc-act="flow">
+    <div class="title-act__wrap">
+      <p class="title-act__meta" data-sc-parallax="0.3">Mike Jerugim, case study</p>
+      <h1 class="title-act__h1" data-sc-parallax="0.3">Five surfaces. Four months. One system.</h1>
+      <p class="title-act__sub" data-sc-parallax="0.6">Onix, zero to one: the iOS app, the Creator Space, the sites, the brand and design system, the research.</p>
+      <hr class="sc-rule title-act__rule" data-sc-parallax="0.6">
+    </div>
+  </section>
+
+  <!-- ============================================================ ACT 1 == -->
+  <section class="chapter brief" id="chapter-1" data-sc-act="flow">
+    <div class="chapter__wrap">
+      <div class="brief__grid" data-sc-in data-sc-stagger="70">
+        <div class="brief__col">
+          <p class="brief__lede">Experts train an onix: a digital twin grounded in their own body of work.</p>
+          <p>Their followers talk to it in a private, always-available iOS app and get guidance built around their own life, not a generic answer. Onix calls this Personal Intelligence.</p>
+          <p>I led design across every surface Onix shipped in its first four months, from the iOS app to the research behind it. The product went from zero to one in that window.</p>
+        </div>
+        <div class="brief__col">
+          <ol class="surfaces">
+            <li><span class="n">01</span><div><h3>iOS app</h3><p>The conversation people actually have, and the hand-off between experts.</p></div></li>
+            <li><span class="n">02</span><div><h3>Creator Space</h3><p>Where experts and their teams train and safeguard their onix.</p></div></li>
+            <li><span class="n">03</span><div><h3>Marketing sites</h3><p>onix.life and creator.onix.life.</p></div></li>
+            <li><span class="n">04</span><div><h3>Brand guide and Anvil design system</h3><p>The tokens and components under all of it.</p></div></li>
+            <li><span class="n">05</span><div><h3>Habit tracker research</h3><p>A desk-research brief on habit formation.</p></div></li>
+          </ol>
+          <p class="constraint">Design direction, five surfaces. Four months. Zero to one.</p>
+          <div class="stats">
+            <div class="stat"><span class="stat__n" data-sc-count="0 5">0</span><span class="stat__l">Surfaces</span></div>
+            <div class="stat"><span class="stat__n" data-sc-count="0 4">0</span><span class="stat__l">Months</span></div>
+            <div class="stat"><span class="stat__n" data-sc-count="0 20">0</span><span class="stat__l">Experts listed on onix.life</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ ACT 2 == -->
+  <section id="chapter-2" data-sc-act="scrub" data-sc-span="2.6" data-sc-dwell="0.3">
+    <div data-sc-stage class="app-stage">
+      <div class="app-stage__inner">
+        <div class="app-stage__grid">
+          <div class="app-stage__media">
+            <div class="phone-frame">
+              <div class="phone-frame__screen">
+                <img class="sc-stage__poster" src="assets/app-handoff-poster.jpg" width="532" height="1080" alt="Onix iOS app, chat screen">
+                <video data-sc-scrub data-sc-src="assets/app-handoff.mp4" data-sc-src-mobile="assets/app-handoff-m.mp4" muted playsinline width="532" height="1080"></video>
+              </div>
+            </div>
+            <p class="app-stage__caption">Onix for iOS, v0.92.0. Screen recording, unedited apart from the cut.</p>
+          </div>
+          <div class="app-stage__copy">
+            <p class="sc-lede" data-sc-cue="0 0.32 0">Someone tells Onix, &ldquo;I&rsquo;m having trouble sleeping.&rdquo;</p>
+            <p class="sc-lede" data-sc-cue="0.26 0.56">Onix is the router. It doesn&rsquo;t answer. It recommends a specialist: Dr. Rabin.</p>
+            <p class="sc-lede" data-sc-cue="0.5 0.8">Dr. Rabin&rsquo;s onix takes over, in his own voice.</p>
+            <p class="sc-lede" data-sc-cue="0.72 1 0.12 0">The &ldquo;not medical advice&rdquo; line stays on screen the whole time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="app-strip chapter" data-sc-act="flow">
+    <div class="chapter__wrap">
+      <div class="app-strip__row" data-sc-in data-sc-stagger="60">
+        <figure>
+          <div class="phone-frame"><div class="phone-frame__screen"><img src="assets/screen-home.jpg" width="720" height="1460" alt="Onix home feed, greeting and guide cards" loading="lazy"></div></div>
+          <figcaption>Home. &ldquo;Good afternoon, Mike.&rdquo;</figcaption>
+        </figure>
+        <figure>
+          <div class="phone-frame"><div class="phone-frame__screen"><img src="assets/screen-discover.jpg" width="720" height="1460" alt="Onix discover tab, list of expert guides" loading="lazy"></div></div>
+          <figcaption>Discover. Browse all guides.</figcaption>
+        </figure>
+        <figure>
+          <div class="phone-frame"><div class="phone-frame__screen"><img src="assets/screen-journey-created.jpg" width="720" height="1460" alt="A journey created inside the conversation" loading="lazy"></div></div>
+          <figcaption>A journey, created inside the chat.</figcaption>
+        </figure>
+        <figure>
+          <div class="phone-frame"><div class="phone-frame__screen"><img src="assets/screen-journey.jpg" width="720" height="1460" alt="The journey detail screen with check-in bar" loading="lazy"></div></div>
+          <figcaption>The journey screen. Check in with Dr. Rabin.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ ACT 3 == -->
+  <section class="chapter creator" id="chapter-3" data-sc-act="flow">
+    <div class="chapter__wrap">
+      <div class="creator__grid">
+        <figure class="creator__media" data-sc-reveal="up" data-sc-reveal-at="0.05 0.5">
+          <div class="plate-stack">
+            <div class="plate plate--1" data-sc-parallax="-1.2"><h4>Knowledge corpus</h4><p>Protocols and notes never published elsewhere.</p></div>
+            <div class="plate plate--2" data-sc-parallax="-0.7"><h4>Personality</h4><p>Tone and conviction, in their own words.</p></div>
+            <div class="plate plate--3" data-sc-parallax="-0.2"><h4>Safeguards</h4><p>Scope and boundaries the expert sets.</p></div>
+            <div class="plate plate--4" data-sc-parallax="0.3"><h4>Risk elevation</h4><p>When to say &ldquo;I don&rsquo;t know&rdquo; and hand off.</p></div>
+            <div class="plate plate--5" data-sc-parallax="0.8"><h4>Human in the loop</h4><p>Review before reaching subscribers.</p></div>
+          </div>
+          <figcaption class="creator__caption">Schematic of the training pipeline, drawn for this case study.</figcaption>
+        </figure>
+        <div class="creator__copy" data-sc-in data-sc-stagger="70">
+          <span class="eyebrow">Creator Space</span>
+          <h2 class="sc-display sc-display--md">The safeguards behind the voice.</h2>
+          <p>Experts and their teams train a digital twin on their own body of work, not the public internet. The public creator site describes three steps: create a profile, train it on your body of work, submit it for review.</p>
+          <p>Approved experts keep 70% of what their onix earns. I designed the surface where that training happens, and the review that protects an expert&rsquo;s name once their onix goes live. The Creator Space itself is not shown here; this is the pipeline, drawn for this case study.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ ACT 4 == -->
+  <section class="chapter system" id="chapter-4" data-sc-act="flow">
+    <div class="chapter__wrap">
+      <div data-sc-in data-sc-stagger="70">
+        <span class="eyebrow">Sites, brand, design system</span>
+        <h2 class="sc-display sc-display--md">Two sites, one system, live.</h2>
+        <p class="sc-body">onix.life is where people find their expert. creator.onix.life is where experts sign up to build one. Both are set in the same tokens as this page.</p>
+      </div>
+
+      <div class="browser-pair">
+        <figure data-sc-reveal="left" data-sc-reveal-at="0.08 0.39">
+          <div class="browser-frame">
+            <div class="browser-frame__bar"><span class="browser-frame__dots"><span></span><span></span><span></span></span><span class="browser-frame__url">onix.life</span></div>
+            <img src="assets/site-onix-hero.jpg" width="1600" height="844" alt="onix.life homepage hero" loading="lazy">
+          </div>
+        </figure>
+        <figure data-sc-reveal="right" data-sc-reveal-at="0.13 0.44">
+          <div class="browser-frame">
+            <div class="browser-frame__bar"><span class="browser-frame__dots"><span></span><span></span><span></span></span><span class="browser-frame__url">creator.onix.life</span></div>
+            <img src="assets/site-creator-hero.jpg" width="1600" height="1000" alt="creator.onix.life homepage hero" loading="lazy">
+          </div>
+        </figure>
+      </div>
+
+      <div class="tokens" data-sc-in data-sc-stagger="60">
+        <h3 class="sc-display sc-display--md">Anvil, the design system underneath.</h3>
+        <p class="sc-body">Nine documented text styles across Literata, Inter and DM Mono, and five documented components: App Header, Avatar, Button, Typography, Icons. Rendered here in the real faces, not a screenshot.</p>
+
+        <div class="specimen">
+          <div class="specimen__row"><span class="specimen__label">h1 / 40</span><p class="anvil-h1">Onix</p></div>
+          <div class="specimen__row"><span class="specimen__label">h2 / 32</span><p class="anvil-h2">Personal Intelligence</p></div>
+          <div class="specimen__row"><span class="specimen__label">h3 / 24</span><p class="anvil-h3">Your greatest challenges</p></div>
+          <div class="specimen__row"><span class="specimen__label">h4 / 18</span><p class="anvil-h4">Built on real expertise</p></div>
+          <div class="specimen__row"><span class="specimen__label">body-lg / 18</span><p class="anvil-body-lg">Talk to onixes trained by the world&rsquo;s foremost experts.</p></div>
+          <div class="specimen__row"><span class="specimen__label">body-md / 15</span><p class="anvil-body-md">Learns your history, your health, your context.</p></div>
+          <div class="specimen__row"><span class="specimen__label">body-sm / 13</span><p class="anvil-body-sm">Your data never leaves your vault. Period.</p></div>
+          <div class="specimen__row"><span class="specimen__label">mono / 13</span><p class="anvil-mono">v0.92.0 &middot; iOS</p></div>
+        </div>
+
+        <div class="swatches-radii">
+          <div class="swatches">
+            <div class="swatch"><div class="swatch__fill" style="background:#FCFAF9;"></div><div class="swatch__label">base &middot; #FCFAF9</div></div>
+            <div class="swatch"><div class="swatch__fill" style="background:#F3EAE0;"></div><div class="swatch__label">default &middot; #F3EAE0</div></div>
+            <div class="swatch"><div class="swatch__fill" style="background:#EDE4D8;"></div><div class="swatch__label">raised &middot; #EDE4D8</div></div>
+            <div class="swatch"><div class="swatch__fill" style="background:#E8DFCF;"></div><div class="swatch__label">inset &middot; #E8DFCF</div></div>
+          </div>
+          <div class="radii">
+            <div class="radius-chip"><div class="radius-chip__box" style="border-radius:0;"></div><span class="radius-chip__l">0</span></div>
+            <div class="radius-chip"><div class="radius-chip__box" style="border-radius:4px;"></div><span class="radius-chip__l">4</span></div>
+            <div class="radius-chip"><div class="radius-chip__box" style="border-radius:6px;"></div><span class="radius-chip__l">6</span></div>
+            <div class="radius-chip"><div class="radius-chip__box" style="border-radius:8px;"></div><span class="radius-chip__l">8</span></div>
+            <div class="radius-chip"><div class="radius-chip__box" style="border-radius:12px;"></div><span class="radius-chip__l">12</span></div>
+            <div class="radius-chip"><div class="radius-chip__box" style="border-radius:9999px;"></div><span class="radius-chip__l">9999</span></div>
+          </div>
+        </div>
+
+        <p class="tokens__caption">This page is set in the same tokens.</p>
+
+        <div class="storybook-pair">
+          <figure>
+            <img src="assets/ds-typography.jpg" width="1600" height="890" alt="Anvil Storybook, typography foundations page" loading="lazy">
+            <figcaption>Anvil Storybook, Typography.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/ds-colors.jpg" width="1600" height="888" alt="Anvil Storybook, colors foundations page" loading="lazy">
+            <figcaption>Anvil Storybook, Colors.</figcaption>
+          </figure>
+        </div>
+
+        <p class="brand-note">The brand also carries its own guide: eight sections covering mission, principles, voice, product language, colour, type, radius and a quick reference. I wrote it. I&rsquo;m not quoting it here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ ACT 5 == -->
+  <section class="chapter research" id="chapter-5" data-sc-act="flow">
+    <div class="chapter__wrap">
+      <div data-sc-in data-sc-stagger="70">
+        <span class="eyebrow">Research</span>
+        <h2 class="sc-display sc-display--md">A brief, honestly labelled.</h2>
+        <p class="research__intro">Before any tracker was built, I produced a research brief. It is desk research, not a study Onix ran: 60+ peer-reviewed sources synthesized across 49 pages, proposing 10 wireframe experiments across 3 cohorts and a telemetry plan of 42 events and 18 metrics. None of it has run yet.</p>
+
+        <div class="research__stats">
+          <div class="stat"><span class="stat__n" data-sc-count="0 60">0</span><span class="stat__l">Peer-reviewed sources, minimum</span></div>
+          <div class="stat"><span class="stat__n" data-sc-count="0 49">0</span><span class="stat__l">Pages</span></div>
+          <div class="stat"><span class="stat__n" data-sc-count="0 42">0</span><span class="stat__l">Telemetry events, proposed</span></div>
+          <div class="stat"><span class="stat__n" data-sc-count="0 18">0</span><span class="stat__l">Computed metrics, proposed</span></div>
+        </div>
+      </div>
+
+      <div class="research__grid">
+        <ul class="ledger" data-sc-in data-sc-stagger="80">
+          <li>
+            <p>70% of health-app users abandon within 90 days.</p>
+            <cite>As cited in the brief, Kidman et al. 2024.</cite>
+          </li>
+          <li>
+            <p>Median time to form a habit is 59 to 66 days, ranging from 18 to 335 depending on the person.</p>
+            <cite>As cited in the brief, Singh et al. 2024.</cite>
+          </li>
+          <li>
+            <p>Self-monitoring adherence falls from 96% to 55% over nine months without design intervention.</p>
+            <cite>As cited in the brief, Spring et al.</cite>
+          </li>
+        </ul>
+        <div class="research__images" data-sc-in data-sc-stagger="80">
+          <figure>
+            <img src="assets/research-page-06.jpg" width="1000" height="1294" alt="Research brief page 6, the Journey container concept" loading="lazy">
+            <figcaption>From the brief: the Journey container concept.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/research-page-17.jpg" width="1000" height="1294" alt="Research brief page 17, three progress visualization concepts" loading="lazy">
+            <figcaption>From the brief: three ways to show progress, proposed, not tested.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ ACT 6 == -->
+  <section class="silence chapter chapter--sand" data-sc-act="flow">
+    <div class="chapter__wrap">
+      <p class="silence__line" data-sc-in>All of it, at the same time.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ ACT 7 == -->
+  <section id="peak" data-sc-act="pin" data-sc-span="3.6">
+    <div data-sc-stage class="assembly">
+      <div class="assembly__inner">
+        <div class="assembly__wrap">
+          <div class="assembly__how">
+            <p class="cue-line" data-sc-cue="0 0.22 0">One system.</p>
+            <p class="cue-line" data-sc-cue="0.14 0.4">A small set of AI tools, named once: Claude Code, Figma Make, Google Stitch, Claude Design.</p>
+            <p class="cue-line" data-sc-cue="0.32 0.56">Close collaboration with the founders and the engineers building around me.</p>
+            <p class="cue-line" data-sc-cue="0.48 0.72">Decisions made in days, not sprints.</p>
+          </div>
+
+          <div class="assembly__stage" data-sc-verify-state="assembly:0">
+            <div class="assembly__hairline"></div>
+            <div class="assembly__row">
+              <div class="plate-card plate-card--1">
+                <img src="assets/screen-rabin.jpg" width="720" height="1460" alt="">
+                <span class="plate-card__label">iOS app</span>
+              </div>
+              <div class="plate-card plate-card--2">
+                <div class="mini-stack">
+                  <div class="mini-stack__layer" style="top:0;"></div>
+                  <div class="mini-stack__layer" style="top:1.32rem; right:14%;"></div>
+                  <div class="mini-stack__layer" style="top:2.64rem; right:6%;"></div>
+                  <div class="mini-stack__layer" style="top:3.96rem; right:18%;"></div>
+                  <div class="mini-stack__layer" style="top:5.28rem;"></div>
+                </div>
+                <span class="plate-card__label">Creator Space</span>
+              </div>
+              <div class="plate-card plate-card--3">
+                <div class="mini-browser">
+                  <div class="mini-browser__bar"><span></span><span></span><span></span></div>
+                  <img src="assets/site-onix-hero.jpg" width="1600" height="844" alt="">
+                </div>
+                <span class="plate-card__label">Sites</span>
+              </div>
+              <div class="plate-card plate-card--4">
+                <div class="mini-swatches">
+                  <span style="background:#FCFAF9;"></span><span style="background:#F3EAE0;"></span>
+                  <span style="background:#EDE4D8;"></span><span style="background:#E8DFCF;"></span>
+                </div>
+                <span class="plate-card__label">Brand &amp; design system</span>
+              </div>
+              <div class="plate-card plate-card--5">
+                <img src="assets/research-page-06.jpg" width="1000" height="1294" alt="">
+                <span class="plate-card__label">Research</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="assembly__peak" data-sc-cue="0.72 1">4 months</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ ACT 8 == -->
+  <section class="chapter colophon" id="colophon" data-sc-act="flow">
+    <div class="chapter__wrap">
+      <div data-sc-in data-sc-stagger="60">
+        <dl class="colophon__cols">
+          <div><dt>Role</dt><dd>Design direction, all surfaces</dd></div>
+          <div><dt>Tools</dt><dd>Claude Code, Figma Make, Google Stitch, Claude Design</dd></div>
+          <div><dt>Collaborators</dt><dd>The founders and cross-functional engineers</dd></div>
+          <div><dt>Year</dt><dd>2026</dd></div>
+          <div><dt>Type</dt><dd>Literata, Inter, DM Mono</dd></div>
+        </dl>
+        <p class="colophon__cta">More work at <a href="https://flat7.design/">flat7.design</a>. Or <a href="mailto:mike@flat7.design">write to Mike</a>.</p>
+        <div class="colophon__foot">
+          <img src="assets/onix-logo.svg" alt="" aria-hidden="true">
+          <span>Onix is a trademark of its owner. Case study by Mike Jerugim, Flat7 Design.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="scrollcraft.js"></script>
+<script>
+  ScrollCraft.mount(document.body);
+
+  (function () {
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var bandsWrap = document.getElementById('railBands');
+    var bands = Array.prototype.slice.call(bandsWrap.querySelectorAll('.rail__band'));
+    var rail = document.querySelector('.rail');
+    var maxReached = 0;
+
+    function paint() {
+      bands.forEach(function (b, i) {
+        if (i < maxReached) b.classList.add('is-filled');
+      });
+      rail.setAttribute('data-sc-verify-state', 'bands:' + maxReached);
+    }
+
+    if (reduce) {
+      maxReached = 5;
+      paint();
+    } else {
+      var chapters = [1, 2, 3, 4, 5];
+      chapters.forEach(function (n) {
+        var el = document.getElementById('chapter-' + n);
+        if (!el) return;
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              maxReached = Math.max(maxReached, n);
+              paint();
+            }
+          });
+        }, { rootMargin: '-40% 0px -60% 0px', threshold: 0 });
+        io.observe(el);
+      });
+
+      var peak = document.getElementById('peak');
+      if (peak) {
+        var peakIo = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              maxReached = 5;
+              paint();
+            }
+          });
+        }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+        peakIo.observe(peak);
+      }
+    }
+
+    // Sixteen week ticks, labelled at 1, 4, 8, 12, 16.
+    var ticksHost = document.getElementById('railTicks');
+    var labelled = { 1: 'W1', 4: 'W4', 8: 'W8', 12: 'W12', 16: 'W16' };
+    for (var w = 1; w <= 16; w++) {
+      var tick = document.createElement('div');
+      tick.className = 'rail__tick';
+      tick.style.top = ((w - 1) / 16 * 100) + '%';
+      if (labelled[w]) {
+        var label = document.createElement('span');
+        label.className = 'rail__tick-label';
+        label.textContent = labelled[w];
+        tick.appendChild(label);
+      }
+      ticksHost.appendChild(tick);
+    }
+
+    // Bespoke verify-state signature for the peak's convergence.
+    var stage = document.querySelector('.assembly__stage');
+    var peakAct = document.getElementById('peak');
+    if (stage && peakAct) {
+      var raf = null;
+      function tick2() {
+        var p = parseFloat(getComputedStyle(peakAct).getPropertyValue('--sc-p')) || 0;
+        stage.setAttribute('data-sc-verify-state', 'assembly:' + Math.round(p * 100));
+        raf = requestAnimationFrame(tick2);
+      }
+      tick2();
+    }
+  })();
+</script>
+</body>
+</html>
