@@ -113,7 +113,7 @@ function Pill({ label, bg, fg, size = 'sm' }: { label: string; bg: string; fg: s
 
 // ─── Scroll-reveal hook ───────────────────────────────────────────────────────
 function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement & HTMLAnchorElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const el = ref.current;
@@ -328,11 +328,14 @@ export function GenZPage() {
           {PROJECTS.map((proj, i) => {
             const { ref, visible } = useReveal();
             const vivid = VIVID[proj.pastel] ?? VIVID['mint'];
+            const Card = proj.url ? 'a' : 'div';
+            const linkProps = proj.url ? { href: proj.url, target: '_blank', rel: 'noopener noreferrer' } : {};
             return (
-              <div
+              <Card
                 key={proj.no}
                 ref={ref}
                 className="gz-proj-card"
+                {...linkProps}
                 style={{
                   background: vivid.bg,
                   borderRadius: '20px',
@@ -348,6 +351,9 @@ export function GenZPage() {
                   gap: '16px',
                   position: 'relative',
                   overflow: 'hidden',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                  cursor: proj.url ? 'pointer' : 'default',
                 }}
               >
                 <span style={{ position: 'absolute', top: '12px', right: '16px', fontFamily: display, fontSize: '1.8rem', color: vivid.text, opacity: 0.2, userSelect: 'none', lineHeight: 1 }}>✦</span>
@@ -361,14 +367,12 @@ export function GenZPage() {
                     <Pill label={proj.cat} bg="rgba(255,255,255,0.28)" fg={vivid.text} />
                   </div>
                   <h3 style={{ fontFamily: display, fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.02em', color: vivid.text, lineHeight: 1.05, marginBottom: '10px' }}>
-                    {proj.url
-                      ? <a href={proj.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{proj.name} <span style={{ fontSize: '0.45em', opacity: 0.7, verticalAlign: 'middle' }}>↗</span></a>
-                      : proj.name
-                    }
+                    {proj.name}
+                    {proj.url && <span style={{ fontSize: '0.45em', opacity: 0.7, verticalAlign: 'middle', marginLeft: '4px' }}>↗</span>}
                   </h3>
                   <p style={{ fontFamily: font, fontSize: '13px', color: vivid.text, opacity: 0.82, lineHeight: 1.65 }}>{proj.desc}</p>
                 </div>
-              </div>
+              </Card>
             );
           })}
         </div>
