@@ -214,7 +214,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: 'decathlon',
     title: 'Decathlon Community',
     company: 'Decathlon',
-    role: 'Senior Product Designer',
+    role: 'Lead Product Designer',
     subtitle: 'Helping People Stay Active and Connected During a Global Pandemic',
     thumbnail: '/case-studies/img/thumbs/Decathlon-thumb.jpg',
     heroImage: '/case-studies/img/decathlon/01.jpg',
