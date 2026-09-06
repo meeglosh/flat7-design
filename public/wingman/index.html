@@ -221,15 +221,20 @@
 
   /* ===================== act 6: pan rail, tools ===================== */
   .rail-section { background: var(--sc-surface); }
-  .rail-stage { padding: 0; display: flex; align-items: center; }
+  /* Two rows, stacked: a static heading row that never moves during the pan,
+     and a pan row beneath it. Only .rail (the pan row's inner flex track)
+     carries data-sc-pan, so the engine's scrollWidth measurement and its
+     translateX never touch the heading. */
+  .rail-stage { padding: 0; display: flex; flex-direction: column; }
+  .rail-headrow { flex: none; padding: 20vh var(--sc-gutter) 0; }
+  .rail-headrow h2 { font-size: var(--sc-t-3xl); font-weight: 700; line-height: 1.06; margin: 0 0 var(--sc-3); text-wrap: balance; max-width: 32rem; }
+  .rail-headrow .slide-rule { margin-bottom: 0; }
+  .rail-panrow { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; padding-top: var(--sc-6); overflow: hidden; }
   /* Every rail item is sized as a share of the viewport (with rem floors and
      ceilings), so the rail is always ~1.6x the viewport wide and the pan has
      ~60vw of travel at any size. Fixed rem caps made the whole rail fit on
      XL screens, leaving the act with nothing to pan. */
-  .rail { display: flex; gap: clamp(1.5rem, 3vw, 4rem); align-items: center; padding: var(--sc-section) var(--sc-gutter); width: max-content; }
-  .rail-heading { flex: none; width: clamp(20rem, 32vw, 60rem); display: flex; flex-direction: column; justify-content: center; }
-  .rail-heading h2 { font-size: var(--sc-t-3xl); font-weight: 700; line-height: 1.06; margin: 0 0 var(--sc-3); text-wrap: balance; }
-  .rail-heading .slide-rule { margin-bottom: var(--sc-3); }
+  .rail { display: flex; gap: clamp(1.5rem, 3vw, 4rem); align-items: center; padding: 0 var(--sc-gutter); width: max-content; }
   /* The track holds the connector line and the four cards. Cards centre on
      the connector rather than stretching to the heading column's height. */
   .rail-track { position: relative; flex: none; display: flex; align-items: center; gap: clamp(1.5rem, 3vw, 4rem); }
@@ -263,10 +268,23 @@
   .rail-note { flex: none; width: clamp(16rem, 24vw, 44rem); display: flex; flex-direction: column; justify-content: center; color: var(--sc-ink-soft); }
   @media (prefers-reduced-motion: reduce) {
     .rail-card { opacity: 1; transform: none; }
+    /* The engine's reduced-motion fallback makes [data-sc-stage] itself the
+       native scroll region, which here would carry the static heading row
+       along with it. Keep the stage from scrolling and hand the fallback to
+       .rail-panrow instead, so the heading stays put and only the cards
+       become a native horizontal scroller. */
+    .rail-stage { overflow-x: hidden !important; }
+    .rail-panrow {
+      overflow-x: auto; overflow-y: hidden;
+      overscroll-behavior-x: contain; scroll-snap-type: x proximity;
+    }
   }
   @media (max-width: 860px) {
+    .rail-headrow { padding: calc(3.6rem + var(--sc-5)) var(--sc-gutter) 0; }
+    .rail-headrow h2 { font-size: var(--sc-t-2xl); }
+    .rail-panrow { padding-top: var(--sc-5); }
     .rail { gap: var(--sc-5); }
-    .rail-heading, .rail-note { width: 78vw; }
+    .rail-note { width: 78vw; }
     .rail-card { width: 74vw; min-height: 11rem; }
   }
 
@@ -432,12 +450,13 @@
   <!-- Act 6 · Slide 4, tools: pan rail -->
   <section id="act-slide4" class="rail-section" data-sc-act="pan" data-sc-span="8" data-sc-drift="#15122A">
     <div data-sc-stage class="rail-stage" data-slide="4" data-title="Tools I used to build it">
+      <div class="rail-headrow">
+        <p class="mono" style="color: var(--sc-accent); margin: 0 0 0.6em;">Slide 4</p>
+        <h2>Tools I used to build it</h2>
+        <div class="slide-rule"></div>
+      </div>
+      <div class="rail-panrow">
       <div class="rail" id="tools-rail" data-sc-pan="0.1">
-        <div class="rail-heading">
-          <p class="mono" style="color: var(--sc-accent); margin: 0 0 0.6em;">Slide 4</p>
-          <h2>Tools I used to build it</h2>
-          <div class="slide-rule"></div>
-        </div>
         <div class="rail-track">
           <div class="rail-connector" aria-hidden="true"></div>
 
@@ -526,6 +545,7 @@
         <div class="rail-note">
           <p class="mono">One tool per stop. No version numbers, no timeline.</p>
         </div>
+      </div>
       </div>
     </div>
   </section>
