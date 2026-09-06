@@ -35,7 +35,7 @@ const projects: Project[] = [
     category: 'Productivity AI · Web',
     description:
       'From prompt to polished presentation. AI-driven slide generation with real themes, real typography, audio visualization, and export. The full stack, not a demo.',
-    url: 'https://wingman.design',
+    url: '/wingman/',
     accent: '#A8FF3E',
   },
   {

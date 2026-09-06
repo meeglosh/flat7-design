@@ -74,7 +74,7 @@ function usePalette(dark: boolean) {
 const PROJECTS = [
   { name: 'Onix',        cat: 'Health AI',     url: '/onix/',                    color: '#cc3344', initials: 'Ox', thumb: '/thumbnails/myspace/onix.png' },
   { name: 'Soluna',      cat: 'Mental Health', url: '/soluna/',                color: '#7733aa', initials: 'Sl', thumb: '/thumbnails/myspace/soluna.png' },
-  { name: 'Wingman',     cat: 'Productivity',  url: 'https://wingman.design',               color: '#449933', initials: 'Wm', thumb: '/thumbnails/myspace/wingman.png' },
+  { name: 'Wingman',     cat: 'Productivity',  url: '/wingman/',                             color: '#449933', initials: 'Wm', thumb: '/thumbnails/myspace/wingman.png' },
   { name: 'Woltspace',   cat: 'AI Infra',      url: 'https://woltspace.com',                color: '#885511', initials: 'Ws', thumb: '/thumbnails/myspace/woltspace.png' },
   { name: 'SPASynth',    cat: 'Audio Software', url: 'https://spasynth.com/',               color: '#0088aa', initials: 'Sp', thumb: '/thumbnails/myspace/spasynth.png' },
   { name: 'Decathlon',   cat: 'E-Commerce',    url: '/decathlon/',                           color: '#005580', initials: 'Dc', thumb: '/thumbnails/myspace/decathlon.png' },

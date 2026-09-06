@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wingman &middot; For speakers who think on their feet</title>
+<meta name="description" content="How I built Wingman, a speech-to-slide presentation tool, re-created as a scroll-driven deck. A personal project by Mike Jerugim.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%237C3AED'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  :root {
+    --sc-canvas:      #0A0912;
+    --sc-surface:     #15122A;
+    --sc-ink:         #F3F0FF;
+    --sc-ink-soft:    #A79FC4;
+    --sc-accent:      #7C3AED;
+    --sc-accent-ink:  #FFFFFF;
+    --sc-font-display: "Space Grotesk", system-ui, sans-serif;
+    --sc-font-text:    "Space Grotesk", system-ui, sans-serif;
+    --sc-font-mono:    "DM Mono", ui-monospace, monospace;
+  }
+
+  body { background: var(--sc-canvas); position: relative; }
+  ::selection { background: var(--sc-accent); color: var(--sc-accent-ink); }
+  .mono { font-family: var(--sc-font-mono); font-size: 0.72rem; letter-spacing: 0.06em; }
+
+  /* violet glow, static, like the product's own background */
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(60vw 60vw at -10% -10%, rgba(124,58,237,0.22), transparent 60%),
+      radial-gradient(50vw 50vw at 110% 15%, rgba(124,58,237,0.14), transparent 60%),
+      var(--sc-canvas);
+  }
+
+  /* ===================== app chrome (nav replacement) ===================== */
+  #topbar, #bottombar {
+    position: fixed; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center;
+    font-family: var(--sc-font-text);
+  }
+  #topbar {
+    top: 0; height: 3.6rem; padding: 0 var(--sc-gutter);
+    justify-content: space-between; gap: var(--sc-4);
+    background: rgba(10,9,18,0.72); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(243,240,255,0.08);
+  }
+  #topbar .brand { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+  #topbar .brand__mark {
+    width: 1.8rem; height: 1.8rem; border-radius: 0.5rem; flex: none;
+    background: linear-gradient(135deg, #7C3AED, #4C1D95);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; color: #fff;
+  }
+  #topbar .brand__deck { font-weight: 700; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #topbar .brand__slide { color: var(--sc-ink-soft); font-size: 0.8rem; flex: none; }
+  @media (max-width: 700px) { #topbar .brand__deck { max-width: 38vw; } }
+
+  #bottombar {
+    bottom: 0; height: 3.8rem; padding: 0 var(--sc-gutter);
+    justify-content: space-between; gap: var(--sc-4);
+    background: rgba(10,9,18,0.78); backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(243,240,255,0.08);
+  }
+  .live-pill {
+    display: inline-flex; align-items: center; gap: 0.4em; flex: none;
+    background: rgba(124,58,237,0.18); color: var(--sc-ink);
+    border: 1px solid rgba(124,58,237,0.4);
+    border-radius: 999px; padding: 0.32em 0.75em;
+    font-family: var(--sc-font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .live-pill__dot { width: 0.45em; height: 0.45em; border-radius: 50%; background: var(--sc-accent); }
+  .ribbon-group { display: flex; align-items: center; gap: 0.85rem; min-width: 0; flex: 1 1 auto; }
+  .waveform { display: flex; align-items: center; gap: 2px; height: 1.1rem; flex: none; }
+  .waveform span { display: block; width: 2px; border-radius: 1px; background: var(--sc-accent); opacity: 0.35; height: 20%; transition: height 90ms linear, opacity 90ms linear; }
+  .ribbon-text { font-family: var(--sc-font-mono); font-size: 0.76rem; color: var(--sc-ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .ribbon-text .caret { display: inline-block; width: 0.5em; }
+  .dots { display: flex; align-items: center; gap: 0.5rem; flex: none; }
+  .dots a {
+    width: 0.5rem; height: 0.5rem; border-radius: 50%; background: rgba(243,240,255,0.22);
+    display: block; transition: background 150ms var(--sc-ease-out), transform 150ms var(--sc-ease-out);
+  }
+  .dots a.is-current { background: var(--sc-accent); transform: scale(1.3); }
+  .dots a:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 3px; }
+  #end-btn {
+    flex: none; display: inline-flex; align-items: center; gap: 0.4em;
+    background: #F43F5E; color: #fff; border: 0; border-radius: 999px;
+    padding: 0.42em 0.95em; font-family: var(--sc-font-text); font-weight: 500; font-size: 0.8rem;
+    cursor: pointer;
+  }
+  #end-btn:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 3px; }
+  @media (max-width: 700px) {
+    .ribbon-text { display: none; }
+    #end-btn span.label { display: none; }
+    #end-btn { padding: 0.5em; }
+  }
+
+  main { padding-top: 3.6rem; padding-bottom: 3.8rem; }
+
+  /* ===================== act 1: home ===================== */
+  .home-stage {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: var(--sc-section) var(--sc-gutter);
+  }
+  .home-stage h1 {
+    font-size: var(--sc-t-4xl); line-height: 1.04; font-weight: 700; letter-spacing: var(--sc-track-tight);
+    text-wrap: balance; max-width: 20ch; margin: 0 0 var(--sc-4);
+  }
+  .home-stage h1 em { font-style: normal; color: var(--sc-accent); }
+  .home-stage .sub { color: var(--sc-ink-soft); max-width: 46ch; font-size: var(--sc-t-lg); margin: 0 0 var(--sc-6); text-wrap: pretty; }
+  .prompt-box {
+    width: min(100%, 46rem); background: var(--sc-surface); border: 1px solid rgba(243,240,255,0.1);
+    border-radius: 1rem; padding: var(--sc-5); text-align: left;
+  }
+  .prompt-box__text { min-height: 3.2rem; font-size: 1.05rem; color: var(--sc-ink); }
+  .prompt-box__text .caret { display: inline-block; width: 2px; height: 1.1em; background: var(--sc-accent); vertical-align: -0.15em; margin-left: 1px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .prompt-box__row { display: flex; align-items: center; justify-content: space-between; gap: var(--sc-3); margin-top: var(--sc-4); flex-wrap: wrap; }
+  .prompt-box__pills { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .prompt-box__pill { display: inline-flex; align-items: center; gap: 0.4em; font-family: var(--sc-font-mono); font-size: 0.72rem; color: var(--sc-ink-soft); background: rgba(243,240,255,0.06); border: 1px solid rgba(243,240,255,0.1); border-radius: 999px; padding: 0.35em 0.75em; }
+  .generate-btn {
+    display: inline-flex; align-items: center; gap: 0.5em; border: 0; border-radius: 999px;
+    background: rgba(124,58,237,0.35); color: var(--sc-ink);
+    font-family: var(--sc-font-text); font-weight: 500; font-size: 0.92rem; padding: 0.6em 1.2em;
+    transition: background 200ms var(--sc-ease-out), box-shadow 200ms var(--sc-ease-out);
+  }
+  .generate-btn.is-lit { background: var(--sc-accent); color: #fff; box-shadow: 0 0 0 4px rgba(124,58,237,0.22); }
+  .home-foot { margin-top: var(--sc-5); color: var(--sc-ink-soft); font-size: 0.82rem; display: flex; flex-direction: column; gap: 0.35em; }
+  .home-pills { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; margin-top: var(--sc-6); }
+  .home-pills span { font-family: var(--sc-font-mono); font-size: 0.7rem; color: var(--sc-ink-soft); background: rgba(243,240,255,0.05); border: 1px solid rgba(243,240,255,0.08); border-radius: 999px; padding: 0.4em 0.85em; }
+  @media (max-width: 700px) {
+    .home-stage h1 { font-size: var(--sc-t-2xl); }
+  }
+
+  /* ===================== act 2: ready ===================== */
+  .ready-card {
+    width: min(100%, 30rem); margin: 0 auto; background: var(--sc-surface);
+    border: 1px solid rgba(243,240,255,0.1); border-radius: 1rem; padding: var(--sc-6);
+    text-align: center;
+  }
+  .ready-card__icon {
+    width: 3rem; height: 3rem; border-radius: 0.85rem; margin: 0 auto var(--sc-4);
+    background: rgba(124,58,237,0.25); display: flex; align-items: center; justify-content: center;
+    color: var(--sc-accent); font-size: 1.3rem;
+  }
+  .ready-card h2 { font-size: var(--sc-t-xl); margin: 0 0 var(--sc-3); }
+  .ready-card p { color: var(--sc-ink-soft); margin: 0 0 var(--sc-5); }
+  .ready-card__cta {
+    display: inline-flex; align-items: center; gap: 0.5em; width: 100%; justify-content: center;
+    background: var(--sc-accent); color: #fff; border: 0; border-radius: 999px;
+    font-family: var(--sc-font-text); font-weight: 700; font-size: 0.95rem; padding: 0.8em 1.2em;
+  }
+
+  /* ===================== deck slides (acts 3,4,5,7) ===================== */
+  .slide-stage { overflow: hidden; padding: var(--sc-section) var(--sc-gutter); display: flex; flex-direction: column; justify-content: flex-end; }
+  .slide-bg { position: absolute; inset: 0; z-index: 0; }
+  .slide-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+  .slide-bg .ground { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,18,0.55), rgba(10,9,18,0.92)); }
+  .slide-scrim { position: absolute; inset: 0; z-index: 1; mask-image: linear-gradient(90deg, #000 0%, #000 55%, transparent 85%); background: var(--sc-canvas); opacity: 0.55; }
+  .slide-credit { position: absolute; right: var(--sc-gutter); bottom: calc(var(--sc-3) + 1rem); z-index: 1; font-family: var(--sc-font-mono); font-size: 0.62rem; color: var(--sc-ink-soft); opacity: 0.7; }
+  .slide-copy { position: relative; z-index: 2; max-width: 42rem; }
+  .slide-copy h2 { font-size: var(--sc-t-3xl); font-weight: 700; line-height: 1.06; margin: 0 0 var(--sc-3); text-wrap: balance; }
+  .slide-rule { width: 3.5rem; height: 3px; background: var(--sc-accent); border-radius: 2px; margin: 0 0 var(--sc-5); }
+  .slide-bullets { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+  .slide-bullets li {
+    font-size: 1.08rem; line-height: 1.45; color: var(--sc-ink); max-width: 40ch;
+    opacity: 0; transform: translateY(8px); transition: opacity 420ms var(--sc-ease-out), transform 420ms var(--sc-ease-out);
+    display: flex; gap: 0.6em;
+  }
+  .slide-bullets li::before { content: "\2022"; color: var(--sc-accent); flex: none; }
+  .slide-bullets li.is-landed { opacity: 1; transform: none; }
+  @media (max-width: 860px) {
+    .slide-copy h2 { font-size: var(--sc-t-2xl); }
+    .slide-bullets li { font-size: 0.98rem; }
+  }
+
+  /* violet-panel-left variant, slide 4 */
+  .slide-stage--panel { flex-direction: row; align-items: stretch; justify-content: flex-start; padding: 0; }
+  .slide-panel {
+    position: relative; z-index: 2; width: 42%; min-width: 20rem; flex: none;
+    background: linear-gradient(160deg, #4C1D95, #2A1160);
+    padding: var(--sc-section) var(--sc-gutter); display: flex; flex-direction: column; justify-content: center;
+  }
+  .slide-panel h2 { font-size: var(--sc-t-3xl); font-weight: 700; line-height: 1.06; margin: 0 0 var(--sc-3); color: #fff; text-wrap: balance; }
+  .slide-photo { position: relative; flex: 1 1 auto; overflow: hidden; }
+  .slide-photo img { width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+  .slide-photo .ground { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,18,0.15), rgba(10,9,18,0.75)); }
+  @media (max-width: 860px) {
+    .slide-stage--panel { flex-direction: column; }
+    .slide-panel { width: 100%; min-width: 0; }
+    .slide-photo { min-height: 40vh; }
+  }
+
+  /* composing beat (authored silence at top of acts 4 & 5) */
+  .composing-pill {
+    position: relative; z-index: 3; align-self: center; margin: 0 0 var(--sc-5);
+    display: inline-flex; align-items: center; gap: 0.5em;
+    background: rgba(124,58,237,0.16); border: 1px solid rgba(124,58,237,0.4); border-radius: 999px;
+    padding: 0.5em 1.1em; font-family: var(--sc-font-text); font-weight: 500; font-size: 0.86rem;
+    color: var(--sc-ink); opacity: 0; transition: opacity 260ms var(--sc-ease-out);
+  }
+  .composing-pill.is-on { opacity: 1; }
+  .composing-pill .cdots { display: inline-flex; gap: 3px; }
+  .composing-pill .cdots span { width: 4px; height: 4px; border-radius: 50%; background: var(--sc-ink-soft); }
+  .composing-pill .cdots span:last-child { background: var(--sc-accent); }
+
+  /* ===================== act 6: pan rail, tools ===================== */
+  .rail-section { background: var(--sc-surface); }
+  .rail-stage { padding: 0; display: flex; align-items: center; }
+  .rail { display: flex; gap: var(--sc-6); align-items: center; padding: var(--sc-section) var(--sc-gutter); width: max-content; }
+  .rail-heading { flex: none; width: min(80vw, 26rem); display: flex; flex-direction: column; justify-content: center; }
+  .rail-heading h2 { font-size: var(--sc-t-3xl); font-weight: 700; line-height: 1.06; margin: 0 0 var(--sc-3); text-wrap: balance; }
+  .rail-heading .slide-rule { margin-bottom: var(--sc-3); }
+  /* The track holds the connector line and the four cards. Cards centre on
+     the connector rather than stretching to the heading column's height. */
+  .rail-track { position: relative; flex: none; display: flex; align-items: center; gap: var(--sc-6); }
+  .rail-connector {
+    position: absolute; left: -1.5rem; right: -1.5rem; top: 50%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--sc-accent) 8%, var(--sc-accent) 92%, transparent);
+    opacity: 0.4; transform: translateY(-1px); z-index: 0;
+  }
+  .rail-card {
+    position: relative; z-index: 1;
+    flex: none; width: clamp(17rem, 26vw, 21rem); background: var(--sc-surface);
+    border: 1px solid rgba(243,240,255,0.12); border-radius: 1rem; padding: var(--sc-6) var(--sc-5);
+    display: flex; flex-direction: column; gap: var(--sc-3); justify-content: center;
+    min-height: 13rem;
+    opacity: 0.55; transform: translateY(10px); transition: opacity 380ms var(--sc-ease-out), transform 380ms var(--sc-ease-out);
+  }
+  .rail-card.is-settled { opacity: 1; transform: none; }
+  .rail-card:first-of-type { opacity: 1; transform: none; }
+  .rail-card__index { font-family: var(--sc-font-mono); font-size: 0.7rem; color: var(--sc-accent); }
+  .rail-card h3 { font-size: 1.15rem; margin: 0; font-weight: 700; }
+  .rail-card p { margin: 0; color: var(--sc-ink-soft); font-size: 0.92rem; line-height: 1.5; }
+  .rail-note { flex: none; width: min(80vw, 20rem); display: flex; flex-direction: column; justify-content: center; color: var(--sc-ink-soft); }
+  @media (prefers-reduced-motion: reduce) {
+    .rail-card { opacity: 1; transform: none; }
+  }
+  @media (max-width: 860px) {
+    .rail { gap: var(--sc-5); }
+    .rail-heading, .rail-note { width: 78vw; }
+    .rail-card { min-height: 11rem; }
+  }
+
+  /* ===================== act 8: close ===================== */
+  .close-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; text-align: center; padding: var(--sc-section) var(--sc-gutter); }
+  .close-stage h2 { font-size: var(--sc-t-4xl); line-height: 1.04; font-weight: 700; letter-spacing: var(--sc-track-tight); text-wrap: balance; max-width: 20ch; margin: 0 0 var(--sc-5); }
+  .close-stage h2 em { font-style: normal; color: var(--sc-accent); }
+  .close-form { width: min(100%, 40rem); margin: 0 auto; }
+  .close-form textarea {
+    width: 100%; min-height: 6rem; resize: vertical; background: var(--sc-surface);
+    border: 1px solid rgba(243,240,255,0.14); border-radius: 0.85rem; color: var(--sc-ink);
+    font-family: var(--sc-font-text); font-size: 1rem; padding: var(--sc-4);
+  }
+  .close-form textarea:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 2px; }
+  .close-form label { display: block; text-align: left; font-family: var(--sc-font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sc-ink-soft); margin-bottom: 0.5em; }
+  .close-form button {
+    margin-top: var(--sc-4); display: inline-flex; align-items: center; gap: 0.5em;
+    background: var(--sc-accent); color: #fff; border: 0; border-radius: 999px;
+    font-family: var(--sc-font-text); font-weight: 700; font-size: 0.95rem; padding: 0.8em 1.4em;
+    transition: transform 140ms var(--sc-ease-out);
+  }
+  .close-form button:hover { transform: translateY(-1px); }
+  .close-form button:focus-visible { outline: 2px solid var(--sc-ink); outline-offset: 3px; }
+  .close-note { margin-top: var(--sc-6); color: var(--sc-ink-soft); font-size: 0.85rem; max-width: 40ch; }
+  .close-links { margin-top: var(--sc-4); display: flex; gap: var(--sc-5); flex-wrap: wrap; justify-content: center; }
+  .close-links a { color: var(--sc-ink); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; padding: 0.3em 0; min-height: 44px; display: inline-flex; align-items: center; font-size: 0.9rem; }
+  .close-links a:hover, .close-links a:focus-visible { color: var(--sc-accent); }
+  .colophon { margin-top: var(--sc-3); font-family: var(--sc-font-mono); font-size: 0.68rem; color: var(--sc-ink-soft); }
+</style>
+</head>
+<body>
+
+<span data-sc-progress></span>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<header id="topbar">
+  <div class="brand">
+    <span class="brand__mark" aria-hidden="true">&#9992;</span>
+    <span class="brand__deck" id="deck-title">How I built Wingman</span>
+  </div>
+  <span class="brand__slide mono" id="slide-counter">Home</span>
+</header>
+
+<footer id="bottombar">
+  <span class="live-pill"><span class="live-pill__dot"></span>AI LIVE</span>
+  <div class="ribbon-group">
+    <div class="waveform" id="waveform" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <span class="ribbon-text" id="ribbon-text">Listening&hellip;</span>
+  </div>
+  <nav class="dots" aria-label="Slides">
+    <a href="#act-home" class="is-current" aria-label="Home" data-dot="0"></a>
+    <a href="#act-slide1" aria-label="Slide 1" data-dot="1"></a>
+    <a href="#act-slide2" aria-label="Slide 2" data-dot="2"></a>
+    <a href="#act-slide3" aria-label="Slide 3" data-dot="3"></a>
+    <a href="#act-slide4" aria-label="Slide 4" data-dot="4"></a>
+    <a href="#act-slide5" aria-label="Slide 5" data-dot="5"></a>
+    <a href="#act-close" aria-label="End" data-dot="6"></a>
+  </nav>
+  <button id="end-btn" type="button" onclick="document.getElementById('act-close').scrollIntoView({behavior:'smooth'})"><span aria-hidden="true">&#9632;</span><span class="label">End</span></button>
+</footer>
+
+<main id="top">
+
+  <!-- Act 1 · Home: pin + bespoke typed prompt -->
+  <section id="act-home" data-sc-act="pin" data-sc-span="2.0" data-sc-verify-state="prompt:0">
+    <div data-sc-stage class="home-stage">
+      <h1 data-sc-cue="0 1 0 0.08">What will you present <em>today?</em></h1>
+      <p class="sub" data-sc-cue="0 1 0 0.08">Describe your topic and Wingman will build the first slide. Then just speak; your presentation grows as you talk.</p>
+      <div class="prompt-box" data-sc-cue="0 1 0 0.08">
+        <div class="prompt-box__text" id="prompt-typed"><span class="caret"></span></div>
+        <div class="prompt-box__row">
+          <div class="prompt-box__pills">
+            <span class="prompt-box__pill">&#9679; Obsidian</span>
+            <span class="prompt-box__pill">T Space Grotesk</span>
+          </div>
+          <button class="generate-btn" id="generate-btn" type="button" tabindex="-1">&#127908; Generate first slide</button>
+        </div>
+      </div>
+      <div class="home-foot">
+        <span>Press &#8984; Enter to generate</span>
+        <span><strong>Pro tip:</strong> Say &ldquo;next slide&rdquo; while presenting to move on to a new slide.</span>
+      </div>
+      <div class="home-pills">
+        <span>Speech-to-slide in real time</span>
+        <span>AI-matched photo backgrounds</span>
+        <span>Export to PowerPoint or HTML</span>
+        <span>Edit every slide after the fact</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 2 · Ready: flow + in, short -->
+  <section class="sc-section" data-sc-act="flow" style="padding-top: var(--sc-4);">
+    <div class="ready-card sc-stack" data-sc-in data-sc-stagger="60">
+      <div class="ready-card__icon" aria-hidden="true">&#127897;</div>
+      <h2>Your first slide is ready</h2>
+      <p>When you&rsquo;re ready to start, hit the button below and speak naturally. Wingman will build your slides as you talk.</p>
+      <button class="ready-card__cta" type="button" tabindex="-1">&#127897; Start Speaking</button>
+    </div>
+  </section>
+
+  <!-- Act 3 · Slide 1, the peak: pin + bespoke transcript/bullets, parallax on photo -->
+  <section id="act-slide1" data-sc-act="pin" data-sc-span="3.2" data-sc-drift="#0A0912" data-sc-verify-state="slide:1;sentence:0;chars:0;bullets:0">
+    <div data-sc-stage class="slide-stage" data-slide="1" data-title="What is Wingman?">
+      <div class="slide-bg"><img src="assets/bg-2.jpg" alt="" data-sc-parallax="0.4" width="1600" height="1000"><div class="ground"></div></div>
+      <div class="slide-scrim" aria-hidden="true"></div>
+      <span class="slide-credit">Photo: Unsplash</span>
+      <div class="slide-copy" data-sc-cue="0 1 0 0.06">
+        <h2>What is Wingman?</h2>
+        <div class="slide-rule"></div>
+        <ul class="slide-bullets" id="bullets-1">
+          <li data-sentence="Wingman is a geeky side project I built with AI tools.">Wingman is a geeky side project I built with AI tools.</li>
+          <li data-sentence="It&rsquo;s a presentation tool for people who think on their feet.">It&rsquo;s a presentation tool for people who think on their feet.</li>
+          <li data-sentence="Describe your topic and it builds the first slide. Then you just talk, and the deck grows as you go.">Describe your topic and it builds the first slide. Then you just talk, and the deck grows as you go.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 4 · Slide 2: flow + in, reveal="left" on photo -->
+  <section id="act-slide2" class="sc-section" data-sc-act="flow" style="padding-top: var(--sc-4); padding-bottom: var(--sc-4);">
+    <div class="slide-stage" style="position: relative; min-height: 90vh;" data-slide="2" data-title="Why I built it">
+      <div class="composing-pill" data-sc-cue="0 0.18 0" id="composing-2"><span class="cdots"><span></span><span></span><span></span></span>Composing next slide</div>
+      <figure data-sc-reveal="left" data-sc-reveal-at="0.1 0.4" style="position:absolute; inset:0; margin:0;">
+        <div class="slide-bg" style="position:absolute; inset:0;"><img src="assets/bg-3.jpg" alt="" width="1600" height="1000"><div class="ground"></div></div>
+      </figure>
+      <div class="slide-scrim" aria-hidden="true"></div>
+      <span class="slide-credit">Photo: Unsplash</span>
+      <div class="slide-copy sc-stack" data-sc-in data-sc-stagger="70">
+        <h2>Why I built it</h2>
+        <div class="slide-rule"></div>
+        <ul class="slide-bullets" style="opacity:1;">
+          <li class="is-landed" style="opacity:1; transform:none;">It started with a conversation with a friend. We both make up our presentations as we go.</li>
+          <li class="is-landed" style="opacity:1; transform:none;">As a musician, I&rsquo;ve always been drawn to improvisation.</li>
+          <li class="is-landed" style="opacity:1; transform:none;">PowerPoint and Slides want the deck finished before you open your mouth. I wanted the opposite.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 5 · Slide 3: pin + bespoke transcript -->
+  <section id="act-slide3" data-sc-act="pin" data-sc-span="2.2" data-sc-drift="#0A0912" data-sc-verify-state="slide:3;sentence:0;chars:0;bullets:0">
+    <div data-sc-stage class="slide-stage" data-slide="3" data-title="How it works">
+      <div class="composing-pill is-on" id="composing-3" style="opacity:1;"><span class="cdots"><span></span><span></span><span></span></span>Composing next slide</div>
+      <div class="slide-bg"><img src="assets/bg-4.jpg" alt="" data-sc-parallax="0.3" width="1600" height="1000"><div class="ground"></div></div>
+      <div class="slide-scrim" aria-hidden="true"></div>
+      <span class="slide-credit">Photo: Unsplash</span>
+      <div class="slide-copy" data-sc-cue="0 1 0 0.06">
+        <h2>How it works</h2>
+        <div class="slide-rule"></div>
+        <ul class="slide-bullets" id="bullets-3">
+          <li data-sentence="Speech-to-slide in real time. Say &ldquo;next slide&rdquo; to move on.">Speech-to-slide in real time. Say &ldquo;next slide&rdquo; to move on.</li>
+          <li data-sentence="AI-matched photo backgrounds, so every slide looks designed.">AI-matched photo backgrounds, so every slide looks designed.</li>
+          <li data-sentence="Export to PowerPoint or HTML. Edit every slide after the fact.">Export to PowerPoint or HTML. Edit every slide after the fact.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 6 · Slide 4, tools: pan rail -->
+  <section id="act-slide4" class="rail-section" data-sc-act="pan" data-sc-span="5" data-sc-drift="#15122A">
+    <div data-sc-stage class="rail-stage" data-slide="4" data-title="Tools I used to build it">
+      <div class="rail" id="tools-rail" data-sc-pan="0.1">
+        <div class="rail-heading">
+          <p class="mono" style="color: var(--sc-accent); margin: 0 0 0.6em;">Slide 4</p>
+          <h2>Tools I used to build it</h2>
+          <div class="slide-rule"></div>
+        </div>
+        <div class="rail-track">
+          <div class="rail-connector" aria-hidden="true"></div>
+          <article class="rail-card is-settled">
+            <span class="rail-card__index mono">01</span>
+            <h3>Figma Make</h3>
+            <p>Prototyped the whole thing here first.</p>
+          </article>
+          <article class="rail-card">
+            <span class="rail-card__index mono">02</span>
+            <h3>GitHub</h3>
+            <p>Exported the prototype and gave it a home.</p>
+          </article>
+          <article class="rail-card">
+            <span class="rail-card__index mono">03</span>
+            <h3>Claude Code</h3>
+            <p>Built it out from there, feature by feature.</p>
+          </article>
+          <article class="rail-card">
+            <span class="rail-card__index mono">04</span>
+            <h3>gpt-realtime-2.1</h3>
+            <p>Handles the speech.</p>
+          </article>
+        </div>
+        <div class="rail-note">
+          <p class="mono">One tool per stop. No timeline, no version numbers, just what did what.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 7 · Slide 5: flow + in, quiet -->
+  <section id="act-slide5" class="sc-section" data-sc-act="flow" style="padding-top: var(--sc-4); padding-bottom: var(--sc-4);">
+    <div class="slide-stage" style="position: relative; min-height: 80vh;" data-slide="5" data-title="What I learned">
+      <div class="slide-bg" style="position:absolute; inset:0;"><img src="assets/bg-2.jpg" alt="" width="1600" height="1000" style="opacity:0.22;"><div class="ground"></div></div>
+      <div class="slide-scrim" aria-hidden="true"></div>
+      <span class="slide-credit">Photo: Unsplash</span>
+      <div class="slide-copy sc-stack" data-sc-in data-sc-stagger="70">
+        <h2>What I learned</h2>
+        <div class="slide-rule"></div>
+        <ul class="slide-bullets" style="opacity:1;">
+          <li class="is-landed" style="opacity:1; transform:none;">Designing the empty state matters more when the content writes itself.</li>
+          <li class="is-landed" style="opacity:1; transform:none;">A live tool has to feel calm. Every animation is there to say &ldquo;I heard you.&rdquo;</li>
+          <li class="is-landed" style="opacity:1; transform:none;">Free includes 15 minutes of AI transcription. Everything else is free forever.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 8 · Close: pin, holds, real input -->
+  <section id="act-close" data-sc-act="pin" data-sc-span="1.6" data-sc-drift="#0A0912" data-sc-verify-state="close:ready">
+    <div data-sc-stage class="close-stage">
+      <h2 data-sc-cue="0 1 0 0">What will you present <em>today?</em></h2>
+      <form class="close-form" action="https://wingman.design" method="get" data-sc-cue="0 1 0 0">
+        <label for="close-topic">Describe your topic</label>
+        <textarea id="close-topic" name="topic" placeholder="e.g. Q3 results and the road ahead for Acme Corp&rsquo;s engineering team"></textarea>
+        <button type="submit">&#127908; Generate first slide</button>
+      </form>
+      <p class="close-note" data-sc-cue="0 1 0 0">Re-created from two real Wingman sessions. The bullets my voice produced were tidied up; the mechanics are the real thing.</p>
+      <div class="close-links" data-sc-cue="0 1 0 0">
+        <a href="https://flat7.design/">More work at flat7.design</a>
+        <a href="mailto:mike@flat7.design">Write to Mike</a>
+      </div>
+      <p class="colophon" data-sc-cue="0 1 0 0">Wingman is a personal project by Mike Jerugim.</p>
+    </div>
+  </section>
+
+</main>
+
+<script src="scrollcraft.js"></script>
+<script>
+  ScrollCraft.mount(document.body);
+
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var topbarTitle = document.getElementById('deck-title');
+    var topbarSlide = document.getElementById('slide-counter');
+    var ribbon = document.getElementById('ribbon-text');
+    var waveformBars = document.querySelectorAll('#waveform span');
+    var dots = document.querySelectorAll('.dots a');
+
+    var HOME_PROMPT = 'How I built Wingman, a presentation tool for people who think on their feet.';
+
+    function findActEl(stageEl) {
+      var el = stageEl;
+      while (el && !el.hasAttribute('data-sc-act')) el = el.parentElement;
+      return el;
+    }
+
+    // ---------- Home: prompt types itself from --sc-p, then button lights ----------
+    var homeAct = document.getElementById('act-home');
+    var promptEl = document.getElementById('prompt-typed');
+    var generateBtn = document.getElementById('generate-btn');
+
+    function updateHome() {
+      var p = parseFloat(getComputedStyle(homeAct).getPropertyValue('--sc-p')) || 0;
+      var typeP = Math.min(1, p / 0.75);
+      var n = reduced ? HOME_PROMPT.length : Math.round(HOME_PROMPT.length * typeP);
+      var shown = HOME_PROMPT.slice(0, n);
+      promptEl.innerHTML = shown.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '<span class="caret"></span>';
+      var lit = reduced || p > 0.85;
+      generateBtn.classList.toggle('is-lit', lit);
+      homeAct.setAttribute('data-sc-verify-state', 'prompt:' + Math.round(typeP * 100));
+    }
+
+    // ---------- Signature move: transcript ribbon types sentences, bullets land ----------
+    function makeTranscriptDriver(actId, bulletsSelector, verifyLabel) {
+      var actEl = document.getElementById(actId);
+      if (!actEl) return null;
+      var bullets = actEl.querySelectorAll(bulletsSelector + ' li');
+      var sentences = [];
+      bullets.forEach(function (li) { sentences.push(li.getAttribute('data-sentence') || li.textContent.trim()); });
+      var n = sentences.length;
+      if (reduced) {
+        bullets.forEach(function (li) { li.classList.add('is-landed'); });
+      }
+      // Sentences occupy the window [START, END] of the act's progress, not
+      // the whole 0..1 span: the first sentence starts typing at START and the
+      // last bullet is fully landed by END, leaving END..1 as a completed-slide
+      // hold before the copy fades (the fade itself lives in the last ~6%,
+      // driven separately by the .slide-copy cue). Without this window the
+      // last sentence lands during the pin's exit slide, off screen.
+      var START = 0.06, END = 0.80;
+      var SPAN = END - START;
+      var SEG = SPAN / n;
+      return function (p) {
+        if (reduced) return { sentence: n, chars: 0, bullets: n, ribbon: 'Listening…', pulsing: false };
+        var activeIdx, localP;
+        if (p <= START) {
+          activeIdx = 0; localP = 0;
+        } else if (p >= END) {
+          activeIdx = n - 1; localP = 1;
+        } else {
+          var rel = p - START;
+          activeIdx = Math.min(n - 1, Math.floor(rel / SEG));
+          localP = Math.min(1, (rel - activeIdx * SEG) / (SEG * 0.82));
+        }
+        var text = sentences[activeIdx] || '';
+        var chars = Math.round(text.length * Math.max(0, Math.min(1, localP)));
+        var typedText = text.slice(0, chars);
+        var landedCount = 0;
+        bullets.forEach(function (li, i) {
+          var landed = i < activeIdx || (i === activeIdx && localP >= 1);
+          li.classList.toggle('is-landed', landed);
+          if (landed) landedCount++;
+        });
+        var pulsing = localP < 1 && chars < text.length;
+        var ribbonText = pulsing ? typedText.replace(/&/g, '&amp;').replace(/</g, '&lt;') : 'Listening…';
+        return { sentence: activeIdx + 1, chars: chars, bullets: landedCount, ribbon: ribbonText, pulsing: pulsing };
+      };
+    }
+
+    var slide1Driver = makeTranscriptDriver('act-slide1', '#bullets-1', 'slide:1');
+    var slide3Driver = makeTranscriptDriver('act-slide3', '#bullets-3', 'slide:3');
+
+    function setWaveform(pulsing) {
+      waveformBars.forEach(function (bar, i) {
+        if (!pulsing) {
+          bar.style.height = '18%';
+          bar.style.opacity = '0.3';
+          return;
+        }
+        var h = 25 + Math.abs(Math.sin((Date.now() / 140) + i)) * 65;
+        bar.style.height = h + '%';
+        bar.style.opacity = '0.9';
+      });
+    }
+
+    // ---------- Composing pill fade for acts 4 & 5 (authored silence) ----------
+    var composing2 = document.getElementById('composing-2');
+    var act4El = document.getElementById('act-slide2');
+
+    function updateComposing2() {
+      // act-slide2 is a `flow` act (not pinned); fade the pill out on entry.
+      var rect = act4El.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var enterP = Math.min(1, Math.max(0, (vh - rect.top) / (vh * 0.4)));
+      composing2.classList.toggle('is-on', enterP < 0.35);
+    }
+
+    // ---------- Slide counter / deck title / dots from scroll position ----------
+    var slideStages = document.querySelectorAll('[data-slide]');
+    var deckLength = 7;
+
+    function updateChrome() {
+      var vh = window.innerHeight;
+      var best = null, bestDist = Infinity;
+      slideStages.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        var center = r.top + r.height / 2;
+        var dist = Math.abs(center - vh / 2);
+        if (r.bottom > 0 && r.top < vh && dist < bestDist) { bestDist = dist; best = el; }
+      });
+      // Also check home + close as "slide 0" / "slide 7 end" for counter purposes.
+      var homeEl = document.querySelector('#act-home [data-sc-stage]');
+      var closeEl = document.querySelector('#act-close [data-sc-stage]');
+      var homeR = homeEl.getBoundingClientRect();
+      var closeR = closeEl.getBoundingClientRect();
+      var inHome = homeR.bottom > vh * 0.5 && homeR.top < vh * 0.5;
+      var inClose = closeR.top < vh * 0.5 && closeR.bottom > vh * 0.5;
+
+      var current = 0;
+      var title = 'How I built Wingman';
+      if (inHome) {
+        current = 0; title = 'How I built Wingman';
+        topbarSlide.textContent = 'Home';
+      } else if (inClose) {
+        current = 6; title = 'How I built Wingman';
+        topbarSlide.textContent = 'End';
+      } else if (best) {
+        var num = parseInt(best.getAttribute('data-slide'), 10);
+        title = best.getAttribute('data-title') || title;
+        current = num;
+        topbarSlide.textContent = 'Slide ' + num + ' of ' + deckLength;
+      }
+      topbarTitle.textContent = title;
+      dots.forEach(function (d) {
+        d.classList.toggle('is-current', parseInt(d.getAttribute('data-dot'), 10) === current);
+      });
+    }
+
+    // ---------- Rail card stagger settle from --sc-p (act 6) ----------
+    var railAct = document.getElementById('act-slide4');
+    var railCards = document.querySelectorAll('#tools-rail .rail-card');
+
+    function updateRail() {
+      if (reduced) return;
+      var p = parseFloat(getComputedStyle(railAct).getPropertyValue('--sc-p')) || 0;
+      var n = railCards.length;
+      railCards.forEach(function (card, i) {
+        if (i === 0) return; // first item exempt, already present
+        var start = (i - 1) / (n - 1) * 0.7;
+        var settled = p > start;
+        card.classList.toggle('is-settled', settled);
+      });
+    }
+
+    function tick() {
+      updateHome();
+
+      var pulsingAny = false;
+      var ribbonText = 'Listening…';
+
+      var s1El = document.getElementById('act-slide1');
+      if (s1El && slide1Driver) {
+        var s1p = parseFloat(getComputedStyle(s1El).getPropertyValue('--sc-p')) || 0;
+        var r1 = slide1Driver(s1p);
+        var s1r = s1El.getBoundingClientRect();
+        var s1Visible = s1r.bottom > 0 && s1r.top < window.innerHeight;
+        if (s1Visible) { pulsingAny = r1.pulsing; ribbonText = r1.ribbon; }
+        s1El.setAttribute('data-sc-verify-state', 'slide:1;sentence:' + r1.sentence + ';chars:' + r1.chars + ';bullets:' + r1.bullets);
+      }
+
+      var s3El = document.getElementById('act-slide3');
+      if (s3El && slide3Driver) {
+        var s3p = parseFloat(getComputedStyle(s3El).getPropertyValue('--sc-p')) || 0;
+        var r3 = slide3Driver(s3p);
+        var s3r = s3El.getBoundingClientRect();
+        var s3Visible = s3r.bottom > 0 && s3r.top < window.innerHeight;
+        if (s3Visible) { pulsingAny = r3.pulsing; ribbonText = r3.ribbon; }
+        s3El.setAttribute('data-sc-verify-state', 'slide:3;sentence:' + r3.sentence + ';chars:' + r3.chars + ';bullets:' + r3.bullets);
+      }
+
+      ribbon.textContent = ribbonText;
+      setWaveform(pulsingAny);
+      updateComposing2();
+      updateChrome();
+      updateRail();
+
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+</script>
+</body>
+</html>
