@@ -164,6 +164,18 @@
   .slide-copy { position: relative; z-index: 2; max-width: 42rem; }
   .slide-copy h2 { font-size: var(--sc-t-3xl); font-weight: 700; line-height: 1.06; margin: 0 0 var(--sc-3); text-wrap: balance; }
   .slide-rule { width: 3.5rem; height: 3px; background: var(--sc-accent); border-radius: 2px; margin: 0 0 var(--sc-5); }
+  /* The one deliberate display statement on the deck: the closing lesson,
+     set like a slide's own big line (the product colours one word, as in
+     "What will you present today?"). */
+  .slide-callout {
+    font-family: var(--sc-font-display); font-weight: 700;
+    font-size: clamp(1.9rem, 3.4vw, 3.1rem); line-height: 1.02; letter-spacing: var(--sc-track-tight);
+    color: var(--sc-ink); max-width: 16ch; text-wrap: balance;
+    margin: var(--sc-7) 0 0; padding-top: var(--sc-5);
+    border-top: 1px solid rgba(243,240,255,0.14);
+  }
+  .slide-callout em { font-style: normal; color: var(--sc-accent); }
+  @media (max-width: 860px) { .slide-callout { font-size: 1.6rem; margin-top: var(--sc-6); } }
   .slide-bullets { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
   .slide-bullets li {
     font-size: 1.08rem; line-height: 1.45; color: var(--sc-ink); max-width: 40ch;
@@ -530,8 +542,9 @@
         <ul class="slide-bullets" style="opacity:1;">
           <li class="is-landed" style="opacity:1; transform:none;">Designing the empty state matters more when the content writes itself.</li>
           <li class="is-landed" style="opacity:1; transform:none;">A live tool has to feel calm. Every animation is there to say &ldquo;I heard you.&rdquo;</li>
-          <li class="is-landed" style="opacity:1; transform:none;">I went in as a product designer and came out having shipped a full-stack, paid product on my own: auth, billing, a real-time AI pipeline, the lot. Building software solo is a design skill now.</li>
+          <li class="is-landed" style="opacity:1; transform:none;">I went in as a product designer and came out having shipped a full-stack, paid product on my own: auth, billing, a real-time AI pipeline, the lot.</li>
         </ul>
+        <p class="slide-callout">Building software solo is a <em>design skill</em> now.</p>
       </div>
     </div>
   </section>
