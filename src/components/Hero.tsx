@@ -150,15 +150,23 @@ export function Hero() {
 
       {/* Scene 2  -  full-screen parallax image */}
       <section ref={sectionRef} className="relative h-screen overflow-hidden">
-        <div
-          ref={parallaxRef}
-          className="absolute inset-[-12%] will-change-transform"
-          style={{
-            backgroundImage: `url('/unsplash1.jpg')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
+        <div ref={parallaxRef} className="absolute inset-[-12%] will-change-transform">
+          {/* Looping clip of the plant scene. The still it replaces stays as
+              the poster so the frame is never empty while the clip loads or
+              where autoplay is refused. Muted + playsInline is what lets it
+              autoplay on iOS. */}
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            src="/hero-plants.mp4"
+            poster="/unsplash1.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+          />
+        </div>
 
         {/* Bottom-left info panel */}
         <div
