@@ -228,10 +228,10 @@
   }
   .rail-card {
     position: relative; z-index: 1;
-    flex: none; width: clamp(17rem, 22vw, 44rem); background: var(--sc-surface);
+    flex: none; width: clamp(15rem, 18vw, 30rem); background: var(--sc-surface);
     border: 1px solid rgba(243,240,255,0.12); border-radius: 1rem; padding: var(--sc-6) var(--sc-5);
     display: flex; flex-direction: column; gap: var(--sc-3); justify-content: center;
-    min-height: 13rem;
+    min-height: 12rem;
     opacity: 0.55; transform: translateY(10px); transition: opacity 380ms var(--sc-ease-out), transform 380ms var(--sc-ease-out);
   }
   .rail-card.is-settled { opacity: 1; transform: none; }
@@ -239,6 +239,15 @@
   .rail-card__index { font-family: var(--sc-font-mono); font-size: 0.7rem; color: var(--sc-accent); }
   .rail-card h3 { font-size: 1.15rem; margin: 0; font-weight: 700; }
   .rail-card p { margin: 0; color: var(--sc-ink-soft); font-size: 0.92rem; line-height: 1.5; }
+  /* Stage label: a small chip that sits ON the connector line, a sibling of
+     the cards (not inside one), marking where a new group of stops begins. */
+  .rail-stagelabel {
+    position: relative; z-index: 1; flex: none;
+    display: inline-flex; align-items: center;
+    font-family: var(--sc-font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--sc-accent); background: var(--sc-surface); border: 1px solid rgba(124,58,237,0.5);
+    border-radius: 999px; padding: 0.4em 0.9em; white-space: nowrap;
+  }
   .rail-note { flex: none; width: clamp(16rem, 24vw, 44rem); display: flex; flex-direction: column; justify-content: center; color: var(--sc-ink-soft); }
   @media (prefers-reduced-motion: reduce) {
     .rail-card { opacity: 1; transform: none; }
@@ -246,7 +255,7 @@
   @media (max-width: 860px) {
     .rail { gap: var(--sc-5); }
     .rail-heading, .rail-note { width: 78vw; }
-    .rail-card { min-height: 11rem; }
+    .rail-card { width: 74vw; min-height: 11rem; }
   }
 
   /* ===================== act 8: close ===================== */
@@ -409,7 +418,7 @@
   </section>
 
   <!-- Act 6 · Slide 4, tools: pan rail -->
-  <section id="act-slide4" class="rail-section" data-sc-act="pan" data-sc-span="5" data-sc-drift="#15122A">
+  <section id="act-slide4" class="rail-section" data-sc-act="pan" data-sc-span="8" data-sc-drift="#15122A">
     <div data-sc-stage class="rail-stage" data-slide="4" data-title="Tools I used to build it">
       <div class="rail" id="tools-rail" data-sc-pan="0.1">
         <div class="rail-heading">
@@ -419,11 +428,15 @@
         </div>
         <div class="rail-track">
           <div class="rail-connector" aria-hidden="true"></div>
+
+          <div class="rail-stagelabel">Design</div>
           <article class="rail-card is-settled">
             <span class="rail-card__index mono">01</span>
             <h3>Figma Make</h3>
             <p>Prototyped the whole thing here first.</p>
           </article>
+
+          <div class="rail-stagelabel">Build</div>
           <article class="rail-card">
             <span class="rail-card__index mono">02</span>
             <h3>GitHub</h3>
@@ -436,12 +449,70 @@
           </article>
           <article class="rail-card">
             <span class="rail-card__index mono">04</span>
-            <h3>gpt-realtime-2.1</h3>
-            <p>Handles the speech.</p>
+            <h3>React + Vite</h3>
+            <p>The front end. Tailwind for style, Radix for the primitives, Motion for the animation.</p>
+          </article>
+
+          <div class="rail-stagelabel">Voice and AI</div>
+          <article class="rail-card">
+            <span class="rail-card__index mono">05</span>
+            <h3>OpenAI Realtime</h3>
+            <p>Live speech to text as I talk, on gpt-4o-transcribe. &ldquo;Next slide&rdquo; is a voice command.</p>
+          </article>
+          <article class="rail-card">
+            <span class="rail-card__index mono">06</span>
+            <h3>gpt-4o-mini</h3>
+            <p>Turns what I just said into the slide.</p>
+          </article>
+          <article class="rail-card">
+            <span class="rail-card__index mono">07</span>
+            <h3>Unsplash API</h3>
+            <p>Finds the matched photo for every slide.</p>
+          </article>
+
+          <div class="rail-stagelabel">Backend</div>
+          <article class="rail-card">
+            <span class="rail-card__index mono">08</span>
+            <h3>Supabase</h3>
+            <p>Magic-link sign-in and storage.</p>
+          </article>
+          <article class="rail-card">
+            <span class="rail-card__index mono">09</span>
+            <h3>Hono on Deno</h3>
+            <p>One edge function fronts the AI, Unsplash, usage metering and billing.</p>
+          </article>
+          <article class="rail-card">
+            <span class="rail-card__index mono">10</span>
+            <h3>Resend</h3>
+            <p>Sends the magic links.</p>
+          </article>
+
+          <div class="rail-stagelabel">Export</div>
+          <article class="rail-card">
+            <span class="rail-card__index mono">11</span>
+            <h3>pptxgenjs</h3>
+            <p>PowerPoint export, and the OOXML parser behind branded template import.</p>
+          </article>
+
+          <div class="rail-stagelabel">Ship</div>
+          <article class="rail-card">
+            <span class="rail-card__index mono">12</span>
+            <h3>Stripe</h3>
+            <p>Fifteen free minutes, then credits or a subscription. Stripe Tax does the tax.</p>
+          </article>
+          <article class="rail-card">
+            <span class="rail-card__index mono">13</span>
+            <h3>Render + Cloudflare</h3>
+            <p>Push to main and it is live. Cloudflare on DNS.</p>
+          </article>
+          <article class="rail-card">
+            <span class="rail-card__index mono">14</span>
+            <h3>Playwright</h3>
+            <p>Every UI change gets a headless run before it ships.</p>
           </article>
         </div>
         <div class="rail-note">
-          <p class="mono">One tool per stop. No timeline, no version numbers, just what did what.</p>
+          <p class="mono">One tool per stop. No version numbers, no timeline.</p>
         </div>
       </div>
     </div>
