@@ -56,8 +56,12 @@
     font-size: 0.9rem; color: #fff;
   }
   #topbar .brand__deck { font-weight: 700; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #topbar .brand__tag { font-weight: 500; color: var(--sc-ink-soft); margin-left: 0.3em; }
   #topbar .brand__slide { color: var(--sc-ink-soft); font-size: 0.8rem; flex: none; }
-  @media (max-width: 700px) { #topbar .brand__deck { max-width: 38vw; } }
+  @media (max-width: 700px) {
+    #topbar .brand__deck { max-width: 38vw; }
+    #topbar .brand__tag { display: none; }
+  }
 
   #bottombar {
     bottom: 0; height: 3.8rem; padding: 0 var(--sc-gutter);
@@ -104,6 +108,10 @@
   .home-stage {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; padding: var(--sc-section) var(--sc-gutter);
+  }
+  .home-stage .meta {
+    font-family: var(--sc-font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--sc-ink-soft); margin: 0 0 var(--sc-4);
   }
   .home-stage h1 {
     font-size: var(--sc-t-4xl); line-height: 1.04; font-weight: 700; letter-spacing: var(--sc-track-tight);
@@ -225,11 +233,14 @@
      and a pan row beneath it. Only .rail (the pan row's inner flex track)
      carries data-sc-pan, so the engine's scrollWidth measurement and its
      translateX never touch the heading. */
-  .rail-stage { padding: 0; display: flex; flex-direction: column; }
-  .rail-headrow { flex: none; padding: 20vh var(--sc-gutter) 0; }
+  .rail-stage { padding: 0; display: flex; flex-direction: column; justify-content: center; }
+  /* Heading and pan row are treated as one block, centred together in the
+     stage; the gap between them is a fixed margin, not flex centring, so it
+     stays a constant, small distance regardless of viewport height. */
+  .rail-headrow { flex: none; padding: 0 var(--sc-gutter); }
   .rail-headrow h2 { font-size: var(--sc-t-3xl); font-weight: 700; line-height: 1.06; margin: 0 0 var(--sc-3); text-wrap: balance; max-width: 32rem; }
   .rail-headrow .slide-rule { margin-bottom: 0; }
-  .rail-panrow { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; padding-top: var(--sc-6); overflow: hidden; }
+  .rail-panrow { flex: none; margin-top: var(--sc-7); display: flex; align-items: center; overflow: hidden; }
   /* Every rail item is sized as a share of the viewport (with rem floors and
      ceilings), so the rail is always ~1.6x the viewport wide and the pan has
      ~60vw of travel at any size. Fixed rem caps made the whole rail fit on
@@ -280,9 +291,8 @@
     }
   }
   @media (max-width: 860px) {
-    .rail-headrow { padding: calc(3.6rem + var(--sc-5)) var(--sc-gutter) 0; }
     .rail-headrow h2 { font-size: var(--sc-t-2xl); }
-    .rail-panrow { padding-top: var(--sc-5); }
+    .rail-panrow { margin-top: var(--sc-6); }
     .rail { gap: var(--sc-5); }
     .rail-note { width: 78vw; }
     .rail-card { width: 74vw; min-height: 11rem; }
@@ -323,7 +333,7 @@
 <header id="topbar">
   <div class="brand">
     <span class="brand__mark" aria-hidden="true">&#9992;</span>
-    <span class="brand__deck" id="deck-title">How I built Wingman</span>
+    <span class="brand__deck" id="deck-title">How I built Wingman <span class="brand__tag">&middot; Case study</span></span>
   </div>
   <span class="brand__slide mono" id="slide-counter">Home</span>
 </header>
@@ -335,7 +345,7 @@
       <span></span><span></span><span></span><span></span><span></span>
       <span></span><span></span><span></span><span></span><span></span>
     </div>
-    <span class="ribbon-text" id="ribbon-text">Listening&hellip;</span>
+    <span class="ribbon-text" id="ribbon-text">Scroll to start presenting</span>
   </div>
   <nav class="dots" aria-label="Slides">
     <a href="#act-home" class="is-current" aria-label="Home" data-dot="0"></a>
@@ -354,6 +364,7 @@
   <!-- Act 1 · Home: pin + bespoke typed prompt -->
   <section id="act-home" data-sc-act="pin" data-sc-span="2.0" data-sc-verify-state="prompt:0">
     <div data-sc-stage class="home-stage">
+      <p class="meta">Mike Jerugim, case study &middot; Wingman</p>
       <h1 data-sc-cue="0 1 0 0.08">What will you present <em>today?</em></h1>
       <p class="sub" data-sc-cue="0 1 0 0.08">Describe your topic and Wingman will build the first slide. Then just speak; your presentation grows as you talk.</p>
       <div class="prompt-box" data-sc-cue="0 1 0 0.08">
@@ -448,7 +459,7 @@
   </section>
 
   <!-- Act 6 · Slide 4, tools: pan rail -->
-  <section id="act-slide4" class="rail-section" data-sc-act="pan" data-sc-span="8" data-sc-drift="#15122A">
+  <section id="act-slide4" class="rail-section" data-sc-act="pan" data-sc-span="8" data-sc-drift="#15122A" data-sc-verify-state="exit:0">
     <div data-sc-stage class="rail-stage" data-slide="4" data-title="Tools I used to build it">
       <div class="rail-headrow">
         <p class="mono" style="color: var(--sc-accent); margin: 0 0 0.6em;">Slide 4</p>
@@ -456,7 +467,7 @@
         <div class="slide-rule"></div>
       </div>
       <div class="rail-panrow">
-      <div class="rail" id="tools-rail" data-sc-pan="0.1">
+      <div class="rail" id="tools-rail" data-sc-pan="0.12">
         <div class="rail-track">
           <div class="rail-connector" aria-hidden="true"></div>
 
@@ -609,20 +620,79 @@
       return el;
     }
 
-    // ---------- Home: prompt types itself from --sc-p, then button lights ----------
+    // ---------- Home: prompt types itself once, on load (time-based, not
+    // scroll-scrubbed), so the case study reads complete the instant the page
+    // lands rather than requiring a scroll to reveal it. A visitor who starts
+    // scrolling before it finishes gets the full text and a lit button
+    // instantly instead of a typing animation racing the page. ----------
     var homeAct = document.getElementById('act-home');
     var promptEl = document.getElementById('prompt-typed');
     var generateBtn = document.getElementById('generate-btn');
+    var HOME_CPS = 28; // characters per second
+    var homeCharsShown = 0;
+    var homeLit = false;
+    var homeTypeComplete = false;
+    var homeTypeStart = null;
 
-    function updateHome() {
-      var p = parseFloat(getComputedStyle(homeAct).getPropertyValue('--sc-p')) || 0;
-      var typeP = Math.min(1, p / 0.75);
-      var n = reduced ? HOME_PROMPT.length : Math.round(HOME_PROMPT.length * typeP);
+    function renderHomePrompt(n) {
+      homeCharsShown = n;
       var shown = HOME_PROMPT.slice(0, n);
       promptEl.innerHTML = shown.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '<span class="caret"></span>';
-      var lit = reduced || p > 0.85;
-      generateBtn.classList.toggle('is-lit', lit);
-      homeAct.setAttribute('data-sc-verify-state', 'prompt:' + Math.round(typeP * 100));
+    }
+
+    function lightGenerateBtn() {
+      if (homeLit) return;
+      homeLit = true;
+      generateBtn.classList.add('is-lit');
+    }
+
+    function updateHomeVerify() {
+      homeAct.setAttribute('data-sc-verify-state', 'chars:' + homeCharsShown + ';lit:' + (homeLit ? 1 : 0));
+    }
+
+    function finishHomeTypingInstantly() {
+      if (homeTypeComplete) return;
+      homeTypeComplete = true;
+      renderHomePrompt(HOME_PROMPT.length);
+      lightGenerateBtn();
+      updateHomeVerify();
+    }
+
+    function homeTypeStep(now) {
+      if (homeTypeComplete) return;
+      if (homeTypeStart === null) homeTypeStart = now;
+      var elapsed = (now - homeTypeStart) / 1000;
+      var n = Math.min(HOME_PROMPT.length, Math.floor(elapsed * HOME_CPS));
+      if (n !== homeCharsShown) renderHomePrompt(n);
+      if (n >= HOME_PROMPT.length) {
+        homeTypeComplete = true;
+        updateHomeVerify();
+        setTimeout(lightGenerateBtn, 300);
+        setTimeout(updateHomeVerify, 320);
+        return;
+      }
+      updateHomeVerify();
+      requestAnimationFrame(homeTypeStep);
+    }
+
+    if (reduced) {
+      homeTypeComplete = true;
+      renderHomePrompt(HOME_PROMPT.length);
+      lightGenerateBtn();
+      updateHomeVerify();
+    } else {
+      updateHomeVerify();
+      document.fonts.ready.then(function () {
+        setTimeout(function () { requestAnimationFrame(homeTypeStep); }, 400);
+      });
+    }
+
+    // A scroll before typing finishes completes it instantly rather than
+    // letting the scrubbed effect fight the reader's own scroll position.
+    function checkHomeScrollSkip() {
+      if (homeTypeComplete) return;
+      var p = parseFloat(getComputedStyle(homeAct).getPropertyValue('--sc-p')) || 0;
+      if (p > 0.05) finishHomeTypingInstantly();
     }
 
     // ---------- Signature move: transcript ribbon types sentences, bullets land ----------
@@ -735,7 +805,11 @@
         current = num;
         topbarSlide.textContent = 'Slide ' + num + ' of ' + deckLength;
       }
-      topbarTitle.textContent = title;
+      if (title === 'How I built Wingman') {
+        topbarTitle.innerHTML = 'How I built Wingman <span class="brand__tag">&middot; Case study</span>';
+      } else {
+        topbarTitle.textContent = title;
+      }
       dots.forEach(function (d) {
         d.classList.toggle('is-current', parseInt(d.getAttribute('data-dot'), 10) === current);
       });
@@ -757,11 +831,61 @@
       });
     }
 
+    // ---------- Exit pan: keep the rail moving left through the section's
+    // own exit slide, so the cards clear the left edge before act 7 arrives.
+    // The engine parks #tools-rail's own transform at its p=1 value for the
+    // whole exit (a.p stays clamped to 1 well past the pin's release), so the
+    // extra travel lives on .rail-panrow instead, driven off the SECTION's
+    // bounding rect rather than any act progress the engine publishes. ----
+    var railSection = document.getElementById('act-slide4');
+    var railPanrow = document.querySelector('#act-slide4 .rail-panrow');
+    var railExitBase = null;   // #tools-rail's intrinsic right edge (engine transform only), captured once per exit pass
+    var railExitTranslate = 0;
+
+    function updateRailExit() {
+      if (!railSection || !railPanrow) return;
+      if (reduced) {
+        if (railExitTranslate !== 0) { railExitTranslate = 0; railPanrow.style.transform = ''; }
+        railExitBase = null;
+        railSection.setAttribute('data-sc-verify-state', 'exit:0');
+        return;
+      }
+      var rect = railSection.getBoundingClientRect();
+      var vh = window.innerHeight;
+      if (rect.bottom < vh && rect.bottom > -vh) {
+        if (railExitBase === null) {
+          var railRect = document.getElementById('tools-rail').getBoundingClientRect();
+          // Clamp to the viewport: content already past the right edge at the
+          // moment the exit begins is already off-screen and needs no travel
+          // credited to it, or the extra distance overshoots and the cards
+          // clear the screen a third of the way into the exit instead of at
+          // its end.
+          railExitBase = Math.max(0, Math.min(window.innerWidth, railRect.right - railExitTranslate));
+        }
+        var frac = Math.min(1, Math.max(0, (vh - rect.bottom) / vh));
+        var distance = frac * (window.innerWidth + railExitBase);
+        railExitTranslate = -distance;
+        railPanrow.style.transform = 'translate3d(' + railExitTranslate.toFixed(1) + 'px,0,0)';
+      } else if (rect.bottom >= vh) {
+        // Fully pinned or not yet reached: no exit travel, ready to re-arm.
+        if (railExitTranslate !== 0) { railExitTranslate = 0; railPanrow.style.transform = ''; }
+        railExitBase = null;
+      }
+      railSection.setAttribute('data-sc-verify-state', 'exit:' + Math.round(Math.abs(railExitTranslate)));
+    }
+
+    // Ribbon nudge: shown until the visitor has scrolled at all, then never
+    // shown again (a one-way flag, not re-armed by scrolling back to top).
+    var hasScrolled = false;
+
     function tick() {
-      updateHome();
+      checkHomeScrollSkip();
+
+      var homeP = parseFloat(getComputedStyle(homeAct).getPropertyValue('--sc-p')) || 0;
+      if (homeP > 0.02) hasScrolled = true;
 
       var pulsingAny = false;
-      var ribbonText = 'Listening…';
+      var ribbonText = hasScrolled ? 'Listening…' : 'Scroll to start presenting';
 
       var s1El = document.getElementById('act-slide1');
       if (s1El && slide1Driver) {
@@ -788,6 +912,7 @@
       updateComposing2();
       updateChrome();
       updateRail();
+      updateRailExit();
 
       requestAnimationFrame(tick);
     }
