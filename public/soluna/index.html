@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Soluna &middot; Ten seconds to remember everything</title>
+<meta name="description" content="AI case-note summaries for Soluna's practitioners, designed with clinicians in the loop. A case study by Mike Jerugim.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23241541'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=Figtree:wght@400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  :root {
+    --sc-canvas:      #FFFFFF;
+    --sc-surface:     #F7F3FB;
+    --sc-ink:         #1B1230;
+    --sc-ink-soft:    #5A4F73;
+    --sc-accent:      #E08A0B;
+    --sc-accent-ink:  #1B1230;
+    --sc-font-display: "Fraunces", Georgia, serif;
+    --sc-font-text:    "Figtree", system-ui, sans-serif;
+    --sc-font-mono:    "DM Mono", ui-monospace, monospace;
+
+    --before-canvas: #241541;
+    --before-ink:    #F4EEFF;
+    --before-ink-soft: #B9ACD6;
+    --before-accent: #F5B84A;
+
+    --after-canvas: #FFFFFF;
+    --after-ink:    #1B1230;
+    --after-ink-soft: #5A4F73;
+    --after-accent: #E08A0B;
+  }
+
+  body { background: var(--sc-canvas); }
+  ::selection { background: var(--sc-accent); color: var(--sc-accent-ink); }
+  .sc-display { margin-bottom: 0.42em; }
+  .mono { font-family: var(--sc-font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ===================== divider (chrome) ===================== */
+  #divider {
+    position: fixed; top: 0; bottom: 0; left: 50%; width: 2px;
+    background: var(--sc-accent); z-index: 40; pointer-events: none;
+    transition: left 0.05s linear;
+  }
+  #divider .flag {
+    position: absolute; top: var(--sc-4); font-family: var(--sc-font-mono);
+    font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+    background: var(--sc-accent); color: #1B1230; padding: 0.3em 0.6em;
+    white-space: nowrap;
+  }
+  #divider .flag--before { right: 4px; }
+  #divider .flag--after  { left: 4px; }
+  #divider .pct {
+    position: absolute; bottom: var(--sc-4); left: 50%; translate: -50% 0;
+    font-family: var(--sc-font-mono); font-size: 0.65rem; color: var(--sc-accent);
+    background: rgba(27,18,48,0.7); padding: 0.2em 0.5em; white-space: nowrap;
+  }
+  @media (max-width: 860px) {
+    #divider { display: none; }
+  }
+
+  /* ===================== split shells ===================== */
+  .split { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .side { padding: var(--sc-section) var(--sc-gutter); position: relative; }
+  .side--before { background: var(--before-canvas); color: var(--before-ink); }
+  .side--before, .side--before * { }
+  .side--before { --sc-ink: var(--before-ink); --sc-ink-soft: var(--before-ink-soft); }
+  .side--after  { background: var(--after-canvas); color: var(--after-ink); }
+  .side--after  { --sc-ink: var(--after-ink); --sc-ink-soft: var(--after-ink-soft); }
+
+  @media (max-width: 860px) {
+    .split { grid-template-columns: 1fr; }
+    .side--before { border-bottom: 2px solid var(--before-accent); }
+  }
+
+  /* ===================== act 0: hero ===================== */
+  .hero-split { align-items: center; }
+  .hero-split .side { display: flex; flex-direction: column; justify-content: center; }
+  .hero-split .side--before { align-items: flex-end; text-align: right; }
+  .hero-split .side--after  { align-items: flex-start; text-align: left; }
+  .hero-split .meta { color: var(--before-ink-soft); margin-bottom: var(--sc-4); }
+  .hero-split h1 {
+    font-family: var(--sc-font-display); font-weight: 400; font-style: italic;
+    font-size: var(--sc-t-4xl); line-height: 1.02; letter-spacing: var(--sc-track-tight);
+    text-wrap: balance; max-width: 14ch; margin: 0;
+  }
+  .hero-split h2 {
+    font-family: var(--sc-font-display); font-weight: 400;
+    font-size: var(--sc-t-3xl); line-height: 1.04; letter-spacing: var(--sc-track-tight);
+    text-wrap: balance; max-width: 14ch; margin: 0 0 var(--sc-4);
+  }
+  .hero-split .after-copy p { max-width: 34ch; color: var(--after-ink-soft); font-size: var(--sc-t-lg); margin: 0; }
+  @media (max-width: 860px) {
+    .hero-split .side--before { align-items: flex-start; text-align: left; }
+  }
+  @media (max-width: 700px) {
+    .hero-split h1, .hero-split h2 { font-size: var(--sc-t-2xl); }
+  }
+
+  /* ===================== act 1 + 2: scramble / crossing ===================== */
+  .argument-stage { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; }
+  .argument-stage .side { min-height: 100%; }
+
+  /* Two zones that never share pixels: a quote zone (top ~40%) and a card
+     pile zone (bottom ~55%), with a small dead gap between them. */
+  .card-field { position: relative; height: 100%; min-height: 34rem; overflow: hidden; }
+  .card-field__quote-zone { position: absolute; top: 0; left: 0; right: 0; height: 34%; overflow: hidden; }
+  /* The pile zone is capped at 31rem and centred, and cards are sized as a
+     fraction of it (46%), so the two columns (left: 0%, right: 54%) keep
+     a constant ~2.5rem gutter at any viewport width instead of drifting
+     apart as the column widens. 31rem is the narrowest that keeps the
+     longest value ("Presenting issue: exam stress") on one line. Rows sit
+     at 0/33/66% (left) and 9/42/75% (right) so cards never overlap at
+     rest; the slight tilt each picks up on arrival can bring corners
+     close, which the solid background keeps readable. bottom: 17% leaves
+     a clear lane for .illustrative-note. */
+  .card-field__pile-zone {
+    position: absolute; top: 38%; bottom: 17%;
+    left: max(0px, calc(50% - 15.5rem)); right: max(0px, calc(50% - 15.5rem));
+  }
+
+  .card {
+    position: absolute; z-index: 1; width: 46%; padding: var(--sc-3) var(--sc-4);
+    background: #2E2350; border: 1px solid rgba(244,238,255,0.22);
+    color: var(--before-ink); font-family: var(--sc-font-text); font-size: 0.88rem;
+    box-shadow: 4px 6px 18px rgba(0,0,0,0.35);
+    opacity: 0; transform: translate3d(0,24px,0) rotate(0deg) scale(0.96);
+    transition: transform 0.05s linear, opacity 0.3s var(--sc-ease-out);
+    will-change: transform, opacity;
+  }
+  .card__label { display: block; font-family: var(--sc-font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--before-accent); margin-bottom: 0.4em; }
+
+  .illustrative-note {
+    position: absolute; left: 0; right: 0; bottom: var(--sc-3);
+    text-align: center; color: var(--before-ink-soft);
+  }
+
+  .quote-cue {
+    position: absolute; inset: 0 var(--sc-5) auto; z-index: 5;
+    /* Column so the <cite> stacks under the quote instead of sitting
+       beside it as a flex-row sibling. */
+    display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end;
+    height: 100%; text-align: right; box-sizing: border-box;
+    font-family: var(--sc-font-display); font-style: italic; font-weight: 400;
+    font-size: clamp(0.95rem, 1.5vw, 1.3rem); line-height: 1.28; text-wrap: balance;
+    max-width: 30ch; margin-left: auto; opacity: 0; transition: opacity 0.4s var(--sc-ease-out);
+    padding: var(--sc-3) 0;
+  }
+  .quote-cue cite { display: block; font-style: normal; font-family: var(--sc-font-mono); font-size: 0.63rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--before-accent); margin-top: 0.5em; }
+
+  /* overflow-y: auto is a safety net: the sheet is exactly as tall as its
+     pinned side, so on short viewports the filled fields plus annotations
+     must scroll inside the border rather than spill past it. */
+  .sheet { position: relative; height: 100%; min-height: 22rem; border: 1px solid rgba(27,18,48,0.14); padding: var(--sc-5) var(--sc-6); background: var(--after-canvas); overflow-y: auto; }
+  .sheet__title { font-family: var(--sc-font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--after-ink-soft); margin: 0 0 var(--sc-4); }
+  .field { margin-bottom: var(--sc-4); position: relative; }
+  .field__label { display: block; font-family: var(--sc-font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--after-accent); margin-bottom: 0.3em; }
+  .field__value { min-height: 1.4em; font-size: 0.98rem; color: var(--after-ink); opacity: 0; transform: translateY(6px); transition: opacity 0.35s var(--sc-ease-out), transform 0.35s var(--sc-ease-out); }
+  .field__value.is-filled { opacity: 1; transform: none; }
+  .annotation {
+    font-family: var(--sc-font-text); font-size: 0.82rem; color: var(--after-ink-soft);
+    border-left: 1px solid var(--after-accent); padding-left: 0.7em; margin-top: 0.4em;
+    opacity: 0; transition: opacity 0.4s var(--sc-ease-out);
+  }
+  .annotation.is-on { opacity: 1; }
+  .sheet__prepared { margin-top: var(--sc-5); font-family: var(--sc-font-mono); font-size: 0.72rem; color: var(--after-accent); opacity: 0; transition: opacity 0.4s var(--sc-ease-out); }
+  .sheet__prepared.is-on { opacity: 1; }
+
+  /* Act title: a display heading confined to the left (BEFORE) half so it
+     never straddles the divider. Sits in the same gutter as the columns
+     below so it reads as the act's headline, not a floating caption. */
+  .act-title {
+    width: 50%; box-sizing: border-box; padding: 0 var(--sc-gutter);
+    margin: 0 0 var(--sc-6);
+  }
+  .act-title__eyebrow { color: var(--sc-accent); margin: 0 0 var(--sc-3); }
+  .act-title__heading {
+    font-family: var(--sc-font-display); font-weight: 400; font-style: italic;
+    font-size: var(--sc-t-3xl); line-height: 1.02; letter-spacing: var(--sc-track-tight);
+    color: var(--sc-ink); margin: 0; text-wrap: balance;
+  }
+  @media (max-width: 860px) {
+    .act-title { width: 100%; }
+    .act-title__heading { font-size: var(--sc-t-2xl); }
+  }
+
+  .left-closing { position: absolute; left: 0; right: 0; bottom: var(--sc-6); text-align: center; opacity: 0; transition: opacity 0.4s var(--sc-ease-out); color: var(--before-ink-soft); }
+  .left-closing.is-on { opacity: 1; }
+
+  @media (max-width: 860px) {
+    .argument-stage { grid-template-columns: 1fr; }
+    /* Each stacked side gets exactly half the pinned stage on mobile
+       (via .argument-stage .side min-height:100% below), so card-field and
+       sheet must fill that half exactly rather than forcing a larger
+       min-height that would overflow past the side's own box. */
+    .card-field, .sheet { min-height: 0; }
+    .quote-cue { font-size: 0.78rem; line-height: 1.22; }
+    .card { font-size: 0.72rem; padding: var(--sc-3) var(--sc-4); }
+    .card-field__quote-zone { height: 36%; }
+    .card-field__pile-zone { top: 50%; bottom: 10%; }
+    .sheet { padding: var(--sc-4); overflow-y: auto; }
+    .sheet__title { margin-bottom: var(--sc-3); }
+    .field { margin-bottom: var(--sc-3); }
+    .field__value { font-size: 0.82rem; }
+    .annotation { font-size: 0.72rem; }
+  }
+
+  /* ===================== act 3: trust ===================== */
+  .trust-grid { display: grid; grid-template-columns: 1fr 1fr; }
+  .trust-col { padding: var(--sc-section) var(--sc-gutter); display: flex; flex-direction: column; gap: var(--sc-5); }
+  .trust-pair { padding-bottom: var(--sc-5); border-bottom: 1px solid rgba(0,0,0,0.08); }
+  .side--before .trust-pair { border-bottom-color: rgba(255,255,255,0.12); }
+  .trust-pair p { margin: 0; font-size: 1.02rem; line-height: 1.5; max-width: 34ch; }
+  @media (max-width: 860px) { .trust-grid { grid-template-columns: 1fr; } }
+
+  /* ===================== act 4: process ===================== */
+  .process-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sc-7); align-items: start; }
+  .process-grid .side { padding: var(--sc-section) var(--sc-gutter); }
+  .counts { display: flex; gap: var(--sc-7); margin: var(--sc-6) 0; }
+  .count { }
+  .count .n { font-family: var(--sc-font-display); font-size: var(--sc-t-2xl); line-height: 1; }
+  .count .l { display: block; font-family: var(--sc-font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--after-ink-soft); margin-top: 0.3em; }
+  .process-media img { width: 100%; height: auto; border: 1px solid rgba(27,18,48,0.12); }
+  .process-media figcaption { font-family: var(--sc-font-mono); font-size: 0.7rem; color: var(--after-ink-soft); margin-top: 0.5em; }
+  @media (max-width: 860px) { .process-grid { grid-template-columns: 1fr; } }
+
+  /* Ideation block: real markup version of the React case study's MediaBlock
+     'ideation' branch, themed to Soluna's own tokens. */
+  .ideation-block {
+    margin-top: var(--sc-6); background: var(--after-canvas);
+    border: 1px solid rgba(27,18,48,0.14); padding: clamp(1.25rem, 3vw, 2rem);
+  }
+  .ideation-block__eyebrow {
+    font-family: var(--sc-font-mono); font-size: 0.62rem; color: var(--after-ink-soft);
+    letter-spacing: 0.25em; text-transform: uppercase; margin: 0 0 0.9em;
+  }
+  .ideation-block__heading {
+    font-family: var(--sc-font-display); font-weight: 400; font-style: italic;
+    font-size: clamp(1.05rem, 2vw, 1.35rem); line-height: 1.25; color: var(--after-ink);
+    margin: 0 0 0.4em; text-wrap: balance;
+  }
+  .ideation-block__meta {
+    font-family: var(--sc-font-mono); font-size: 0.68rem; color: var(--after-ink-soft);
+    letter-spacing: 0.05em; margin: 0 0 1.4em;
+  }
+  .ideation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.75rem; }
+  .ideation-card {
+    background: var(--after-canvas); border: 1px solid rgba(27,18,48,0.14); padding: 0.9rem;
+  }
+  .ideation-card.selected { border: 1.5px solid var(--after-accent); }
+  .ideation-card__badge {
+    display: inline-block; font-family: var(--sc-font-mono); font-size: 0.58rem; color: var(--after-accent);
+    background: rgba(224,138,11,0.12); letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.2em 0.5em; margin-bottom: 0.6em;
+  }
+  .ideation-card p { font-family: var(--sc-font-text); font-size: 0.82rem; color: var(--after-ink); line-height: 1.5; margin: 0; }
+  @media (max-width: 700px) {
+    .ideation-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ===================== act 5: collapse ===================== */
+  .collapse-stage { display: grid; grid-template-columns: 1fr 1fr; }
+  .collapse-before {
+    background: var(--before-canvas); color: var(--before-ink); padding: var(--sc-5);
+    display: flex; align-items: center; justify-content: center; gap: var(--sc-3);
+  }
+  /* The strip text starts horizontal while the BEFORE column is still half
+     the stage, and rotates to the left (counter-clockwise) in step with the
+     column collapsing, driven by updateCollapse(). A transform rotation is
+     used instead of writing-mode so the angle can be animated. */
+  .collapse-before .strip-text {
+    display: flex; align-items: baseline; gap: var(--sc-5); white-space: nowrap;
+    transform-origin: center center; will-change: transform;
+  }
+  .collapse-before .strip-label { font-family: var(--sc-font-mono); font-size: 0.74rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--before-accent); }
+  .collapse-before .strip-note { font-family: var(--sc-font-mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--before-ink-soft); }
+
+  /* Mirror of act 2's sheet, shown filled and receding as the prototype takes over.
+     It is purely decorative (no interactive content), but because it is
+     absolutely positioned it paints ABOVE the static-flow .collapse-resolved
+     sibling regardless of DOM order or opacity, which silently swallowed
+     every click meant for the iframe underneath. pointer-events: none removes
+     it from hit-testing entirely, permanently, since it never needs to be
+     clickable at any opacity. */
+  .collapse-sheet-echo {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    padding: clamp(1rem, 2.4vh, 2rem); transition: opacity 0.3s linear, transform 0.3s linear;
+    pointer-events: none;
+  }
+  .collapse-sheet-echo .mini-sheet {
+    width: 100%; max-width: 26rem; border: 1px solid rgba(27,18,48,0.14); padding: var(--sc-4);
+    font-size: 0.72rem; color: var(--after-ink-soft); background: var(--after-canvas);
+  }
+  .collapse-sheet-echo .mini-sheet strong { display: block; color: var(--after-accent); font-family: var(--sc-font-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; margin: 0.5em 0 0.15em; }
+  .collapse-sheet-echo .mini-sheet strong:first-child { margin-top: 0; }
+
+  .collapse-after {
+    background: var(--after-canvas); color: var(--after-ink); position: relative;
+    padding: clamp(1rem, 2.4vh, 2rem) clamp(1.25rem, 4vw, 3rem);
+    overflow: hidden; overflow-y: auto; height: 100%;
+  }
+  /* Single column: the prototype is the point of this stage, so it gets
+     the full width on top (sized by viewport height, see .proto-frame) and
+     the closing info sits beneath it. The stage scrolls vertically for
+     whatever doesn't fit, rather than shrinking the prototype to squeeze
+     everything onto one screen. */
+  .collapse-resolved {
+    display: flex; flex-direction: column; align-items: stretch; justify-content: center;
+    gap: clamp(1rem, 2.5vh, 1.75rem); min-height: 100%;
+    opacity: 0; transition: opacity 0.3s linear;
+  }
+  .collapse-resolved__proto { flex: none; width: 100%; max-width: calc(85vh * 1.8383); margin: 0 auto; }
+  .collapse-resolved__info {
+    flex: none; display: flex; flex-direction: column; gap: clamp(0.5rem, 1.4vh, 0.9rem);
+    width: 100%; max-width: calc(85vh * 1.8383); margin: 0 auto;
+  }
+  .proto-label { font-family: var(--sc-font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--after-accent); margin: 0 0 0.4em; }
+  .proto-frame {
+    /* The prototype's rendered artboard measures ~1103x600 with
+       scaling=scale-down, an aspect of ~1.84:1, not 16:9. Matching it here
+       is what stops Figma cropping the right panel and bottom nav: a 16:9
+       box forces Figma to fill width and crop height. width:100% up to a
+       height-derived max-width keeps the frame within 85vh at any stage
+       width, so the whole artboard fits without an internal scrollbar and
+       the prototype is as large as the viewport allows. */
+    width: 100%; aspect-ratio: 1.8383; max-height: 85vh;
+    max-width: calc(85vh * 1.8383); margin: 0 auto;
+    border: 1px solid rgba(27,18,48,0.14); background: #0b0b0d;
+    overflow: hidden; position: relative;
+  }
+  /* Do NOT upscale this iframe. In Figma's scale-down / contain modes the
+     viewer pads the artboard with a canvas margin whose size varies with
+     the frame's own size (measured fills ranged ~0.73-0.82), so any fixed
+     upscale used to crop that margin away (136%, then 114%) either cut the
+     artboard's sides off at one size or left a big border at another.
+     scaling=scale-down-width in the embed URL fits the artboard to the
+     iframe's width exactly, so it fills edge to edge at 100% with nothing
+     to compensate for; the frame's aspect-ratio matches the artboard so
+     the height fits too. */
+  .proto-frame iframe {
+    position: absolute; inset: 0; border: 0; width: 100%; height: 100%;
+  }
+  .proto-caption { font-family: var(--sc-font-mono); font-size: 0.65rem; color: var(--after-ink-soft); margin: 0.3em 0 0; }
+  .close-row { display: flex; gap: clamp(0.75rem, 2vw, 1.5rem); align-items: flex-start; }
+  .close-row img { width: 4.5rem; height: auto; border: 1px solid rgba(27,18,48,0.14); flex: none; }
+  .close-row figcaption { font-family: var(--sc-font-mono); font-size: 0.6rem; color: var(--after-ink-soft); margin-top: 0.4em; max-width: 10rem; }
+  .close-text { max-width: 34ch; }
+  .close-text p { font-size: 0.86rem; line-height: 1.4; margin: 0.3em 0; }
+  .projected { font-family: var(--sc-font-mono); font-size: 0.7rem; color: var(--after-accent); margin: 0.2em 0; }
+  .cta-links { display: flex; gap: var(--sc-5); flex-wrap: wrap; }
+  .cta-links a { color: var(--after-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; padding: 0.3em 0; min-height: 44px; display: inline-flex; align-items: center; font-size: 0.86rem; }
+  .cta-links a:hover, .cta-links a:focus-visible { color: var(--after-accent); }
+  .colophon { font-family: var(--sc-font-mono); font-size: 0.6rem; color: var(--after-ink-soft); margin-top: 0; }
+
+  @media (max-width: 860px) {
+    .collapse-stage { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    .collapse-before { padding: var(--sc-3); }
+    .collapse-before .strip-text { flex-wrap: wrap; justify-content: center; white-space: normal; }
+    .collapse-resolved__proto, .collapse-resolved__info { max-width: none; }
+    .proto-frame { max-width: none; max-height: none; }
+  }
+</style>
+</head>
+<body>
+
+<span data-sc-progress></span>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<div id="divider" data-sc-verify-state="pos:50;cross:0">
+  <span class="flag flag--before">Before</span>
+  <span class="flag flag--after">After</span>
+  <span class="pct" id="divider-pct">0%</span>
+</div>
+
+<main id="top">
+
+  <!-- Act 0 · hero: flow -->
+  <section class="hero-split split" data-sc-act="flow">
+    <div class="side side--before">
+      <p class="mono meta">Mike Jerugim, case study</p>
+      <p class="mono meta">Kooth Digital Health, Soluna</p>
+      <h1 data-sc-cue="0 1 0" data-sc-in>Ten seconds to remember everything.</h1>
+    </div>
+    <div class="side side--after">
+      <h2>One summary, ready before the session.</h2>
+      <div class="after-copy">
+        <p>AI case-note summaries for Soluna's practitioners, designed with clinicians in the loop.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 1 · the scramble: pin -->
+  <section data-sc-act="pin" data-sc-span="2.6">
+    <div data-sc-stage class="argument-stage">
+      <div class="side side--before">
+        <div class="card-field" id="scramble-cards">
+          <div class="card-field__quote-zone">
+            <div class="quote-cue" data-sc-cue="0 0.22 0 0.08">
+              &ldquo;We have 10 seconds to assess what happened last time.&rdquo;
+              <cite>Peer support specialist</cite>
+            </div>
+            <div class="quote-cue" data-sc-cue="0.25 0.47 0.08 0.08">
+              &ldquo;For drop ins, it&rsquo;s harder to reference old chats while still trying to be engaged.&rdquo;
+              <cite>Peer support specialist</cite>
+            </div>
+            <div class="quote-cue" data-sc-cue="0.5 0.7 0.08 0.08">
+              &ldquo;People nowadays are used to a quick response, and when we don&rsquo;t respond as quickly as possible, they disengage.&rdquo;
+              <cite>Peer support specialist</cite>
+            </div>
+            <div class="quote-cue" data-sc-cue="0.75 0.94 0.08 0.1">
+              &ldquo;I do a pre-screen of everyone on the schedule: old chats, messages, goals, journaling. I always review that prior to a visit.&rdquo;
+              <cite>Licensed counselor</cite>
+            </div>
+          </div>
+          <div class="card-field__pile-zone">
+            <div class="card" data-card="risk" style="left:0%; top:0%;"><span class="card__label">Risk flags</span>Risk flag: reviewed</div>
+            <div class="card" data-card="chats" style="left:54%; top:9%;"><span class="card__label">Previous chats</span>Last chat, 12 days ago</div>
+            <div class="card" data-card="messages" style="left:0%; top:33%;"><span class="card__label">Messages</span>Messages: 4 unread threads</div>
+            <div class="card" data-card="goals" style="left:54%; top:42%;"><span class="card__label">Goals</span>Goal: sleep routine</div>
+            <div class="card" data-card="journaling" style="left:0%; top:66%;"><span class="card__label">Journaling</span>Journaling: 3 entries</div>
+            <div class="card" data-card="usage" style="left:54%; top:75%;"><span class="card__label">Presenting issues</span>Presenting issue: exam stress</div>
+          </div>
+          <p class="mono illustrative-note">Illustrative content. No service-user data.</p>
+        </div>
+      </div>
+      <div class="side side--after">
+        <div class="sheet">
+          <p class="sheet__title">Summary sheet, empty</p>
+          <div class="field"><span class="field__label">Presenting issues</span><div class="field__value"></div></div>
+          <div class="field"><span class="field__label">Risk indicators</span><div class="field__value"></div></div>
+          <div class="field"><span class="field__label">Goals</span><div class="field__value"></div></div>
+          <div class="field"><span class="field__label">Recent focus</span><div class="field__value"></div></div>
+          <div class="field"><span class="field__label">Last session</span><div class="field__value"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 2 · the crossing: pin, signature move -->
+  <section data-sc-act="pin" data-sc-span="3.0">
+    <div data-sc-stage class="argument-stage" id="crossing-stage" data-sc-verify-state="cross:0">
+      <div class="side side--before">
+        <div class="card-field" id="crossing-cards">
+          <div class="card-field__pile-zone">
+            <div class="card" data-cross="risk" style="left:0%; top:0%;"><span class="card__label">Risk flags</span>Risk flag: reviewed</div>
+            <div class="card" data-cross="chats" style="left:54%; top:9%;"><span class="card__label">Previous chats</span>Last chat, 12 days ago</div>
+            <div class="card" data-cross="messages" style="left:0%; top:33%;"><span class="card__label">Messages</span>Messages: 4 unread threads</div>
+            <div class="card" data-cross="goals" style="left:54%; top:42%;"><span class="card__label">Goals</span>Goal: sleep routine</div>
+            <div class="card" data-cross="journaling" style="left:0%; top:66%;"><span class="card__label">Journaling</span>Journaling: 3 entries</div>
+            <div class="card" data-cross="usage" style="left:54%; top:75%;"><span class="card__label">Presenting issues</span>Presenting issue: exam stress</div>
+          </div>
+          <div class="left-closing" id="crossing-close">
+            <p class="mono">Illustrative content. No service-user data.</p>
+            <p class="mono">Nothing left to hunt for.</p>
+          </div>
+        </div>
+      </div>
+      <div class="side side--after">
+        <div class="sheet">
+          <p class="sheet__title">Summary sheet, in progress</p>
+          <div class="field">
+            <span class="field__label">Risk indicators</span>
+            <div class="field__value" id="field-risk">Risk flag: reviewed</div>
+            <div class="annotation" id="anno-risk">Risk indicators and presenting issues surface first, never buried.</div>
+          </div>
+          <div class="field">
+            <span class="field__label">Presenting issues</span>
+            <div class="field__value" id="field-presenting">Presenting issue: exam stress</div>
+            <div class="annotation" id="anno-review">A clinician reviews the summary before it is used, and can rate it, so the system learns what helps.</div>
+          </div>
+          <div class="field">
+            <span class="field__label">Last session</span>
+            <div class="field__value" id="field-last">Last chat, 12 days ago</div>
+            <div class="annotation" id="anno-safe">Only data we defined as safe to summarise goes in.</div>
+          </div>
+          <div class="field">
+            <span class="field__label">Goals</span>
+            <div class="field__value" id="field-goals">Goal: sleep routine</div>
+            <div class="annotation" id="anno-source">Each statement keeps its source, so a clinician can check it in one click.</div>
+          </div>
+          <div class="field">
+            <span class="field__label">Recent focus</span>
+            <div class="field__value" id="field-recent">Messages: 4 unread threads &middot; Journaling: 3 entries</div>
+            <div class="annotation" id="anno-pii">Personal details are highlighted for review, not hidden.</div>
+          </div>
+          <p class="sheet__prepared mono" id="prepared-line">Prepared in under thirty seconds.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 3 · trust: flow + reveal -->
+  <section class="sc-section" data-sc-act="flow">
+    <header class="act-title" data-sc-reveal="left" data-sc-reveal-at="0 0.22">
+      <p class="mono act-title__eyebrow">Act three</p>
+      <h2 class="act-title__heading">Designing<br>for trust.</h2>
+    </header>
+    <div class="trust-grid">
+      <div class="trust-col side--before">
+        <div class="trust-pair" data-sc-reveal="left" data-sc-reveal-at="0.13 0.39">
+          <p>A summary could state something that never happened.</p>
+        </div>
+        <div class="trust-pair" data-sc-reveal="left" data-sc-reveal-at="0.21 0.47">
+          <p>Stale context could read as current.</p>
+        </div>
+        <div class="trust-pair" data-sc-reveal="left" data-sc-reveal-at="0.29 0.55">
+          <p>A confident summary could be trusted more than it should.</p>
+        </div>
+        <div class="trust-pair" data-sc-reveal="left" data-sc-reveal-at="0.37 0.63">
+          <p>Sensitive details could be exposed to the wrong eyes.</p>
+        </div>
+      </div>
+      <div class="trust-col side--after">
+        <div class="trust-pair" data-sc-reveal="right" data-sc-reveal-at="0.05 0.31">
+          <p>Every statement carries its source.</p>
+        </div>
+        <div class="trust-pair" data-sc-reveal="right" data-sc-reveal-at="0.13 0.39">
+          <p>Recency is shown, and the last session is dated.</p>
+        </div>
+        <div class="trust-pair" data-sc-reveal="right" data-sc-reveal-at="0.21 0.47">
+          <p>The summary is a starting point; a clinician reviews it before use and can rate it.</p>
+        </div>
+        <div class="trust-pair" data-sc-reveal="right" data-sc-reveal-at="0.29 0.55">
+          <p>PII and risk indicators are highlighted for the practitioner, and only defined data is summarised.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 4 · process: flow + in + count -->
+  <section class="sc-section" data-sc-act="flow" style="background: var(--after-canvas); color: var(--after-ink);">
+    <div class="process-grid sc-wrap">
+      <div class="side" style="padding:0;">
+        <div class="sc-stack" data-sc-in data-sc-stagger="70">
+          <p class="sc-body">We were embedded with Kooth's Data Science team, alongside a Lead UX Researcher, and partnered directly with clinicians, clinical leadership and service delivery teams.</p>
+          <p class="sc-body">We asked how we might make the practitioner well prepared for a chat, in 30 seconds or less, then ran multiple ideation rounds and prototype cycles with stakeholder reviews and company-wide demos.</p>
+        </div>
+        <div class="counts">
+          <div class="count"><span class="n" data-sc-count="0 10" data-sc-count-at="0.08 0.42">0</span><span class="l">Ideas</span></div>
+          <div class="count"><span class="n" data-sc-count="0 2" data-sc-count-at="0.08 0.42">0</span><span class="l">Selected</span></div>
+        </div>
+      </div>
+      <div class="side" style="padding:0;">
+        <figure class="process-media">
+          <img src="assets/04.jpg" width="1024" height="508" alt="Design review board comparing AI summary placement options for practitioners.">
+          <figcaption>Summary placement explorations, shown to practitioners.</figcaption>
+        </figure>
+        <div class="ideation-block">
+          <p class="ideation-block__eyebrow">Ideation</p>
+          <h3 class="ideation-block__heading">How might we make the practitioner well prepared for a chat, in 30 seconds or less?</h3>
+          <p class="ideation-block__meta">10 ideas &middot; 2 selected for exploration</p>
+          <div class="ideation-grid" data-sc-in data-sc-stagger="45">
+            <div class="ideation-card"><p>Also include list of previous coaches, so the next one can contact them to share info/ideas</p></div>
+            <div class="ideation-card selected"><span class="ideation-card__badge">Selected</span><p>Quick reference &ldquo;face sheet&rdquo; with all pertinent info available at a glance</p></div>
+            <div class="ideation-card"><p>Improved SU profile inclusive of risk profile, presenting issues, etc. (snapshot)</p></div>
+            <div class="ideation-card"><p>AI chat summary created</p></div>
+            <div class="ideation-card"><p>Sentiment analysis of previous chats to get an idea of the user&rsquo;s mood and concerns</p></div>
+            <div class="ideation-card"><p>Key themes as a word cloud sized by frequency</p></div>
+            <div class="ideation-card"><p>Data-summary dashboard that is scannable</p></div>
+            <div class="ideation-card selected"><span class="ideation-card__badge">Selected</span><p>Bring all user data to one screen: usage, demographics, sessions, risk flags, goals, chat summary</p></div>
+            <div class="ideation-card"><p>Previous case note summaries by LLMs (with feedback)</p></div>
+            <div class="ideation-card"><p>Key themes from past chats, content, tools, etc. for each SU</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 5 · the collapse: pin, peak -->
+  <section data-sc-act="pin" data-sc-span="3.4">
+    <div data-sc-stage class="collapse-stage" id="collapse-stage" data-sc-verify-state="pos:50;proto:0">
+      <div class="collapse-before" id="collapse-before">
+        <div class="strip-text" id="strip-text">
+          <span class="mono strip-label">Before</span>
+          <span class="mono strip-note">Illustrative content. No service-user data.</span>
+        </div>
+      </div>
+      <div class="collapse-after">
+        <!-- Present from p=0: a compact echo of the completed summary sheet from
+             act 2, so the AFTER column is never empty while the divider travels.
+             It fades out as the resolved prototype layout fades in. -->
+        <div class="collapse-sheet-echo" id="sheet-echo">
+          <div class="mini-sheet">
+            <strong>Risk indicators</strong>Risk flag: reviewed
+            <strong>Presenting issues</strong>Presenting issue: exam stress
+            <strong>Last session</strong>Last chat, 12 days ago
+            <strong>Goals</strong>Goal: sleep routine
+            <strong>Recent focus</strong>Messages: 4 unread threads &middot; Journaling: 3 entries
+          </div>
+        </div>
+
+        <div class="collapse-resolved" id="proto-wrap">
+          <div class="collapse-resolved__proto">
+            <p class="mono proto-label">Live prototype. Click through it.</p>
+            <div class="proto-frame">
+              <iframe src="https://embed.figma.com/proto/CUtmgZv4nnYcmjQYVVCD4k/SU-History-Summaries?node-id=4498-14063&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;hide-ui=1&amp;starting-point-node-id=4479%3A11828&amp;show-proto-sidebar=0&amp;hotspot-hints=0&amp;page-id=1%3A69&amp;embed-host=share"
+                allow="fullscreen" allowfullscreen loading="lazy" title="Soluna case-note summary prototype"></iframe>
+            </div>
+            <p class="proto-caption">SU History Summaries, Figma prototype.</p>
+          </div>
+          <div class="collapse-resolved__info">
+            <p class="mono" style="color: var(--after-accent); margin:0;">Approved for development.</p>
+            <p class="projected">Projected: 10 to 15 minutes back per session, per practitioner.</p>
+            <div class="close-row">
+              <div class="close-text">
+                <p>This project reflects my approach to AI design in regulated, human-centred environments: pairing technical possibility with ethical responsibility, clinical trust and measurable operational impact.</p>
+              </div>
+              <figure>
+                <img src="assets/07.jpg" width="1024" height="557" alt="The AI-generated case-note summary in the practitioner dashboard.">
+                <figcaption>The summary in the practitioner dashboard.</figcaption>
+              </figure>
+            </div>
+            <div class="cta-links">
+              <a href="https://flat7.design/">More work at flat7.design</a>
+              <a href="mailto:mike@flat7.design">Write to Mike</a>
+            </div>
+            <p class="colophon">Soluna is a Kooth Digital Health product. Case study by Mike Jerugim.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="scrollcraft.js"></script>
+<script>
+  ScrollCraft.mount(document.body);
+
+  (function () {
+    var divider = document.getElementById('divider');
+    var dividerPct = document.getElementById('divider-pct');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Cards cross in the order the sheet lists its fields top to bottom, so
+    // the sheet fills linearly: risk, presenting issues (usage card), last
+    // session (chats), goals, recent focus (messages + journaling).
+    var crossOrder = ['risk', 'usage', 'chats', 'goals', 'messages', 'journaling'];
+    var crossTargets = {
+      risk:      { field: 'field-risk',      anno: 'anno-risk' },
+      chats:     { field: 'field-last',      anno: 'anno-safe' },
+      messages:  { field: 'field-recent',    anno: 'anno-pii' },
+      goals:     { field: 'field-goals',     anno: 'anno-source' },
+      journaling:{ field: 'field-recent',    anno: 'anno-pii' },
+      usage:     { field: 'field-presenting', anno: 'anno-review' }
+    };
+
+    function landPointFor(card) {
+      var rect = document.getElementById(crossTargets[card.dataset.cross].field).closest('.field').getBoundingClientRect();
+      var stageRect = document.getElementById('crossing-stage').getBoundingClientRect();
+      return { x: rect.left - stageRect.left - card.getBoundingClientRect().width * 0.1, y: rect.top - stageRect.top };
+    }
+
+    function findActEl(id) {
+      // Locate the pinned <section data-sc-act> ancestor via its stage id
+      var stage = document.getElementById(id);
+      var el = stage;
+      while (el && !el.hasAttribute('data-sc-act')) el = el.parentElement;
+      return el;
+    }
+
+    var scrambleAct = findActEl('scramble-cards');
+    var crossingAct = findActEl('crossing-cards');
+    var collapseAct = findActEl('collapse-stage');
+
+    var scrambleCards = document.querySelectorAll('#scramble-cards .card');
+    var n1 = scrambleCards.length;
+
+    function updateScramble() {
+      var p = parseFloat(scrambleAct && scrambleAct.style.getPropertyValue('--sc-p') || getComputedStyle(scrambleAct || document.body).getPropertyValue('--sc-p')) || 0;
+      // Every card settles at full opacity. An earlier version spotlit the
+      // arriving card and dimmed the rest to 0.5, which read fine on the
+      // old translucent cards but looks like a glitch on solid ones.
+      scrambleCards.forEach(function (card, i) {
+        var start = i / n1 * 0.8;
+        var t = Math.min(1, Math.max(0, (p - start) / 0.2));
+        if (reduced) t = 1;
+        var rot = (i % 2 === 0 ? 1 : -1) * (1.5 + i * 0.4);
+        card.style.opacity = t;
+        card.style.transform = 'translate3d(0,' + (24 - 24 * t) + 'px,0) rotate(' + (rot * t) + 'deg) scale(' + (0.96 + 0.04 * t) + ')';
+      });
+    }
+
+    var crossingCards = document.querySelectorAll('#crossing-cards .card');
+    var n2 = crossingCards.length;
+    var closingNote = document.getElementById('crossing-close');
+
+    function landAllReduced() {
+      crossingCards.forEach(function (card) {
+        card.style.opacity = 0;
+        var key = card.dataset.cross;
+        var t = crossTargets[key];
+        var fieldEl = document.getElementById(t.field);
+        fieldEl.classList.add('is-filled');
+        var annoEl = document.getElementById(t.anno);
+        if (annoEl) annoEl.classList.add('is-on');
+      });
+      document.getElementById('prepared-line').classList.add('is-on');
+      closingNote.classList.add('is-on');
+    }
+
+    function updateCrossing() {
+      var el = crossingAct;
+      if (!el) return;
+      var p = parseFloat(getComputedStyle(el).getPropertyValue('--sc-p')) || 0;
+      var stage = document.getElementById('crossing-stage');
+      var stageRect = stage.getBoundingClientRect();
+
+      crossingCards.forEach(function (card, i) {
+        var key = card.dataset.cross;
+        var idx = crossOrder.indexOf(key);
+        var segStart = idx / n2;
+        var segEnd = segStart + (1 / n2) * 0.85;
+        var t = Math.min(1, Math.max(0, (p - segStart) / (segEnd - segStart)));
+
+        // origin (already visible, laid out via left/top percent) -> we compute travel in px
+        var cardRect = card.getBoundingClientRect();
+        var originX = 0, originY = 0;
+        if (!card._origin) {
+          card._origin = { left: card.style.left, top: card.style.top };
+        }
+        var target = landPointFor(card);
+        var dx = target.x - (cardRect.left - stageRect.left) + (t === 0 ? 0 : 0);
+        var dy = target.y - (cardRect.top - stageRect.top);
+
+        if (t <= 0) {
+          card.style.transform = 'translate3d(0,0,0) scale(1)';
+          card.style.opacity = 1;
+        } else if (t >= 1) {
+          card.style.opacity = 0;
+        } else {
+          card.style.transform = 'translate3d(' + (dx * t) + 'px,' + (dy * t) + 'px,0) scale(' + (1 - 0.35 * t) + ')';
+          card.style.opacity = 1 - t * 0.6;
+        }
+
+        var landed = t >= 0.98;
+        var target2 = crossTargets[key];
+        var fieldEl = document.getElementById(target2.field);
+        if (landed) fieldEl.classList.add('is-filled'); else fieldEl.classList.remove('is-filled');
+        var annoEl = document.getElementById(target2.anno);
+        if (annoEl) {
+          if (t > 0.9) annoEl.classList.add('is-on'); else annoEl.classList.remove('is-on');
+        }
+      });
+
+      var lastLanded = p >= (crossOrder.length - 0.3) / n2 || p >= 0.85;
+      document.getElementById('prepared-line').classList.toggle('is-on', p >= 0.9);
+      closingNote.classList.toggle('is-on', p >= 0.92);
+
+      var stageEl = document.getElementById('crossing-stage');
+      stageEl.setAttribute('data-sc-verify-state', 'cross:' + Math.round(p * 100));
+    }
+
+    var collapseBefore = document.getElementById('collapse-before');
+    var stripText = document.getElementById('strip-text');
+    var FINAL_BEFORE = 4.5; // % of stage width the BEFORE strip settles at
+    var protoWrap = document.getElementById('proto-wrap');
+
+    function updateCollapse() {
+      var el = collapseAct;
+      if (!el) return;
+      var p = parseFloat(getComputedStyle(el).getPropertyValue('--sc-p')) || 0;
+      var collapseP = Math.min(1, p / 0.45);
+      // The BEFORE column narrows to FINAL_BEFORE (not 0) so the rotated
+      // strip text keeps breathing room, and the divider lands on that
+      // column's edge rather than the viewport edge so it frames the text.
+      var beforeWidth = 50 - (50 - FINAL_BEFORE) * collapseP;
+      var dividerPos = beforeWidth;
+      if (window.innerWidth > 860) {
+        divider.style.left = dividerPos + '%';
+      }
+      dividerPct.textContent = Math.round(p * 100) + '%';
+
+      collapseBefore.style.flexBasis = beforeWidth + '%';
+      // Strip text turns from horizontal to vertical (rotating left) as the
+      // column narrows; on mobile the column stacks full-width so it stays flat.
+      stripText.style.transform = window.innerWidth > 860
+        ? 'rotate(' + (-90 * collapseP).toFixed(2) + 'deg)'
+        : 'none';
+      var stage = document.getElementById('collapse-stage');
+      if (window.innerWidth > 860) {
+        stage.style.gridTemplateColumns = beforeWidth + '% ' + (100 - beforeWidth) + '%';
+      }
+
+      // The AFTER column is never empty: the sheet echo (present at p=0) fades
+      // as the resolved two-column layout (prototype + info) fades in over it.
+      var protoP = Math.min(1, Math.max(0, p / 0.5));
+      protoWrap.style.opacity = protoP;
+      var echo = document.getElementById('sheet-echo');
+      echo.style.opacity = Math.max(0, 1 - protoP * 1.4);
+      echo.style.transform = 'scale(' + (1 - 0.06 * protoP) + ')';
+
+      stage.setAttribute('data-sc-verify-state', 'pos:' + Math.round(dividerPos) + ';proto:' + Math.round(protoP * 100));
+    }
+
+    function updateGlobalDividerPct() {
+      var doc = document.documentElement;
+      var scrolled = doc.scrollTop / (doc.scrollHeight - window.innerHeight);
+      if (!collapseAct) return;
+      var collapseRect = collapseAct.getBoundingClientRect();
+      var inCollapse = collapseRect.top < window.innerHeight && collapseRect.bottom > 0;
+      if (!inCollapse) {
+        dividerPct.textContent = Math.round((scrolled || 0) * 100) + '%';
+        if (window.innerWidth > 860) divider.style.left = '50%';
+      }
+    }
+
+    if (reduced) {
+      landAllReduced();
+      protoWrap.style.opacity = 1;
+      document.getElementById('sheet-echo').style.opacity = 0;
+      collapseBefore.style.flexBasis = FINAL_BEFORE + '%';
+      if (window.innerWidth > 860) stripText.style.transform = 'rotate(-90deg)';
+      var stageR = document.getElementById('collapse-stage');
+      if (window.innerWidth > 860) stageR.style.gridTemplateColumns = FINAL_BEFORE + '% ' + (100 - FINAL_BEFORE) + '%';
+      if (window.innerWidth > 860) divider.style.left = FINAL_BEFORE + '%';
+    }
+
+    function tick() {
+      updateScramble();
+      updateCrossing();
+      updateCollapse();
+      updateGlobalDividerPct();
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+</script>
+</body>
+</html>

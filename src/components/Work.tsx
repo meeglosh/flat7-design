@@ -26,7 +26,7 @@ const projects: Project[] = [
     category: 'Mental Health AI · iOS',
     description:
       'High-stakes UX where gentleness is a feature. Mental health support for young people, designed at the intersection of clinical rigor, safeguarding requirements, and human warmth.',
-    url: 'https://solunaapp.com',
+    url: '/soluna/',
     accent: '#00C8FF',
   },
   {

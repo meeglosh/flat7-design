@@ -39,7 +39,7 @@ function usePalette(dark: boolean) {
 const PROJECTS = [
   { no: '01', name: 'Onix',        cat: 'Health AI · iOS',         url: '/onix/',                   color: 'teal',
     desc: 'Expert-trained AI health companions built on a privacy-first architecture. 16 renowned specialists encode their life\'s work, not public internet knowledge.' },
-  { no: '02', name: 'Soluna',      cat: 'Mental Health AI · iOS',  url: 'https://solunaapp.com',               color: 'teal',
+  { no: '02', name: 'Soluna',      cat: 'Mental Health AI · iOS',  url: '/soluna/',               color: 'teal',
     desc: 'High-stakes UX where gentleness is a feature. Mental health support for young people, designed at the intersection of clinical rigor and human warmth.' },
   { no: '03', name: 'Wingman',     cat: 'Productivity AI · Web',   url: 'https://wingman.design', color: 'yellow',
     desc: 'From prompt to polished presentation. AI-driven slide generation with real themes, real typography, audio visualization, and export.' },

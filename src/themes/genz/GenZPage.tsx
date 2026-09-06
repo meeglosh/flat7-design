@@ -57,7 +57,7 @@ const VIVID: Record<string, { bg: string; text: string }> = {
 const PROJECTS = [
   { no: '01', name: 'Onix',        cat: 'Health AI · iOS',         url: '/onix/',                   pastel: 'mint',   size: 'big',
     desc: 'Expert-trained AI health companions. 16 renowned specialists encode their life\'s work  -  not public internet knowledge.' },
-  { no: '02', name: 'Soluna',      cat: 'Mental Health AI · iOS',  url: 'https://solunaapp.com',               pastel: 'coral',  size: 'small',
+  { no: '02', name: 'Soluna',      cat: 'Mental Health AI · iOS',  url: '/soluna/',               pastel: 'coral',  size: 'small',
     desc: 'Mental health support for young people. Gentleness is a feature, not an afterthought.' },
   { no: '03', name: 'Wingman',     cat: 'Productivity AI · Web',   url: 'https://wingman.design',              pastel: 'yellow', size: 'small',
     desc: 'From prompt to polished presentation. AI-driven slides with real themes and real typography.' },

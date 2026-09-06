@@ -1,17 +1,21 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Dev-only: rewrite /onix and /onix/ to the static onix page, matching
-// how production/`vite preview` serve public/onix/index.html.
-function onixStaticPage() {
+// Dev-only: rewrite static case-study roots (e.g. /onix, /onix/) to their
+// static page, matching how production/`vite preview` serve
+// public/<name>/index.html.
+function staticCaseStudyPages(names: string[]) {
   return {
-    name: 'onix-static-page',
+    name: 'static-case-study-pages',
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         const url = req.url || '';
         const path = url.split('?')[0];
-        if (path === '/onix' || path === '/onix/') {
-          req.url = '/onix/index.html';
+        for (const name of names) {
+          if (path === `/${name}` || path === `/${name}/`) {
+            req.url = `/${name}/index.html`;
+            break;
+          }
         }
         next();
       });
@@ -20,6 +24,6 @@ function onixStaticPage() {
 }
 
 export default defineConfig({
-  plugins: [react(), onixStaticPage()],
+  plugins: [react(), staticCaseStudyPages(['onix', 'soluna'])],
   server: { port: 5174 },
 });
