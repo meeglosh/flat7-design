@@ -210,13 +210,17 @@
   /* ===================== act 6: pan rail, tools ===================== */
   .rail-section { background: var(--sc-surface); }
   .rail-stage { padding: 0; display: flex; align-items: center; }
-  .rail { display: flex; gap: var(--sc-6); align-items: center; padding: var(--sc-section) var(--sc-gutter); width: max-content; }
-  .rail-heading { flex: none; width: min(80vw, 26rem); display: flex; flex-direction: column; justify-content: center; }
+  /* Every rail item is sized as a share of the viewport (with rem floors and
+     ceilings), so the rail is always ~1.6x the viewport wide and the pan has
+     ~60vw of travel at any size. Fixed rem caps made the whole rail fit on
+     XL screens, leaving the act with nothing to pan. */
+  .rail { display: flex; gap: clamp(1.5rem, 3vw, 4rem); align-items: center; padding: var(--sc-section) var(--sc-gutter); width: max-content; }
+  .rail-heading { flex: none; width: clamp(20rem, 32vw, 60rem); display: flex; flex-direction: column; justify-content: center; }
   .rail-heading h2 { font-size: var(--sc-t-3xl); font-weight: 700; line-height: 1.06; margin: 0 0 var(--sc-3); text-wrap: balance; }
   .rail-heading .slide-rule { margin-bottom: var(--sc-3); }
   /* The track holds the connector line and the four cards. Cards centre on
      the connector rather than stretching to the heading column's height. */
-  .rail-track { position: relative; flex: none; display: flex; align-items: center; gap: var(--sc-6); }
+  .rail-track { position: relative; flex: none; display: flex; align-items: center; gap: clamp(1.5rem, 3vw, 4rem); }
   .rail-connector {
     position: absolute; left: -1.5rem; right: -1.5rem; top: 50%; height: 2px;
     background: linear-gradient(90deg, transparent, var(--sc-accent) 8%, var(--sc-accent) 92%, transparent);
@@ -224,7 +228,7 @@
   }
   .rail-card {
     position: relative; z-index: 1;
-    flex: none; width: clamp(17rem, 26vw, 21rem); background: var(--sc-surface);
+    flex: none; width: clamp(17rem, 22vw, 44rem); background: var(--sc-surface);
     border: 1px solid rgba(243,240,255,0.12); border-radius: 1rem; padding: var(--sc-6) var(--sc-5);
     display: flex; flex-direction: column; gap: var(--sc-3); justify-content: center;
     min-height: 13rem;
@@ -235,7 +239,7 @@
   .rail-card__index { font-family: var(--sc-font-mono); font-size: 0.7rem; color: var(--sc-accent); }
   .rail-card h3 { font-size: 1.15rem; margin: 0; font-weight: 700; }
   .rail-card p { margin: 0; color: var(--sc-ink-soft); font-size: 0.92rem; line-height: 1.5; }
-  .rail-note { flex: none; width: min(80vw, 20rem); display: flex; flex-direction: column; justify-content: center; color: var(--sc-ink-soft); }
+  .rail-note { flex: none; width: clamp(16rem, 24vw, 44rem); display: flex; flex-direction: column; justify-content: center; color: var(--sc-ink-soft); }
   @media (prefers-reduced-motion: reduce) {
     .rail-card { opacity: 1; transform: none; }
   }
