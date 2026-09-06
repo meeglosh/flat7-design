@@ -157,7 +157,7 @@ export function Hero() {
               autoplay on iOS. */}
           <video
             className="absolute inset-0 w-full h-full object-cover"
-            src="/hero-plants-720.mp4"
+            src="/hero-plants-1080.mp4"
             poster="/unsplash1.jpg"
             autoPlay
             muted
