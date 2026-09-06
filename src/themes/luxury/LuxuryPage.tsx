@@ -188,8 +188,22 @@ export function LuxuryPage() {
 
       {/* ── Hero ──────────────────────────────────────────────────────────────── */}
       <section style={{ position: 'relative', height: 'calc(100vh - 91px)', minHeight: '480px', maxHeight: '780px', overflow: 'hidden' }}>
-        {/* Background image */}
-        <div ref={parallaxRef} style={{ position: 'absolute', top: '-15%', bottom: '-15%', left: 0, right: 0, backgroundImage: "url('/unsplash5.jpg')", backgroundSize: 'cover', backgroundPosition: 'center 30%', willChange: 'transform' }} />
+        {/* Background clip. The poster is the clip's own first frame so the
+            hand-off is invisible; muted + playsInline lets it autoplay on iOS,
+            and where autoplay is refused the poster simply holds. */}
+        <div ref={parallaxRef} style={{ position: 'absolute', top: '-15%', bottom: '-15%', left: 0, right: 0, willChange: 'transform' }}>
+          <video
+            src="/hero-luxury.mp4"
+            poster="/hero-luxury-poster.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }}
+          />
+        </div>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(12,11,9,0.55) 0%, rgba(12,11,9,0.15) 60%, rgba(12,11,9,0.6) 100%)' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(12,11,9,0.38)' }} />
 
