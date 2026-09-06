@@ -24,6 +24,6 @@ function staticCaseStudyPages(names: string[]) {
 }
 
 export default defineConfig({
-  plugins: [react(), staticCaseStudyPages(['onix', 'soluna'])],
+  plugins: [react(), staticCaseStudyPages(['onix', 'soluna', 'decathlon'])],
   server: { port: 5174 },
 });

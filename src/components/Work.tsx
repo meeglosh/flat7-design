@@ -62,7 +62,7 @@ const projects: Project[] = [
     category: 'E-Commerce · Web & App',
     description:
       'Large-scale retail UX for one of the world\'s biggest sports brands. Designing accessible gear discovery across 15+ sport categories for millions of recreational athletes at every skill level.',
-    url: 'https://www.decathlon.ca/en',
+    url: '/decathlon/',
     accent: '#00C8FF',
   },
   {

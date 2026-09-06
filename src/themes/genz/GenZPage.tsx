@@ -65,7 +65,7 @@ const PROJECTS = [
     desc: 'Persistent workspaces for AI agents with memory, identity, and autonomy across sessions.' },
   { no: '06', name: 'SPASynth',    cat: 'Audio Software',           url: 'https://spasynth.com/',               pastel: 'sky',      size: 'small',
     desc: 'Turns 11,474 real-world sound recordings into playable synth engines  -  granular, wavetable, and convolution synthesis with a one-button patch randomizer.' },
-  { no: '07', name: 'Decathlon',   cat: 'E-Commerce · Web & App',  url: 'https://www.decathlon.ca/en',         pastel: 'sky',     size: 'small',
+  { no: '07', name: 'Decathlon',   cat: 'E-Commerce · Web & App',  url: '/decathlon/',                         pastel: 'sky',     size: 'small',
     desc: "Large-scale retail UX for one of the world's biggest sports brands. Accessible gear discovery across 15+ sport categories." },
   { no: '08', name: 'Hololabs',    cat: 'Spatial Computing · AR/VR', url: 'https://hololabs.org/',             pastel: 'coral',   size: 'small',
     desc: 'Immersive experience design for entertainment venues and theme parks. UX beyond the screen  -  spatial and embodied.' },

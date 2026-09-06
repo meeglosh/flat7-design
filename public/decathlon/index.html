@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Decathlon Community &middot; Staying active when the world went indoors</title>
+<meta name="description" content="Helping people stay active and connected during a global pandemic. A product design case study by Mike Jerugim.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230082C3'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  :root {
+    --sc-canvas:      #F6F8FA;
+    --sc-surface:     #FFFFFF;
+    --sc-ink:         #0E1B2B;
+    --sc-ink-soft:    #4F5F70;
+    --sc-accent:      #0082C3;
+    --sc-accent-ink:  #FFFFFF;
+    --sc-font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+    --sc-font-text:    "Barlow", system-ui, sans-serif;
+
+    --navy: #0B1420;
+    --navy-ink: #F2F6FA;
+    --navy-ink-soft: #A9B8C8;
+
+    /* Phone geometry. Height is the master; width follows the 380:842 screen
+       plus the bezel. Both the fixed phone and the act-5 video use these so
+       the clip lands exactly inside the frame's screen well. */
+    --ph-h: clamp(420px, 78vh, 760px);
+    --ph-bezel: 10px;
+    --ph-radius: 44px;
+    --ph-screen-h: calc(var(--ph-h) - 2 * var(--ph-bezel));
+    --ph-screen-w: calc(var(--ph-screen-h) * 380 / 842);
+    --ph-w: calc(var(--ph-screen-w) + 2 * var(--ph-bezel));
+    --ph-screen-radius: calc(var(--ph-radius) - var(--ph-bezel));
+  }
+  body { background: var(--sc-canvas); color: var(--sc-ink); }
+  ::selection { background: var(--sc-accent); color: var(--sc-accent-ink); }
+
+  .sc-display { text-transform: uppercase; font-weight: 700; letter-spacing: 0.005em; }
+  .sc-display em { font-style: italic; color: var(--sc-accent); }
+  .meta { font-family: var(--sc-font-text); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sc-ink-soft); }
+
+  /* ===================== the phone (fixed layer) ===================== */
+  #phone {
+    position: fixed; left: 50%; top: 50%; z-index: calc(var(--sc-z-stage) + 1);
+    width: var(--ph-w); height: var(--ph-h);
+    margin-left: calc(var(--ph-w) / -2); margin-top: calc(var(--ph-h) / -2);
+    transform: translate3d(0, 120vh, 0); will-change: transform, opacity;
+    pointer-events: none;
+  }
+  #phone.is-live { pointer-events: auto; }
+  .ph-bezel {
+    position: absolute; inset: 0; border-radius: var(--ph-radius);
+    background: transparent; border: var(--ph-bezel) solid #101820;
+    box-shadow: 0 30px 60px -20px rgba(11,20,32,0.45), 0 12px 24px -12px rgba(11,20,32,0.35), inset 0 0 0 1px rgba(255,255,255,0.06);
+    pointer-events: none;
+  }
+  .ph-notch {
+    position: absolute; top: var(--ph-bezel); left: 50%; translate: -50% 0;
+    width: 42%; height: calc(var(--ph-screen-w) * 0.075); background: #101820;
+    border-radius: 0 0 18px 18px; pointer-events: none; z-index: 3;
+  }
+  .ph-screen {
+    position: absolute; inset: var(--ph-bezel); border-radius: var(--ph-screen-radius);
+    overflow: hidden; background: #fff; transform: translateZ(0);
+  }
+  .ph-screen > img, .ph-screen > .ph-proto {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0; transition: opacity 0.28s var(--sc-ease-out);
+  }
+  .ph-screen > .is-on { opacity: 1; }
+  .ph-screen.is-clear { background: transparent; }
+  .ph-screen.is-clear > img { opacity: 0; }
+  /* The prototype layer sits over the last still of the flow. The iframe is
+     transparent until Figma has actually painted, so a slow or blocked embed
+     shows the still underneath rather than a black slab. */
+  .ph-proto { background: transparent; }
+  .ph-proto iframe { position: absolute; inset: 0; border: 0; width: 100%; height: 100%; background: transparent; opacity: 0; transition: opacity 0.4s var(--sc-ease-out); }
+  .ph-proto iframe.is-loaded { opacity: 1; background: #fff; }
+  .ph-screen > img[data-screen="end"].is-under { opacity: 1; }
+  .ph-proto__hint {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 0.6em 1em;
+    font-family: var(--sc-font-text); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #fff; background: linear-gradient(to top, rgba(11,20,32,0.7), rgba(11,20,32,0));
+    pointer-events: none; opacity: 0; transition: opacity 0.4s var(--sc-ease-out);
+  }
+  .ph-proto__hint.is-on { opacity: 1; }
+
+  /* ===================== act 1: the world went indoors ===================== */
+  .open { background: var(--navy); color: var(--navy-ink); --sc-ink: var(--navy-ink); --sc-ink-soft: var(--navy-ink-soft); }
+  .open [data-sc-stage] { background: var(--navy); overflow: hidden; }
+  .open__photo {
+    position: absolute; inset: -12% 0; width: 100%; height: 124%; object-fit: cover; object-position: 50% 40%;
+    filter: saturate(0.25) contrast(1.05); opacity: 0.55; max-width: none;
+  }
+  /* Photographic ground masked away from the copy column, not scrimmed over. */
+  .open__mask {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(11,20,32,0.96) 0%, rgba(11,20,32,0.9) 34%, rgba(11,20,32,0.35) 62%, rgba(11,20,32,0.1) 100%);
+  }
+  .open__floor { position: absolute; left: 0; right: 0; bottom: 0; height: 28%; background: linear-gradient(to bottom, rgba(11,20,32,0), var(--navy)); }
+  .open .sc-copy--lead { max-width: min(46rem, 60vw); }
+  .open h1 { font-size: var(--sc-t-4xl); line-height: 0.92; margin: 0 0 0.35em; text-wrap: balance; }
+  .open .meta { color: var(--navy-ink-soft); margin: 0 0 var(--sc-5); }
+  .open__lines { position: absolute; left: var(--sc-gutter); right: var(--sc-gutter); bottom: clamp(3rem, 12vh, 8rem); max-width: min(38rem, 52vw); }
+  .open__lines p { font-family: var(--sc-font-display); text-transform: uppercase; font-weight: 600; font-size: clamp(1.3rem, 2.6vw, 2.2rem); line-height: 1.05; margin: 0; color: var(--navy-ink); }
+  .open__lines p + p { margin-top: 0.3em; }
+  .open__lines p:last-child { color: var(--sc-accent); }
+  .open__lines p:last-child { color: #5EC3F0; }
+
+  /* ===================== act 2: the question ===================== */
+  .ask { padding-block: var(--sc-section); min-height: 100svh; display: flex; align-items: center; }
+  .ask .sc-wrap { max-width: var(--sc-maxw); }
+  .ask__copy { max-width: 34rem; }
+  .ask h2 { font-size: var(--sc-t-3xl); line-height: 0.94; margin: 0 0 0.4em; text-wrap: balance; }
+  .ask p { font-size: var(--sc-t-lg); line-height: 1.5; color: var(--sc-ink-soft); max-width: 34rem; margin: 0; }
+  .ask p + p { margin-top: 1em; }
+  .ask p strong { color: var(--sc-ink); font-weight: 600; }
+
+  /* Shared: copy column that stays clear of the phone parked trail-side. */
+  .beside { position: absolute; inset: 0 auto 0 var(--sc-gutter); width: min(36rem, 44vw); display: flex; flex-direction: column; justify-content: center; }
+  .beside .line { position: absolute; left: 0; right: 0; top: 50%; translate: 0 -50%; }
+  .beside .line h2 { font-size: var(--sc-t-2xl); line-height: 0.96; margin: 0 0 0.35em; text-wrap: balance; }
+  .beside .line p { font-size: var(--sc-t-lg); line-height: 1.5; color: var(--sc-ink-soft); margin: 0; text-wrap: pretty; }
+  .beside .line p + p { margin-top: 0.8em; }
+  .beside .line .sc-lede { font-size: clamp(1.4rem, 2.4vw, 2rem); line-height: 1.2; color: var(--sc-ink); font-weight: 500; margin: 0; }
+
+  /* ===================== act 4: book (reveal on the copy plate) ===================== */
+  .book__plate { background: var(--sc-surface); padding: var(--sc-7) var(--sc-7); box-shadow: var(--sc-e2); border-top: 3px solid var(--sc-accent); }
+  .book__plate h2 { font-size: var(--sc-t-2xl); line-height: 0.96; margin: 0 0 0.4em; }
+  .book__plate p { font-size: var(--sc-t-base); line-height: 1.6; color: var(--sc-ink-soft); margin: 0; }
+  .book__plate p + p { margin-top: 0.9em; }
+  .book__steps { display: flex; gap: var(--sc-4); margin-top: var(--sc-6); flex-wrap: wrap; }
+  .book__steps span { font-family: var(--sc-font-display); text-transform: uppercase; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.02em; color: var(--sc-accent); }
+  .book__steps span::after { content: "\2192"; margin-left: var(--sc-4); color: var(--sc-ink-soft); font-weight: 400; }
+  .book__steps span:last-child::after { content: none; }
+
+  /* ===================== act 5: the flow, scrubbed ===================== */
+  .flow [data-sc-stage] { background: var(--sc-canvas); }
+  /* The well only paints while the flow stage is pinned and the fixed phone
+     is centred over it; on the entry and exit slides the phone shows a still
+     instead, so there is never a second phone sliding past the first. */
+  .flow__well {
+    position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+    width: var(--ph-screen-w); height: var(--ph-screen-h); border-radius: var(--ph-screen-radius);
+    overflow: hidden; background: #fff; transform: translateZ(0);
+    opacity: 0; transition: opacity 0.12s linear;
+  }
+  .flow.is-pinned .flow__well { opacity: 1; }
+  .flow__well .sc-stage__poster, .flow__well video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .flow__line {
+    position: absolute; left: var(--sc-gutter); bottom: clamp(2rem, 8vh, 5rem);
+    font-family: var(--sc-font-display); text-transform: uppercase; font-weight: 700;
+    font-size: clamp(1.6rem, 4vw, 3.4rem); line-height: 0.95; color: var(--sc-ink); margin: 0;
+  }
+  .flow__line em { color: var(--sc-accent); font-style: italic; }
+  .flow__ring { position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 50%, rgba(0,130,195,0.10) 0%, rgba(0,130,195,0) 55%); }
+
+  /* ===================== act 6: both sides ===================== */
+  .sides { padding-block: var(--sc-section); background: var(--sc-surface); position: relative; z-index: calc(var(--sc-z-stage) + 2); }
+  .sides h2 { font-size: var(--sc-t-3xl); line-height: 0.94; margin: 0 0 var(--sc-6); text-wrap: balance; max-width: 16ch; }
+  .sides__grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: var(--sc-8) var(--sc-7); align-items: start; }
+  .sides__pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sc-6); }
+  .sides__pair figure { margin: 0; }
+  .sides__pair img { width: 100%; height: auto; border: 1px solid rgba(14,27,43,0.12); }
+  .sides__pair figcaption { font-family: var(--sc-font-text); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sc-ink-soft); margin-top: 0.6em; }
+  .sides__col h3 { font-family: var(--sc-font-display); text-transform: uppercase; font-size: 1.3rem; letter-spacing: 0.02em; color: var(--sc-accent); margin: 0 0 0.3em; }
+  .sides__col p { font-size: var(--sc-t-base); line-height: 1.6; color: var(--sc-ink-soft); margin: 0; }
+  .sides__col + .sides__col { margin-top: var(--sc-6); }
+  .sides__after { margin-top: var(--sc-8); padding-top: var(--sc-6); border-top: 1px solid rgba(14,27,43,0.12); max-width: 60ch; }
+  .sides__after p { font-size: var(--sc-t-lg); line-height: 1.5; color: var(--sc-ink); margin: 0; }
+  .sides__after p + p { margin-top: 0.8em; color: var(--sc-ink-soft); font-size: var(--sc-t-base); }
+
+  /* ===================== act 7: try it (close) ===================== */
+  .try [data-sc-stage] { background: var(--sc-canvas); }
+  .try__copy { position: absolute; inset: 0 var(--sc-gutter) 0 auto; width: min(30rem, 40vw); display: flex; flex-direction: column; justify-content: center; gap: var(--sc-5); }
+  .try__copy h2 { font-size: var(--sc-t-3xl); line-height: 0.92; margin: 0; }
+  .try__copy p { font-size: var(--sc-t-base); line-height: 1.6; color: var(--sc-ink-soft); margin: 0; max-width: 34ch; }
+  .try__links { display: flex; gap: var(--sc-6); flex-wrap: wrap; margin-top: var(--sc-2); }
+  .try__links a { color: var(--sc-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; text-decoration-color: var(--sc-accent); min-height: 44px; display: inline-flex; align-items: center; }
+  .try__links a:hover, .try__links a:focus-visible { color: var(--sc-accent); }
+  .try__colophon { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sc-ink-soft); margin: 0; }
+
+  /* ===================== mobile art direction ===================== */
+  @media (max-width: 860px) {
+    :root { --ph-h: clamp(300px, 46svh, 460px); --ph-radius: 30px; --ph-bezel: 7px; }
+    #phone { top: 8svh; margin-top: 0; }
+    .open .sc-copy--lead { max-width: none; }
+    .open h1 { font-size: var(--sc-t-2xl); }
+    .open__lines { max-width: none; bottom: 2rem; }
+    .open__lines p { font-size: 1.15rem; }
+    .open__mask { background: linear-gradient(to bottom, rgba(11,20,32,0.55) 0%, rgba(11,20,32,0.92) 70%); }
+    .ask { min-height: auto; padding-top: calc(8svh + var(--ph-h) + var(--sc-6)); }
+    .beside { inset: auto 0 0 0; width: auto; padding: var(--sc-5) var(--sc-gutter) var(--sc-6); background: linear-gradient(to top, var(--sc-canvas) 78%, rgba(246,248,250,0)); }
+    .beside .line { position: absolute; left: var(--sc-gutter); right: var(--sc-gutter); top: auto; bottom: var(--sc-6); translate: none; }
+    .beside .line h2 { font-size: 1.6rem; }
+    .beside .line p, .beside .line .sc-lede { font-size: 1rem; line-height: 1.45; }
+    .book__plate { padding: var(--sc-5); }
+    .book__plate h2 { font-size: 1.6rem; }
+    .flow__well { top: 8svh; translate: -50% 0; }
+    .flow__line { font-size: 1.6rem; bottom: 1.5rem; }
+    .sides__grid, .sides__pair { grid-template-columns: 1fr; }
+    .sides h2 { font-size: var(--sc-t-2xl); }
+    .try__copy { inset: auto var(--sc-gutter) var(--sc-6) var(--sc-gutter); width: auto; gap: var(--sc-4); }
+    .try__copy h2 { font-size: var(--sc-t-2xl); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #phone { transition: opacity 0.3s linear; }
+  }
+</style>
+</head>
+<body>
+
+<span data-sc-progress></span>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<!-- The one continuous phone. It is content, not chrome: every act after the
+     first hands its screen a different thing (stills, the scrubbed clip, the
+     live prototype) and the frame never changes. Driven by the page script. -->
+<div id="phone" data-sc-verify-state="screen:none;x:0;s:1;o:0" aria-hidden="true">
+  <div class="ph-screen" id="ph-screen">
+    <img src="assets/02.jpg" width="375" height="812" alt="" data-screen="home">
+    <img src="assets/04.jpg" width="375" height="812" alt="" data-screen="s1" loading="lazy">
+    <img src="assets/05.jpg" width="375" height="812" alt="" data-screen="s2" loading="lazy">
+    <img src="assets/06.jpg" width="375" height="812" alt="" data-screen="s3" loading="lazy">
+    <img src="assets/07.jpg" width="375" height="812" alt="" data-screen="s4" loading="lazy">
+    <img src="assets/08.jpg" width="375" height="812" alt="" data-screen="s5" loading="lazy">
+    <img src="assets/booking-flow-end.jpg" width="380" height="842" alt="" data-screen="end" loading="lazy">
+    <div class="ph-proto" data-screen="proto" id="ph-proto">
+      <!-- Sized to the phone's screen well. scale-down-width fits the artboard
+           to the iframe width exactly (see the Soluna build), no upscale. -->
+      <iframe id="proto-frame" title="Decathlon Community booking prototype" loading="lazy"
+        data-src="https://embed.figma.com/proto/Xt6DUfKK1qfLIv0WMtouK9/Decathlon_Community_Mobile_v2?node-id=6265-3045&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=849%3A16383&amp;hide-ui=1&amp;embed-host=share"
+        allow="fullscreen" allowfullscreen></iframe>
+      <p class="ph-proto__hint" id="proto-hint">Live prototype. Tap through it.</p>
+    </div>
+  </div>
+  <div class="ph-notch" aria-hidden="true"></div>
+  <div class="ph-bezel" aria-hidden="true"></div>
+</div>
+
+<main id="top">
+
+  <!-- 1 · The world went indoors: pin + parallax planes -->
+  <section class="open" id="act-open" data-sc-act="pin" data-sc-span="2.0" data-sc-drift="#0B1420">
+    <div data-sc-stage>
+      <img class="open__photo" src="assets/dancers.jpg" width="1024" height="527" alt="" data-sc-parallax="-1.2">
+      <div class="open__mask" aria-hidden="true"></div>
+      <div class="open__floor" aria-hidden="true"></div>
+      <div class="sc-copy sc-copy--lead" data-sc-cue="0 0.62 0">
+        <p class="meta">Mike Jerugim, case study &middot; Decathlon Community</p>
+        <h1 class="sc-display">The world<br>went <em>indoors.</em></h1>
+      </div>
+      <div class="open__lines">
+        <p data-sc-cue="0.18 0.9">Gyms closed.</p>
+        <p data-sc-cue="0.30 0.9">Group classes vanished.</p>
+        <p data-sc-cue="0.44 1">The rituals that kept people moving simply stopped.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · The question: flow. The phone arrives here. -->
+  <section class="ask sc-section" id="act-ask" data-sc-act="flow" data-sc-drift="#F6F8FA">
+    <div class="sc-wrap">
+      <div class="ask__copy sc-stack" data-sc-in data-sc-stagger="70">
+        <p class="meta">Senior Product Designer &middot; 2020</p>
+        <h2 class="sc-display">Decathlon asked one question.</h2>
+        <p>How do we help people stay active, healthy and connected when the world has gone indoors?</p>
+        <p><strong>Decathlon Community</strong> was the answer to that moment: a place to find local activities, book a session with a real coach, and keep moving.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Discover: pin, screens swap -->
+  <section id="act-discover" data-sc-act="pin" data-sc-span="2.4" data-sc-drift="#F6F8FA">
+    <div data-sc-stage>
+      <div class="beside">
+        <div class="line" data-sc-cue="0 0.3 0">
+          <h2 class="sc-display">We listened to <em>both sides.</em></h2>
+          <p>Coaches, trainers, gym owners and independent fitness professionals on one side. People stuck at home on the other.</p>
+        </div>
+        <div class="line" data-sc-cue="0.26 0.58">
+          <p class="sc-lede">Coaches had lost their income, their communities, and their way of motivating people in person.</p>
+        </div>
+        <div class="line" data-sc-cue="0.5 0.8 0.15 0.15">
+          <p class="sc-lede">Everyday users were searching for ways to stay active, and sane, while stuck indoors.</p>
+        </div>
+        <div class="line" data-sc-cue="0.72 1 0.2 0">
+          <p>Those conversations shaped our personas and the first concepts. We tested interactive wireframes with at least five users in each segment, so we were designing for real needs instead of assumptions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Book: reveal on the copy plate, screens keep swapping -->
+  <section id="act-book" data-sc-act="pin" data-sc-span="1.8" data-sc-drift="#F6F8FA">
+    <div data-sc-stage>
+      <div class="beside">
+        <div class="book__plate" data-sc-reveal="left" data-sc-reveal-at="0.04 0.34">
+          <h2 class="sc-display">Test. Refine. <em>Test again.</em></h2>
+          <p>Once the wireframes proved out, we moved into higher-fidelity prototypes and repeated the same cycle. The whole flow had to feel simple and effortless.</p>
+          <p>I worked closely with a highly engaged engineering team, many of them athletes themselves, so the product shipped with the same clarity and energy as the prototypes.</p>
+          <div class="book__steps" aria-label="The flow"><span>Discover</span><span>Book</span><span>Check out</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · The flow, live: the only scrub. The phone frame sits over this well. -->
+  <section class="flow" id="act-flow" data-sc-act="scrub" data-sc-span="2.4" data-sc-dwell="0.3" data-sc-drift="#F6F8FA">
+    <div data-sc-stage>
+      <div class="flow__ring" aria-hidden="true"></div>
+      <div class="flow__well">
+        <img class="sc-stage__poster" src="assets/booking-flow-poster.jpg" width="380" height="842" alt="">
+        <video data-sc-scrub data-sc-src="assets/booking-flow.mp4" muted playsinline></video>
+      </div>
+      <p class="flow__line" data-sc-cue="0.08 0.94">Discover.<br>Book.<br><em>Check out.</em></p>
+    </div>
+  </section>
+
+  <!-- 6 · Both sides: flow + reveal plates. Quieter, before the peak. -->
+  <section class="sides" id="act-sides" data-sc-act="flow" data-sc-drift="#FFFFFF">
+    <div class="sc-wrap">
+      <h2 class="sc-display" data-sc-in>Value on <em>both sides.</em></h2>
+      <div class="sides__grid">
+        <div class="sides__pair">
+          <figure data-sc-reveal="up" data-sc-reveal-at="0.05 0.45">
+            <img src="assets/09.png" width="1024" height="603" alt="Decathlon Community platform, coach-facing view." loading="lazy">
+            <figcaption>For the professionals</figcaption>
+          </figure>
+          <figure data-sc-reveal="up" data-sc-reveal-at="0.15 0.55">
+            <img src="assets/10.png" width="1024" height="614" alt="Decathlon Community platform, user-facing view." loading="lazy">
+            <figcaption>For everyone else</figcaption>
+          </figure>
+        </div>
+        <div class="sc-stack" data-sc-in data-sc-stagger="80">
+          <div class="sides__col">
+            <h3>Coaches earning again</h3>
+            <p>Decathlon Community gave fitness professionals a way to keep working while gyms were closed and in-person sessions were cancelled. At a time when much of the industry was struggling, it created a new channel for income, visibility and community building.</p>
+          </div>
+          <div class="sides__col">
+            <h3>People moving again</h3>
+            <p>For users, it became a dependable, intuitive hub for discovering local sports and staying connected through movement.</p>
+          </div>
+        </div>
+      </div>
+      <div class="sides__after sc-stack" data-sc-in data-sc-stagger="80">
+        <p>After launch, retention and revenue trended steadily upward, validating the focus on simplicity and clarity.</p>
+        <p>The platform filled a gap during one of the most disruptive periods in modern memory. It reconnected people to their bodies, their routines and their communities, even when physical distance was non-negotiable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · Try it: pin, holds. The peak. LAST element on the page. -->
+  <section class="try" id="act-try" data-sc-act="pin" data-sc-span="2.8" data-sc-drift="#F6F8FA">
+    <div data-sc-stage>
+      <div class="try__copy">
+        <h2 class="sc-display" data-sc-cue="0.1">Now <em>you</em> try it.</h2>
+        <p data-sc-cue="0.18">The booking flow as a live prototype. Find an activity, pick a session, and check out.</p>
+        <p data-sc-cue="0.26">Decathlon Community proved that thoughtful design, grounded in real user needs, can create meaningful impact even in the most challenging conditions.</p>
+        <div class="try__links" data-sc-cue="0.32">
+          <a href="https://flat7.design/">More work at flat7.design</a>
+          <a href="mailto:mike@flat7.design">Write to Mike</a>
+        </div>
+        <p class="try__colophon" data-sc-cue="0.32">Decathlon Community is a Decathlon product. Case study by Mike Jerugim.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="scrollcraft.js"></script>
+<script>
+  ScrollCraft.mount(document.body);
+
+  // ---- The one continuous phone -------------------------------------------
+  // Reads each act's --sc-p and places the fixed phone: below the fold in the
+  // opening, rising through act 2, parked trail-side for discover and book,
+  // centred and full for the scrubbed flow (its screen goes clear so the
+  // engine's clip shows through the well), receding for both sides, and
+  // centred again holding the live prototype at the close.
+  (function () {
+    var phone = document.getElementById('phone');
+    var screen = document.getElementById('ph-screen');
+    var layers = Array.prototype.slice.call(screen.children);
+    var proto = document.getElementById('ph-proto');
+    var protoFrame = document.getElementById('proto-frame');
+    var protoHint = document.getElementById('proto-hint');
+    var acts = {
+      open: document.getElementById('act-open'),
+      ask: document.getElementById('act-ask'),
+      discover: document.getElementById('act-discover'),
+      book: document.getElementById('act-book'),
+      flow: document.getElementById('act-flow'),
+      sides: document.getElementById('act-sides'),
+      tryIt: document.getElementById('act-try')
+    };
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var mobile = function () { return window.innerWidth <= 860; };
+    var protoLoaded = false;
+
+    function p(el) {
+      var v = parseFloat(getComputedStyle(el).getPropertyValue('--sc-p'));
+      return isNaN(v) ? 0 : Math.min(1, Math.max(0, v));
+    }
+    // Progress of a flow (non-pinned) act through the viewport: 0 when its
+    // top is at the bottom of the viewport, 1 when its bottom leaves the top.
+    function flowP(el) {
+      var r = el.getBoundingClientRect();
+      var vh = window.innerHeight;
+      return Math.min(1, Math.max(0, (vh - r.top) / (r.height + vh)));
+    }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function ease(t) { return 1 - Math.pow(1 - t, 3); }
+    function smooth(t) { return t * t * (3 - 2 * t); }
+
+    var endStill = screen.querySelector('[data-screen="end"]');
+    var protoReady = false;
+    function setScreen(key) {
+      layers.forEach(function (l) { l.classList.toggle('is-on', l.dataset.screen === key); });
+      // The prototype layer is transparent until Figma paints, so keep the
+      // flow's last frame lit underneath it until then; once the embed has
+      // faded in, drop the still so it cannot ghost through the artboard.
+      endStill.classList.toggle('is-under', key === 'proto' && !protoReady);
+    }
+    function loadProto() {
+      if (protoLoaded) return;
+      protoLoaded = true;
+      protoFrame.addEventListener('load', function () {
+        protoFrame.classList.add('is-loaded');
+        setTimeout(function () { protoReady = true; endStill.classList.remove('is-under'); }, 700);
+      }, { once: true });
+      protoFrame.src = protoFrame.dataset.src;
+    }
+
+    // Trail-side x offset (px) for acts 3 and 4: right of centre on desktop,
+    // centred on mobile where the copy sits below the phone instead.
+    function trailX() { return mobile() ? 0 : Math.min(window.innerWidth * 0.22, 380); }
+    function leadX() { return mobile() ? 0 : -Math.min(window.innerWidth * 0.2, 340); }
+
+    function update() {
+      var vh = window.innerHeight;
+      var pOpen = p(acts.open), pAsk = flowP(acts.ask), pDisc = p(acts.discover), pBook = p(acts.book);
+      var pFlow = p(acts.flow), pSides = flowP(acts.sides), pTry = p(acts.tryIt);
+      var rTry = acts.tryIt.getBoundingClientRect();
+      var rFlow = acts.flow.getBoundingClientRect();
+      var rSides = acts.sides.getBoundingClientRect();
+
+      var x = 0, y = 0, s = 1, o = 1, key = 'home', clear = false, live = false;
+
+      // Which phase are we in? Decide from the document geometry so the phone
+      // never depends on an act that is not on screen.
+      var rAsk = acts.ask.getBoundingClientRect();
+      var rDisc = acts.discover.getBoundingClientRect();
+
+      if (rAsk.top >= vh) {
+        // Act 1. Phone rises a little at the end as the foreground plane.
+        // It rises on the trail side so it never crosses the act-2 heading.
+        var t = Math.max(0, (pOpen - 0.7) / 0.3);
+        y = lerp(vh * 1.2, vh * 0.78, ease(t));
+        x = trailX();
+        o = t > 0 ? 1 : 0;
+        key = 'home';
+      } else if (rDisc.top > vh * 0.001 && rAsk.bottom > 0) {
+        // Act 2. Arrive: slide up from 0.78vh to rest at the trail slot.
+        var a = smooth(Math.min(1, Math.max(0, (vh - rAsk.top) / (rAsk.height * 0.9))));
+        y = lerp(vh * 0.78, 0, a);
+        x = trailX();
+        key = 'home';
+      } else if (rFlow.top > vh * 0.5) {
+        // Acts 3 and 4. Parked trail-side; screens swap.
+        x = trailX();
+        if (pBook > 0 || acts.book.getBoundingClientRect().top < vh * 0.5) {
+          key = pBook < 0.5 ? 's4' : 's5';
+        } else {
+          key = pDisc < 0.3 ? 's1' : pDisc < 0.62 ? 's2' : 's3';
+        }
+      } else if (rSides.top > vh * 0.6) {
+        // Act 5. Glide to centre as the flow stage arrives; screen clears so
+        // the engine's scrubbed clip shows through the well.
+        var g = smooth(Math.min(1, Math.max(0, (vh * 0.5 - rFlow.top) / (vh * 0.5))));
+        x = lerp(trailX(), 0, g);
+        if (mobile()) x = 0;
+        // Only clear the screen (and paint the stage's well) while the flow
+        // stage is actually pinned; on its entry slide the phone still shows
+        // the last booking still, on its exit slide the clip's end frame.
+        var pinned = rFlow.top <= 1 && rFlow.bottom >= vh - 1;
+        var exiting = rFlow.bottom < vh - 1;
+        clear = pinned && g > 0.98;
+        key = clear ? 'none' : (exiting ? 'end' : 's5');
+      } else if (rTry.top > vh * 0.55) {
+        // Act 6. Recede behind the both-sides section: shrink and fade, then
+        // hold off screen so the plates read clean.
+        var r = smooth(Math.min(1, Math.max(0, (vh * 0.6 - rSides.top) / (vh * 0.6))));
+        s = lerp(1, 0.82, r);
+        o = 1 - r;
+        y = lerp(0, -vh * 0.25, r);
+        key = 'end';
+      } else {
+        // Act 7. Return, centred lead-side on desktop, holding the prototype.
+        var c = smooth(Math.min(1, Math.max(0, (vh * 0.55 - rTry.top) / (vh * 0.55))));
+        loadProto();
+        s = lerp(0.82, 1, c);
+        o = c;
+        y = lerp(vh * 0.3, 0, c);
+        x = lerp(0, leadX(), c);
+        key = 'proto';
+        live = c > 0.9;
+      }
+
+      if (reduced) {
+        // Position changes are dropped; only opacity and screen carry meaning.
+        x = key === 'proto' ? leadX() : (key === 'none' || key === 'end') ? 0 : trailX();
+        y = (key === 'home' && rAsk.top >= vh) ? vh * 1.2 : 0;
+        s = 1;
+      }
+
+      phone.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + s.toFixed(3) + ')';
+      phone.style.opacity = o.toFixed(3);
+      screen.classList.toggle('is-clear', clear);
+      acts.flow.classList.toggle('is-pinned', clear);
+      phone.classList.toggle('is-live', live);
+      protoHint.classList.toggle('is-on', live && pTry < 0.5);
+      if (key !== 'none') setScreen(key);
+      phone.setAttribute('data-sc-verify-state',
+        'screen:' + key + ';x:' + Math.round(x) + ';y:' + Math.round(y) + ';s:' + s.toFixed(2) + ';o:' + o.toFixed(2) + (clear ? ';clear' : ''));
+      if (live && pTry >= 0.5) phone.setAttribute('data-sc-verify-hold', 'true');
+      else phone.removeAttribute('data-sc-verify-hold');
+    }
+
+    var raf = null;
+    function schedule() {
+      if (raf) return;
+      raf = requestAnimationFrame(function () { raf = null; update(); });
+    }
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    document.fonts && document.fonts.ready.then(schedule);
+    update();
+    // The engine writes --sc-p on its own rAF; run one more frame after it so
+    // the phone never lags a frame behind the acts.
+    (function tick() { update(); requestAnimationFrame(tick); })();
+  })();
+</script>
+</body>
+</html>
