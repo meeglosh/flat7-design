@@ -16,7 +16,7 @@ Build reviewed September 7, 2026.
 
 The first harness reported a missing favicon and classified the bespoke reveal as static because it does not use engine cues. Added the existing sprite as favicon and exposed actual rendered sprite transforms and opacity to the harness. The quiet lead-in is an intentional hold. No engine modifications.
 
-The first visual pass revealed the landscape too early in the opening workspace screenshot. Changed that image to the labeled scenery-hidden view so the “make it crazier” exhibit delivers the principal visual change. Mobile review caught the escaped beaver colliding with the status caption; confined it to the picture boundary and moved the cloud away from interface text.
+The first visual pass revealed the landscape too early in the opening workspace screenshot. Changed that image to the labeled scenery-hidden view so the “make it zanier” exhibit delivers the principal visual change. Mobile review caught the escaped beaver colliding with the status caption; confined it to the picture boundary and moved the cloud away from interface text.
 
 The prototype test initially tried to use the sidebar while the newly created wolt's full-screen conversation was open. The correct flow uses its visible Back/Lodge button first, then clicks the project title (not the surrounding card). This was a test navigation issue, not a change to the supplied design.
 
@@ -53,7 +53,7 @@ Skeletal revision: replaced the polished grayscale before with a generated text-
 
 ## Concept introduction revision
 
-Removed the opening dashboard screenshot and expanded the harness, scaffold, and wolt cards with decorative illustrations. The dashboard now first appears in the crazier reveal. Reviewed screenshots at 1440px and 390px; verified three concept cards, no workspace image in the challenge section, and no horizontal overflow. Production build and whitespace checks pass.
+Removed the opening dashboard screenshot and expanded the harness, scaffold, and wolt cards with decorative illustrations. The dashboard now first appears in the zanier reveal. Reviewed screenshots at 1440px and 390px; verified three concept cards, no workspace image in the challenge section, and no horizontal overflow. Production build and whitespace checks pass.
 
 Current animal revision: production build and diff checks pass. Verified concept cards and animal group at 1440px and 390px, with no horizontal overflow; confirmed footer head is absent. Visually reviewed the rendered updated sprites at both sizes.
 
@@ -63,4 +63,4 @@ Setup selector and Retina revision: setup buttons now use bounded cards and a fi
 
 Onboarding framing: recaptured the form bounds with 24px padding at 2x resolution, removing the surrounding empty viewport. The setup image retains its natural portrait proportions so the full form stays visible at a larger size. Visually checked the complete capture; production build passes. Also repaired stale sprite extraction lines in the capture script.
 
-Landscape reveal: light green transitions to a blue sky with layered pixel hills, drifting clouds, and flowing river highlights when the crazier state activates. Uses the same scroll/button state as the dashboard reveal. Decorative layers are hidden from assistive technology; reduced motion disables animation and transitions. Desktop/mobile toggles, overflow checks, reduced-motion assertions, and build pass.
+Landscape reveal: light green transitions to a blue sky with layered pixel hills, drifting clouds, and flowing river highlights when the zanier state activates. Uses the same scroll/button state as the dashboard reveal. Decorative layers are hidden from assistive technology; reduced motion disables animation and transitions. Desktop/mobile toggles, overflow checks, reduced-motion assertions, and build pass.

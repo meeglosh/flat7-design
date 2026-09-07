@@ -9,7 +9,7 @@ Branch: `codex/woltspace-case-study`, based on `origin/main` at `a46611a`.
 - All six Selected Work tiles now link to `/woltspace/`.
 - Vite trailing-slash handling includes Woltspace.
 
-Direction confirmed by Mike: distinct chapters, a “make it crazier” moment, technical clarity first and personality as the surprise. Credits identify Mike as solo product designer and Jeremy Pinto as creator and principal architect. No invented dates, metrics, or research outcomes.
+Direction confirmed by Mike: distinct chapters, a “make it zanier” moment, technical clarity first and personality as the surprise. Credits identify Mike as solo product designer and Jeremy Pinto as creator and principal architect. No invented dates, metrics, or research outcomes.
 
 ## Files and constraints
 

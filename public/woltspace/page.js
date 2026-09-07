@@ -1,16 +1,16 @@
 (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const peak = document.querySelector('#crazier');
-  const toggle = document.querySelector('#crazy-toggle');
-  const status = document.querySelector('#crazy-status');
+  const peak = document.querySelector('#zanier');
+  const toggle = document.querySelector('#zany-toggle');
+  const status = document.querySelector('#zany-status');
   let manual = false;
   let wild = false;
   function setWild(next) {
     if (wild === next) return;
     wild = next;
-    peak.classList.toggle('is-crazy', wild);
+    peak.classList.toggle('is-zany', wild);
     toggle.setAttribute('aria-pressed', String(wild));
-    toggle.innerHTML = wild ? 'A little less crazy <span aria-hidden="true">✳</span>' : 'Make it crazier <span aria-hidden="true">✳</span>';
+    toggle.innerHTML = wild ? 'A little less zany <span aria-hidden="true">✳</span>' : 'Make it zanier <span aria-hidden="true">✳</span>';
     document.querySelector('.wild-shot').setAttribute('aria-hidden', String(!wild));
     document.querySelector('.quiet-shot').setAttribute('aria-hidden', String(wild));
     status.textContent = wild ? 'Beavers, raccoons, fish, rivers, clouds. Still the same clear place to work.' : 'Just the structure. No personality yet.';

@@ -13,7 +13,7 @@ for(const config of [{name:'desktop',width:1440,height:900},{name:'mobile',width
  await page.goto(url);await page.evaluate(()=>document.fonts.ready);await page.screenshot({path:`${out}/${config.name}-opening.png`});
  assert.match(await page.title(),/Woltspace/);
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${config.name} overflow`);
- for(const selector of ['#challenge','#setup','#crazier','#workspace','#explore','.closing']){
+ for(const selector of ['#challenge','#setup','#zanier','#workspace','#explore','.closing']){
   await page.locator(selector).scrollIntoViewIfNeeded();await page.waitForTimeout(350);
   assert.equal(await page.locator(selector).isVisible(),true);
  }
@@ -22,15 +22,15 @@ for(const config of [{name:'desktop',width:1440,height:900},{name:'mobile',width
   assert.match(await page.locator('#step-copy').textContent(),/local copy/);
   await page.locator('[data-step="2"]').click();assert.match(await page.locator('#step-title').textContent(),/destination/);
   for(const key of ['workflow','terminal','workspace']){await page.locator(`[data-view="${key}"]`).click();await page.locator('#view-image').evaluate(img=>img.decode());assert.match(await page.locator('#view-image').getAttribute('src'),new RegExp(key));}
-  await page.locator('#crazy-toggle').scrollIntoViewIfNeeded();
-  const before=await page.locator('#crazy-toggle').getAttribute('aria-pressed');
-  await page.locator('#crazy-toggle').click();assert.notEqual(await page.locator('#crazy-toggle').getAttribute('aria-pressed'),before);
-  if(await page.locator('#crazy-toggle').getAttribute('aria-pressed')==='false') await page.locator('#crazy-toggle').click();
+  await page.locator('#zany-toggle').scrollIntoViewIfNeeded();
+  const before=await page.locator('#zany-toggle').getAttribute('aria-pressed');
+  await page.locator('#zany-toggle').click();assert.notEqual(await page.locator('#zany-toggle').getAttribute('aria-pressed'),before);
+  if(await page.locator('#zany-toggle').getAttribute('aria-pressed')==='false') await page.locator('#zany-toggle').click();
   await page.waitForTimeout(350);
-  await page.screenshot({path:`${out}/${config.name}-crazy.png`});
-  await page.locator('#workspace').scrollIntoViewIfNeeded();assert.equal(await page.locator('#crazy-toggle').getAttribute('aria-pressed'),'true','Manual choice survives scrolling');
-  await page.locator('#crazy-toggle').focus();await page.keyboard.press('Space');assert.equal(await page.locator('#crazy-toggle').getAttribute('aria-pressed'),'false');
-  const ring=await page.locator('#crazy-toggle').evaluate(b=>getComputedStyle(b).outlineStyle);assert.notEqual(ring,'none');
+  await page.screenshot({path:`${out}/${config.name}-zany.png`});
+  await page.locator('#workspace').scrollIntoViewIfNeeded();assert.equal(await page.locator('#zany-toggle').getAttribute('aria-pressed'),'true','Manual choice survives scrolling');
+  await page.locator('#zany-toggle').focus();await page.keyboard.press('Space');assert.equal(await page.locator('#zany-toggle').getAttribute('aria-pressed'),'false');
+  const ring=await page.locator('#zany-toggle').evaluate(b=>getComputedStyle(b).outlineStyle);assert.notEqual(ring,'none');
  }
  await page.locator('.closing').scrollIntoViewIfNeeded();await page.screenshot({path:`${out}/${config.name}-ending.png`});
  const broken=await page.locator('img').evaluateAll(imgs=>imgs.filter(i=>i.complete&&!i.naturalWidth).map(i=>i.src));assert.deepEqual(broken,[]);
