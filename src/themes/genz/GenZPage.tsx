@@ -61,7 +61,7 @@ const PROJECTS = [
     desc: 'Mental health support for young people. Gentleness is a feature, not an afterthought.' },
   { no: '03', name: 'Wingman',     cat: 'Productivity AI · Web',   url: '/wingman/',                            pastel: 'yellow', size: 'small',
     desc: 'From prompt to polished presentation. AI-driven slides with real themes and real typography.' },
-  { no: '04', name: 'Woltspace',   cat: 'AI Infrastructure',       url: 'https://woltspace.com',               pastel: 'lavender', size: 'medium',
+  { no: '04', name: 'Woltspace',   cat: 'AI Infrastructure',       url: '/woltspace/',               pastel: 'lavender', size: 'medium',
     desc: 'Persistent workspaces for AI agents with memory, identity, and autonomy across sessions.' },
   { no: '06', name: 'SPASynth',    cat: 'Audio Software',           url: '/spasynth/',               pastel: 'sky',      size: 'small',
     desc: 'Turns 11,474 real-world sound recordings into playable synth engines  -  granular, wavetable, and convolution synthesis with a one-button patch randomizer.' },
