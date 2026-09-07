@@ -74,7 +74,16 @@ const projects: Project[] = [
     url: '/renorun/',
     accent: '#E8562E',
   },
-  // Hidden until their case studies are rebuilt (2026-09-07): Hololabs, Flashtract, Bandsintown, Estateably.
+  {
+    id: '08',
+    name: 'Estateably',
+    category: 'LegalTech · Web',
+    description:
+      'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists navigating high-stakes legal and tax requirements.',
+    url: '/estateably/',
+    accent: '#00C8FF',
+  },
+  // Hidden until their case studies are rebuilt (2026-09-07): Hololabs, Flashtract, Bandsintown.
   // {
   //   id: '10',
   //   name: 'Hololabs',
@@ -101,15 +110,6 @@ const projects: Project[] = [
   //     'Billing and payment automation for the construction industry. Designing for highly regulated, multi-party financial workflows where the stakes are compliance, not convenience.',
   //   url: 'https://flashtract.com/',
   //   accent: '#FF3D5A',
-  // },
-  // {
-  //   id: '13',
-  //   name: 'Estateably',
-  //   category: 'LegalTech · Web',
-  //   description:
-  //     'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists navigating high-stakes legal and tax requirements.',
-  //   url: 'https://www.estateably.com/',
-  //   accent: '#00C8FF',
   // },
 ];
 
