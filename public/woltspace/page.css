@@ -1222,8 +1222,8 @@ html:not(.sc-ready) .zany-stage {
 .workspace-scroll { height:300svh; position:relative; margin-top:48px; }
 .workspace-sticky { position:sticky; top:16px; padding-block:8px; }
 .workspace-sticky .view-prompt { margin-top:0; }
-.workspace-sticky .workspace-view { max-width:900px; margin-inline:auto; }
-.workspace-sticky #view-image { max-height:55svh; width:100%; object-fit:contain; }
+.workspace-sticky .workspace-view { max-width:none; width:100%; margin-inline:auto; }
+.workspace-sticky #view-image { max-height:none; width:100%; height:auto; object-fit:contain; }
 .workspace-sticky .design-note { padding-top:18px; gap:32px; }
 .workspace-sticky .design-note h3 { font-size:18px; }
 .workspace-sticky .design-note p { font-size:14px; }
