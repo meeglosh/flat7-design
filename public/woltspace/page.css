@@ -1183,7 +1183,8 @@ html:not(.sc-ready) .crazy-stage {
 .onboarding img { object-fit:contain; }
 
 /* Let the tightly framed form retain its natural proportions. */
-.onboarding img[src$="onboarding.png"] { aspect-ratio:auto; object-fit:contain; }
+.onboarding img[src$="onboarding.png"] { width:74%; margin:40px auto; display:block; aspect-ratio:auto; object-fit:contain; }
+@media(max-width:600px) { .onboarding img[src$="onboarding.png"] { width:86%; margin:24px auto; } }
 
 /* The playful reveal expands beyond the dashboard into its own landscape. */
 .crazy-stage { isolation:isolate; background:#dce5d5; transition:background-color 900ms ease; }
