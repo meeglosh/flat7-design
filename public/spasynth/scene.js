@@ -18,7 +18,8 @@ if (stage) {
   let variant = mobile.matches ? 'sequence-mobile' : 'sequence';
   let phase = 'poster', failedTarget = -1, posterRequest = 0;
   const blobs = new Map(), decoded = new Map(), fetching = new Map(), decoding = new Set(), failed = new Set();
-  const frameURL = frame => `./assets/${variant}/frame-${String(frame).padStart(3,'0')}.webp`;
+  const modelVersion = encodeURIComponent(stage.dataset.modelVersion || '1');
+  const frameURL = frame => `./assets/${variant}/frame-${String(frame).padStart(3,'0')}.webp?v=${modelVersion}`;
   const limit = n => Math.max(0, Math.min(FRAME_COUNT - 1, n));
 
   function state() {

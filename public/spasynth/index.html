@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="styles.css">
   <script src="scrollcraft.js" defer></script>
   <script src="page.js" defer></script>
-  <script type="module" src="scene.js"></script>
+  <script type="module" src="scene.js?v=20260907-recesses"></script>
 </head>
 <body>
 <a class="skip-link" href="#story">Skip to the story</a>
@@ -33,7 +33,7 @@
     <div class="hero-object">
       <div class="hero-light" aria-hidden="true" data-sc-parallax="0.55"></div>
       <div class="hero-rule" aria-hidden="true"></div>
-      <img class="hero-synth" src="assets/studio-assembled.webp" width="1600" height="1050" alt="A three-dimensional SPASynth instrument with wood side panels, black controls and turquoise displays." fetchpriority="high" data-sc-parallax="-0.45">
+      <img class="hero-synth" src="assets/studio-assembled.webp?v=20260907-recesses" width="1600" height="1050" alt="A three-dimensional SPASynth instrument with wood side panels, black controls and turquoise displays." fetchpriority="high" data-sc-parallax="-0.45">
       <p class="object-caption">Software, imagined as hardware.</p>
     </div>
     <div class="hero-foot"><span>A case study in making the unfamiliar playable.</span><span class="release-status"><i aria-hidden="true"></i> Approaching release</span></div>
@@ -62,8 +62,8 @@
   <section class="teardown" id="teardown" data-sc-act="flow" aria-label="An illustrated teardown of SPASynth">
     <div class="bench-visual">
       <div class="bench-caption"><span>SPASynth / study model</span><span id="module-label">Sample engine</span></div>
-      <div id="synth-stage" data-poster-assembled="./assets/studio-assembled.webp" data-poster-exploded="./assets/studio-exploded.webp" role="img" aria-label="Three-dimensional SPASynth model. Selected module panels, displays and controls separate into an exploded view, then reassemble as the story progresses.">
-        <img class="scene-fallback" src="assets/studio-assembled.webp" width="1600" height="1050" alt="" aria-hidden="true">
+      <div id="synth-stage" data-model-version="20260907-recesses" data-poster-assembled="./assets/studio-assembled.webp?v=20260907-recesses" data-poster-exploded="./assets/studio-exploded.webp?v=20260907-recesses" role="img" aria-label="Three-dimensional SPASynth model. Selected module panels, displays and controls separate into an exploded view, then reassemble as the story progresses.">
+        <img class="scene-fallback" src="assets/studio-assembled.webp?v=20260907-recesses" width="1600" height="1050" alt="" aria-hidden="true">
       </div>
       <div class="bench-floor" aria-hidden="true"></div>
       <p class="model-disclosure">A physical metaphor for a software instrument.<br> Internal layers are illustrative, not a hardware schematic.</p>
@@ -114,7 +114,7 @@
   <section class="build section-gutter" id="build" data-sc-act="flow" aria-labelledby="build-title">
     <div class="build-heading"><p class="eyebrow">From product design to native audio</p><h2 id="build-title">Beyond the interface.</h2></div>
     <div class="build-copy"><p class="lead">The part I'm proudest of: I didn't stop at designing a synth. I built one.</p><p>SPASynth is my first software instrument, and I'm bringing it to market for Silverplatter Audio. The work crosses product thinking, interface design and the realities of a native plugin.</p></div>
-    <figure class="interface-figure"><img src="assets/interface.png" width="2760" height="1800" alt="The actual SPASynth software interface, with sample and wavetable oscillators, filters, modulation and effects." loading="lazy"><figcaption>The actual software interface. The physical instrument above is a visualization.</figcaption></figure>
+    <figure class="interface-figure"><img src="assets/interface.png?v=20260907-recesses" width="2760" height="1800" alt="The actual SPASynth software interface, with sample and wavetable oscillators, filters, modulation and effects." loading="lazy"><figcaption>The actual software interface. The physical instrument above is a visualization.</figcaption></figure>
     <dl class="build-facts"><div><dt>My role</dt><dd>Product designer<br> Solo developer</dd></div><div><dt>Native foundation</dt><dd>C++20 · JUCE<br> CMake</dd></div><div><dt>Build targets</dt><dd>AU · VST3<br> Standalone</dd></div><div><dt>AI build partners</dt><dd>Claude Code<br> Codex</dd></div></dl>
   </section>
 
