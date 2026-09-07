@@ -1,4 +1,4 @@
-# flat7.design — Session Handoff
+# flat7.design: Session Handoff
 
 Last updated: 2026-09-06 (repo at `7055619`, live at https://flat7.design). Read this first when picking the project back up.
 
