@@ -139,7 +139,13 @@
      (the van occupies roughly the middle 60% of the frame's height), in dark
      ink for contrast. */
   #cut-2 { background: #628BA7; color: #0B0B0C; align-items: flex-start; padding-top: calc(var(--bar-h, 3.4rem) + clamp(1.5rem, 4vh, 3rem)); }
-  #cut-2 .cut__bg--contain { object-fit: contain; object-position: 50% 62%; }
+  #cut-2 .cut__bg--contain {
+    object-fit: contain; object-position: 50% 62%;
+    /* The render's blue is faintly vignetted, so its edges would show as a
+       seam against the flat fill; fade them out so it dissolves into the ground. */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 88%, transparent 100%);
+  }
   #cut-2 .lede { color: #0B0B0C; max-width: 30ch; }
   .cut--photo .cut__inner { max-width: 38rem; }
 
@@ -212,8 +218,8 @@
   /* ===================== mobile ===================== */
   @media (max-width: 860px) {
     /* Cut 2 on mobile: a real height, copy at the top, the van parked at the bottom. */
-    #cut-2 { min-height: 70svh; padding-top: calc(var(--bar-h, 3.4rem) + 1.25rem); }
-    #cut-2 .cut__bg--contain { object-position: 50% 100%; }
+    #cut-2 { min-height: 56svh; padding-top: calc(var(--bar-h, 3.4rem) + 1.25rem); }
+    #cut-2 .cut__bg--contain { object-position: 50% 92%; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 100%); }
     :root { --bar-h: 3rem; --tracker-h: 4.4rem; }
     .cut { min-height: auto; padding-block: clamp(3rem, 12vh, 4.5rem); padding-top: calc(var(--bar-h) + 2rem); padding-bottom: calc(var(--tracker-h) + 2rem); }
     #bar .bar__credit { display: none; }
