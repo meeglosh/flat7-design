@@ -1159,3 +1159,17 @@ html:not(.sc-ready) .crazy-stage {
   .cast-beaver { width:115px; bottom:25px; }
   .cast-raccoon { width:100px; bottom:25px; }
 }
+
+/* Make the screenshot selector read as an invitation to interact. */
+.view-prompt { display:flex; align-items:baseline; gap:16px; margin:48px 0 14px; font-size:16px; font-weight:600; }
+.view-prompt span { font-size:13px; font-weight:400; color:var(--sc-ink-soft); }
+.view-buttons { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:0 0 24px; border:0; }
+.view-buttons button { min-height:58px; padding:16px 20px; border:1px solid #b8ad9b; border-radius:6px; background:#f8f5ee; color:var(--sc-ink); font-size:15px; text-align:center; cursor:pointer; transition:background 150ms,color 150ms,border-color 150ms; }
+.view-buttons button:hover { background:#e5ddcd; border-color:var(--sc-ink-soft); }
+.view-buttons button[aria-pressed=true] { background:var(--sc-accent); border-color:var(--sc-accent); color:#fff; }
+.view-buttons button:focus-visible { outline:3px solid var(--sc-ink); outline-offset:4px; }
+@media(max-width:600px) {
+  .view-prompt { margin-top:28px; flex-wrap:wrap; gap:6px 16px; }
+  .view-buttons { gap:8px; }
+  .view-buttons button { padding:12px 8px; min-height:64px; font-size:12px; line-height:1.4; }
+}
