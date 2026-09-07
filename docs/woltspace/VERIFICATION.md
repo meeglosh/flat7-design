@@ -42,3 +42,5 @@ Phone visual review also caught an overly narrow split after creating a wolt. Th
 ## Active header simplification
 
 Verified that the extra toolbar hides after Start exploring, its controls move below the frame, and reset restores both the preview header and keyboard focus. Desktop and phone onboarding, Chat/Project switching, and reset continue to pass.
+
+Back from the larger prototype now targets `#prototype-demo`. The page realigns that anchor after fonts and scroll-craft layout settle, preventing late height changes from moving the destination offscreen. Verified actual back-link navigation at 1440px and 390px: prototype begins approximately 48px below the viewport top in both.

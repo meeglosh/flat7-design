@@ -119,5 +119,15 @@
     startPrototype.focus({ preventScroll: true });
   });
   if (window.ScrollCraft) ScrollCraft.mount(document.body);
+  // Scroll-craft and webfonts change the document height after native hash navigation.
+  // Restore the return destination once that initial layout has settled.
+  function restorePrototypeAnchor() {
+    if (location.hash !== '#prototype-demo') return;
+    document.fonts.ready.then(() => requestAnimationFrame(() => {
+      prototypeDemo.scrollIntoView({ behavior: 'instant', block: 'start' });
+    }));
+  }
+  if (document.readyState === 'complete') restorePrototypeAnchor();
+  else addEventListener('load', restorePrototypeAnchor, { once: true });
   update();
 })();
