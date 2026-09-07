@@ -45,7 +45,11 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 clamp(1rem, 3vw, 2rem);
   }
-  #bar .bar__mark { font-family: var(--sc-font-display); font-weight: 900; text-transform: uppercase; font-size: clamp(1.1rem, 2.6vw, 1.5rem); letter-spacing: -0.02em; color: var(--rr-orange-lg); }
+  /* The real horizontal lockup (white variant) replaces the text wordmark.
+     Height is the only dimension set; width follows the 1664:369 aspect. */
+  #bar .bar__mark { display: inline-flex; align-items: center; flex: none; }
+  #bar .bar__mark img { display: block; height: clamp(1.35rem, 2.4vw, 1.75rem); width: auto; }
+  #bar .bar__mark:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
   #bar .bar__right { display: flex; align-items: center; gap: clamp(0.8rem, 2vw, 1.6rem); }
   #bar .bar__credit { font-family: var(--sc-font-display); font-weight: 600; text-transform: uppercase; font-size: clamp(0.72rem, 1.6vw, 0.9rem); letter-spacing: 0.02em; color: var(--rr-orange-lg); }
   #bar .bar__link { font-family: var(--sc-font-display); font-weight: 900; text-transform: uppercase; font-size: clamp(1rem, 2.2vw, 1.3rem); letter-spacing: -0.01em; color: var(--rr-orange-lg); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
@@ -238,7 +242,7 @@
 <div class="sc-grain" aria-hidden="true"></div>
 
 <header id="bar">
-  <span class="bar__mark">RENORUN</span>
+  <a class="bar__mark" href="#top" aria-label="RenoRun, back to the top"><img src="assets/logo-white.png" width="1664" height="369" alt="RenoRun"></a>
   <div class="bar__right">
     <span class="bar__credit">Mike Jerugim, Head of Design</span>
     <a class="bar__link" href="https://flat7.design/#work">All work</a>
