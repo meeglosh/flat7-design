@@ -182,6 +182,10 @@
   .close__links a { font-family: var(--sc-font-display); font-weight: 900; text-transform: uppercase; font-size: clamp(1.1rem, 2.4vw, 1.5rem); color: var(--rr-orange-lg); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; border-bottom: 2px solid var(--rr-orange-lg); }
   .close__links a:hover, .close__links a:focus-visible { opacity: 0.7; }
   .close__colophon { font-family: "DM Mono", monospace; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rr-orange-lg); opacity: 0.75; margin-top: var(--sc-7); }
+  /* Low-key contact link at colophon weight, as on the other case studies:
+     same size and colour as the colophon, underlined, never a button. */
+  .close__colophon-link { color: inherit; text-decoration: underline; text-underline-offset: 3px; margin-left: 0.6em; padding: 0.4em 0; }
+  .close__colophon-link:hover, .close__colophon-link:focus-visible { opacity: 1; color: #fff; }
 
   /* ===================== mobile ===================== */
   @media (max-width: 860px) {
@@ -411,7 +415,7 @@
           <a href="https://flat7.design/#work">More work at flat7.design</a>
           <a href="https://flat7.design/wingman/">Next case study: Wingman</a>
         </div>
-        <p class="close__colophon mono">RenoRun case study by Mike Jerugim. Head of Design.</p>
+        <p class="close__colophon mono">RenoRun case study by Mike Jerugim. Head of Design. <a class="close__colophon-link" href="mailto:mike@flat7.design">Write to Mike</a></p>
       </div>
     </div>
   </section>
