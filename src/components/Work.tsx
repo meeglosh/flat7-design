@@ -53,7 +53,7 @@ const projects: Project[] = [
     category: 'Audio Software · VST/AU',
     description:
       'A software synthesizer that turns 11,474 professional sound-effects recordings into playable instruments. Granular, wavetable, and convolution synthesis built from real-world Foley and ambient audio, with a one-button patch randomizer for instant sound design.',
-    url: 'https://spasynth.com/',
+    url: '/spasynth/',
     accent: '#A8FF3E',
   },
   {

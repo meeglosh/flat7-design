@@ -43,7 +43,7 @@ const PROJECTS = [
     desc: 'From prompt to polished presentation. AI-driven slide generation with real themes, real typography, audio visualization, and export.' },
   { no: '04', name: 'Woltspace',   cat: 'AI Infrastructure · Web',   url: 'https://woltspace.com',
     desc: 'Persistent workspaces for AI agents with memory, identity, and autonomy that survive across sessions. Designing for non-human collaborators.' },
-  { no: '05', name: 'SPASynth',    cat: 'Audio Software · VST/AU',   url: 'https://spasynth.com/',
+  { no: '05', name: 'SPASynth',    cat: 'Audio Software · VST/AU',   url: '/spasynth/',
     desc: 'A software synthesizer that turns 11,474 professional sound-effects recordings into playable instruments. Granular, wavetable, and convolution synthesis built from real-world Foley and ambient audio.' },
   { no: '06', name: 'Decathlon',   cat: 'E-Commerce · Web & App',    url: '/decathlon/',
     desc: 'Large-scale retail UX for one of the world\'s biggest sports brands. Accessible gear discovery across 15+ sport categories for millions of recreational athletes.' },
