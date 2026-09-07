@@ -56,3 +56,5 @@ User statement is authority for role and rationale. Supplied HTML is a design re
 User clarified that the original clean, modern dashboard did not resemble the final workspace and no screenshot survives. Requested a grayscale, conventional, modern, attractive before state: restrained enough to make the transition delightful, but polished enough to represent strong dashboard design skills. Use built-in image generation for that asset; label it as an AI-generated reconstruction, never an original historical screen. Keep the original source UI and opening hierarchy screenshot unchanged.
 
 Latest direction: make the reconstructed before state very skeletal, replacing all text with gray placeholder boxes. Keep orderly spacing but remove visual personality to amplify the colorful final design. This is an illustrative wireframe, not a reconstruction of exact historical fidelity.
+
+Opening revision: remove the dashboard screenshot under the hero. Use three coordinated illustrations for the harness (a tool), scaffold (supporting layers), and wolt (the collaborator). The final dashboard first appears in the crazier reveal.

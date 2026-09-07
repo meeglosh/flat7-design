@@ -15,7 +15,7 @@ Direction confirmed by Mike: distinct chapters, a “make it crazier” moment, 
 
 `public/woltspace/index.html`, `page.css`, and `page.js` are the final authored source. `scrollcraft.css` and `scrollcraft.js` are unchanged copies of the shared skill engine. Original screenshots and pixel sprites are under `assets/`. `prototype/index.html` is the supplied prototype, not the live production product.
 
-The opening hierarchy screenshot remains the supplied project view with its `#bg-scene` decoration hidden. The reveal now uses a separate AI-generated skeletal grayscale wireframe (`workspace-wireframe-simple.png`), requested by Mike because the original modern direction looked different and no screenshot survives. Its caption explicitly labels it as an illustrative wireframe. The earlier polished reconstruction is retained as an unused alternate. Never describe it as the actual earlier design.
+The opening dashboard screenshot has been removed. An illustrated three-part explanation of harness, scaffold, and wolt now introduces the concept, saving the dashboard for the reveal. The reveal now uses a separate AI-generated skeletal grayscale wireframe (`workspace-wireframe-simple.png`), requested by Mike because the original modern direction looked different and no screenshot survives. Its caption explicitly labels it as an illustrative wireframe. The earlier polished reconstruction is retained as an unused alternate. Never describe it as the actual earlier design.
 
 The setup chapter explains the original design approach; current install documentation remains linked to woltspace.com. Do not replace it with runnable installation commands without checking the current docs.
 
