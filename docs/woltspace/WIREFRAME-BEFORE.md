@@ -7,3 +7,7 @@ This is labeled as an illustrative wireframe, not an original historical design.
 ## Edit prompt
 
 undefined
+
+## Simplified revision
+
+Removed the entire recent-activity block below the three cards, leaving whitespace. Current reveal asset: `public/woltspace/assets/workspace-wireframe-simple.png`. Built-in image edit prompt: remove the entire activity table, its enclosing border, header, rows and placeholders; preserve the sidebar, three cards, top controls, small bottom utility placeholders, framing and pale-gray style.
