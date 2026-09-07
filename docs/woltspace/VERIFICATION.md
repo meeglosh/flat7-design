@@ -48,3 +48,5 @@ Back from the larger prototype now targets `#prototype-demo`. The page realigns 
 ## Reconstructed grayscale before state
 
 Replaced only the reveal’s scenery-hidden before image with the user-requested generated grayscale modern dashboard. The opening hierarchy screenshot remains the original design with scenery hidden. Reviewed the generated asset and the composed transition at 1440px and 390px; before/after switching, image decoding, and absence of horizontal overflow pass. Production build passes. The reconstruction is explicitly labeled and the generation prompt is recorded in GENERATED-BEFORE.md.
+
+Skeletal revision: replaced the polished grayscale before with a generated text-free wireframe using pale gray placeholder bars, squares, and circles. Verified the resulting asset, desktop/phone transition, image loading, and no horizontal overflow. Production build passes. Caption now says illustrative wireframe.
