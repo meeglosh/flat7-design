@@ -13,7 +13,7 @@
     toggle.innerHTML = wild ? 'A little less crazy <span aria-hidden="true">✳</span>' : 'Make it crazier <span aria-hidden="true">✳</span>';
     document.querySelector('.wild-shot').setAttribute('aria-hidden', String(!wild));
     document.querySelector('.quiet-shot').setAttribute('aria-hidden', String(wild));
-    status.textContent = wild ? 'Beavers, raccoons, fish, rivers, clouds. Still the same clear place to work.' : 'The quiet version. A clear place for projects and their keepers.';
+    status.textContent = wild ? 'Beavers, raccoons, fish, rivers, clouds. Still the same clear place to work.' : 'Clean, modern, and deliberately understated.';
   }
   toggle.addEventListener('click', () => { manual = true; setWild(!wild); });
   let queued = false;

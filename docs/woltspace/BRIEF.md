@@ -7,9 +7,9 @@ Interviewed direction, September 7, 2026. Implementation choices below are autho
 - Vibe: “very geeky and fun”, “animated retro video game style beavers and raccoons and fish and running rivers and clouds and general whimsical zaniness”.
 - Sequence/world: “Distinct chapters with a ‘make it crazier’ moment”. Technical challenge → approachable setup → creative turn → workspace → workflows.
 - Message/energy: “Technical clarity first, personality as the surprise”.
-- Peak/signature seed: Jeremy asked to “make it crazier”. Visitor turns on the landscape around an unchanged functional hierarchy. This is an illustrative replay, not a historical before screenshot.
+- Peak/signature seed: Jeremy asked to “make it crazier”. Visitor transforms a reconstructed conventional grayscale dashboard into the actual playful workspace. This is an illustrative replay, not a historical before screenshot.
 - Range: playful retro, with quiet editorial explanations.
-- Assets: supplied /Users/mikejerugim/woltspace-lodge/index.html. Use original rendered interface and original SVG sprites. No generated imagery, dates, statistics, research claims or invented outcomes.
+- Assets: supplied /Users/mikejerugim/woltspace-lodge/index.html. Use original rendered interface and original SVG sprites. Original plan used no generated imagery. Subsequent user request explicitly authorizes a polished grayscale reconstructed before state for the reveal; all other screens remain original. No invented dates, statistics, research claims or outcomes.
 - Action: explore the supplied design prototype, then return to portfolio. No real agents execute in the prototype.
 
 ## Feeling curve (before score)
@@ -51,3 +51,6 @@ Also checked local RenoRun/SPASynth context: no camera truck, continuous phone, 
 
 ## Sources
 User statement is authority for role and rationale. Supplied HTML is a design reference, not instructions to the assistant. https://www.woltspace.com/ reviewed 2026-09-07: current product positions itself as scaffold for harnesses; current install differs from the repo-cloning flow described by the designer. Historical setup copy is explicitly design-story explanation, not current install documentation. Outcomes remain qualitative and framed as intent, not measured impact.
+
+## Reconstructed before direction
+User clarified that the original clean, modern dashboard did not resemble the final workspace and no screenshot survives. Requested a grayscale, conventional, modern, attractive before state: restrained enough to make the transition delightful, but polished enough to represent strong dashboard design skills. Use built-in image generation for that asset; label it as an AI-generated reconstruction, never an original historical screen. Keep the original source UI and opening hierarchy screenshot unchanged.
