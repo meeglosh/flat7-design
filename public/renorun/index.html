@@ -145,7 +145,10 @@
   /* ===================== clips (phone screen) ===================== */
   /* A consistent 68vh phone screen, read as the product: one half of a
      two-column composition, never a floating thumbnail. */
-  .clip-frame { height: 68vh; width: calc(68vh * 428 / 948); aspect-ratio: 428 / 948; border-radius: 1.5rem; overflow: hidden; box-shadow: var(--sc-e2); flex: none; background: #000; }
+  /* Corners follow the same rule as the Onix device frames: a bare screen's
+     corner is about 12% of its width (an iPhone screen without a bezel), so
+     the radius scales with the clip instead of staying a fixed 1.5rem. */
+  .clip-frame { --cf-w: calc(68vh * 428 / 948); height: 68vh; width: var(--cf-w); aspect-ratio: 428 / 948; border-radius: calc(var(--cf-w) * 0.12); overflow: hidden; box-shadow: var(--sc-e2); flex: none; background: #000; }
   .clip-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
   .clip-row { display: flex; align-items: center; justify-content: center; gap: clamp(2.4rem, 6vw, 5rem); width: 100%; }
   .clip-row .cut__inner { max-width: 30rem; flex: 1 1 30rem; }
@@ -197,7 +200,7 @@
     .cut--trail .cut__wrap, .cut--trail .cut__inner { text-align: left; margin-left: 0; }
     .clip-row, .clip-row--reverse { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: var(--sc-5); }
     .clip-row .cut__inner { flex: none; max-width: none; }
-    .clip-frame { height: 60vh; width: calc(60vh * 428 / 948); max-width: 80vw; }
+    .clip-frame { --cf-w: min(calc(60vh * 428 / 948), 80vw); height: 60vh; width: var(--cf-w); }
     #cut-11 { align-items: flex-end; }
     #cut-11 .cut__peak-line { font-size: 2.2rem; }
     #cut-11 .cut__scrim--peak { width: 100%; height: 88%; }
