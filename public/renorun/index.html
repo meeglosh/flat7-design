@@ -165,12 +165,16 @@
   /* A column of density under the peak line, sized to the text block, sibling
      of the copy so the verification pass can measure it. */
   #cut-11 .cut__scrim--peak {
-    position: absolute; left: 0; bottom: 0; top: auto; right: auto;
-    /* Wide enough to clear the gutter plus the peak line's own max-width
-       (40rem), with margin so no glyph ever sits past the covered edge. */
-    width: min(58rem, 74vw); height: 66%;
-    background: linear-gradient(0deg, rgba(11,11,12,0.94) 0%, rgba(11,11,12,0.78) 55%, rgba(11,11,12,0) 100%);
+    position: absolute; left: 0; right: 0; bottom: 0; top: auto;
+    /* A full-width band the text cannot outrun on any viewport: dense on
+       the left where the line sits, fading out toward the van on the right,
+       and fading upward so the top half of the photo stays clean. */
+    width: 100%; height: 72%;
+    background:
+      linear-gradient(0deg, rgba(11,11,12,0.35) 0%, rgba(11,11,12,0.35) 60%, rgba(11,11,12,0) 100%),
+      linear-gradient(90deg, rgba(11,11,12,0.94) 0%, rgba(11,11,12,0.88) 42%, rgba(11,11,12,0.55) 66%, rgba(11,11,12,0.12) 100%);
   }
+  #cut-11 .cut__inner { max-width: min(40rem, 56vw); }
 
   /* ===================== cut 13: series B count ===================== */
   #cut-13 .cut__bg { object-position: 50% 35%; }
