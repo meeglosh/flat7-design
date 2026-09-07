@@ -67,6 +67,15 @@ const projects: Project[] = [
   },
   {
     id: '08',
+    name: 'RenoRun',
+    category: 'Construction Tech · Web & App',
+    description:
+      "The DoorDashification of construction materials. Get-it-today delivery and split-shipment tracking for job sites that cannot wait, designed and led as Head of Design through a $142M Series B.",
+    url: '/renorun/',
+    accent: '#E8562E',
+  },
+  {
+    id: '10',
     name: 'Hololabs',
     category: 'Spatial Computing · AR/VR',
     description:
@@ -75,7 +84,7 @@ const projects: Project[] = [
     accent: '#FF3D5A',
   },
   {
-    id: '09',
+    id: '11',
     name: 'Bandsintown',
     category: 'Music Tech · Web',
     description:
@@ -84,7 +93,7 @@ const projects: Project[] = [
     accent: '#A8FF3E',
   },
   {
-    id: '10',
+    id: '12',
     name: 'Flashtract',
     category: 'Construction Tech · Web',
     description:
@@ -93,7 +102,7 @@ const projects: Project[] = [
     accent: '#FF3D5A',
   },
   {
-    id: '11',
+    id: '13',
     name: 'Estateably',
     category: 'LegalTech · Web',
     description:

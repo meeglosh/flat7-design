@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RenoRun &middot; The DoorDashification of construction materials</title>
+<meta name="description" content="The DoorDashification of Construction Materials. A product design case study by Mike Jerugim.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23E8562E'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;900&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  :root {
+    --sc-canvas:      #0B0B0C;
+    --sc-surface:     #161617;
+    --sc-ink:         #F5F3EF;
+    --sc-ink-soft:    #A9A5A0;
+    --sc-accent:      #E8562E;
+    --sc-accent-ink:  #15110F;
+    --sc-font-display: "Archivo", system-ui, sans-serif;
+    --sc-font-text:    "Archivo", system-ui, sans-serif;
+
+    --rr-white-bg:   #F7F5F1;
+    --rr-white-ink:  #0B0B0C;
+    --rr-white-soft: #5B5752;
+    --rr-orange-bg:  #E8562E;
+    --rr-orange-lg:  #0B0B0C;
+    --rr-orange-sm:  #FFF7F2;
+    --rr-accent-white: #D24A22;
+
+    --bar-h: 3.4rem;
+    --tracker-h: 3.6rem;
+  }
+  body { background: var(--sc-canvas); color: var(--sc-ink); }
+  ::selection { background: var(--sc-accent); color: var(--sc-accent-ink); }
+
+  .sc-display { text-transform: uppercase; font-weight: 900; letter-spacing: -0.01em; }
+  .mono { font-family: "DM Mono", monospace; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ===================== the loud bar ===================== */
+  #bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    height: var(--bar-h); background: var(--rr-orange-bg); color: var(--rr-orange-lg);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 clamp(1rem, 3vw, 2rem);
+  }
+  #bar .bar__mark { font-family: var(--sc-font-display); font-weight: 900; text-transform: uppercase; font-size: clamp(1.1rem, 2.6vw, 1.5rem); letter-spacing: -0.02em; color: var(--rr-orange-lg); }
+  #bar .bar__meta { font-family: "DM Mono", monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rr-orange-lg); opacity: 0.86; display: none; }
+  #bar .bar__link { font-family: var(--sc-font-display); font-weight: 900; text-transform: uppercase; font-size: clamp(1rem, 2.2vw, 1.3rem); letter-spacing: -0.01em; color: var(--rr-orange-lg); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  #bar .bar__link:hover, #bar .bar__link:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
+  #bar .bar__center { display: flex; align-items: center; gap: 0.6rem; }
+
+  /* ===================== the fixed order tracker (signature move) ===================== */
+  #tracker {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 500;
+    height: var(--tracker-h); background: rgba(11,11,12,0.94); backdrop-filter: blur(6px);
+    border-top: 1px solid rgba(245,243,239,0.14);
+    display: flex; align-items: center; gap: clamp(0.8rem, 2vw, 2rem);
+    padding: 0 clamp(1rem, 3vw, 2rem);
+    transition: background-color 0.5s var(--sc-ease-out);
+    color: var(--sc-ink);
+  }
+  #tracker.is-flash { background: var(--rr-accent-white); }
+  #tracker .tr__order { font-family: "DM Mono", monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--sc-ink-soft); white-space: nowrap; }
+  #tracker.is-flash .tr__order { color: var(--rr-orange-lg); }
+  #tracker .tr__stages { flex: 1; display: flex; align-items: center; gap: clamp(0.5rem, 1.4vw, 1.1rem); min-width: 0; }
+  #tracker .tr__stage { display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
+  #tracker .tr__dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(245,243,239,0.22); flex: none; transition: background-color 0.4s var(--sc-ease-out); position: relative; }
+  #tracker .tr__stage.is-done .tr__dot { background: var(--sc-accent); }
+  #tracker.is-flash .tr__stage.is-done .tr__dot { background: var(--rr-orange-lg); }
+  #tracker .tr__label { font-family: "DM Mono", monospace; font-size: 0.66rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--sc-ink-soft); white-space: nowrap; transition: color 0.4s var(--sc-ease-out); }
+  #tracker .tr__stage.is-done .tr__label { color: var(--sc-ink); }
+  #tracker.is-flash .tr__stage.is-done .tr__label { color: var(--rr-orange-lg); }
+  #tracker .tr__line { width: clamp(14px, 3vw, 38px); height: 1px; background: rgba(245,243,239,0.22); flex: none; position: relative; overflow: hidden; }
+  #tracker .tr__line::after { content: ""; position: absolute; inset: 0; background: var(--sc-accent); transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--sc-ease-out); }
+  #tracker .tr__line.is-done::after { transform: scaleX(1); }
+  #tracker.is-flash .tr__line::after { background: var(--rr-orange-lg); }
+  #tracker .tr__eta { font-family: "DM Mono", monospace; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--sc-ink-soft); white-space: nowrap; flex: none; }
+  #tracker.is-flash .tr__eta { color: var(--rr-orange-lg); }
+
+  @media (prefers-reduced-motion: reduce) {
+    #tracker, #tracker .tr__dot, #tracker .tr__label, #tracker .tr__line::after, #tracker .tr__eta, #tracker .tr__order { transition: opacity 0.3s linear; }
+  }
+
+  /* ===================== shared cut scaffolding ===================== */
+  /* Varied cut lengths carry the pulse of a rhythmic cutlist: the hero and
+     close get a full screen, type-only beats are quick (0.8-0.85vh), photo
+     and clip beats need a touch more room, and the peak (11) is the longest. */
+  .cut { position: relative; padding-top: calc(var(--bar-h) + clamp(1rem, 3vh, 2rem)); padding-bottom: calc(var(--tracker-h) + clamp(1rem, 3vh, 2rem)); min-height: calc(0.85 * 100vh); display: flex; align-items: center; overflow: hidden; }
+  /* Desktop-only: mobile stacks and sizes to content instead (see the mobile
+     block), and an ID selector here would otherwise outrank that override. */
+  @media (min-width: 861px) {
+    #cut-1  { min-height: calc(1.0  * 100vh); }
+    #cut-2  { min-height: calc(1.15 * 100vh); }
+    #cut-4  { min-height: calc(0.8  * 100vh); }
+    #cut-6  { min-height: calc(1.05 * 100vh); }
+    #cut-7  { min-height: calc(1.15 * 100vh); }
+    #cut-8  { min-height: calc(1.05 * 100vh); }
+    #cut-9  { min-height: calc(1.05 * 100vh); }
+    #cut-10 { min-height: calc(0.8  * 100vh); }
+    #cut-11 { min-height: calc(1.35 * 100vh); }
+    #cut-13 { min-height: calc(1.15 * 100vh); }
+  }
+  .cut__wrap { position: relative; z-index: 2; width: 100%; max-width: var(--sc-maxw); margin: 0 auto; padding-inline: var(--sc-gutter); }
+  .cut--dark { background: var(--sc-canvas); color: var(--sc-ink); }
+  .cut--white { background: var(--rr-white-bg); color: var(--rr-white-ink); --sc-ink: var(--rr-white-ink); --sc-ink-soft: var(--rr-white-soft); }
+  .cut--white p, .cut--white h2, .cut--white h1 { color: var(--rr-white-ink); }
+  .cut--orange { background: var(--rr-orange-bg); color: var(--rr-orange-lg); --sc-ink: var(--rr-orange-lg); --sc-ink-soft: #3a1c10; }
+  .cut--orange p, .cut--orange h2, .cut--orange h1 { color: var(--rr-orange-lg); }
+  .cut__eyebrow { font-family: "DM Mono", monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sc-ink-soft); margin: 0 0 var(--sc-4); }
+  .cut h2 { font-size: clamp(1.9rem, 4.4vw, 3.4rem); line-height: 0.98; margin: 0; text-wrap: balance; }
+  .cut p.lede { font-size: clamp(1.1rem, 2vw, 1.5rem); line-height: 1.4; margin: var(--sc-4) 0 0; max-width: 42ch; color: var(--sc-ink-soft); text-wrap: pretty; }
+
+  .cut--lead .cut__wrap { text-align: left; }
+  .cut--trail .cut__wrap { text-align: right; margin-left: auto; }
+  .cut--trail .cut__inner { margin-left: auto; }
+  .cut--centre .cut__wrap { text-align: center; }
+  .cut--centre .cut__inner { margin-inline: auto; }
+
+  .cut__inner { max-width: 42rem; }
+
+  /* full-bleed photo cuts: img is absolute, scrim is a SIBLING */
+  .cut--photo { padding-inline: 0; }
+  .cut--photo .cut__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; max-width: none; }
+  .cut__scrim { position: absolute; inset: 0; pointer-events: none; }
+  .cut__scrim--lead  { background: linear-gradient(90deg, rgba(11,11,12,0.94) 0%, rgba(11,11,12,0.72) 42%, rgba(11,11,12,0) 74%); }
+  .cut__scrim--trail { background: linear-gradient(270deg, rgba(11,11,12,0.94) 0%, rgba(11,11,12,0.72) 42%, rgba(11,11,12,0) 74%); }
+  .cut__scrim--band  { background: linear-gradient(to top, rgba(11,11,12,0.96) 0%, rgba(11,11,12,0.8) 40%, rgba(11,11,12,0.1) 70%, rgba(11,11,12,0) 88%); }
+  .cut__scrim--full  { background: rgba(11,11,12,0.74); }
+  .cut--photo .cut__wrap { position: relative; z-index: 2; }
+  .cut--photo .cut__inner { max-width: 38rem; }
+
+  /* ===================== cut 1: hero ===================== */
+  #cut-1 { justify-content: flex-start; }
+  #cut-1 h1 { font-size: clamp(2.4rem, 6.6vw, 5rem); line-height: 0.94; margin: 0; text-wrap: balance; }
+
+  /* ===================== cut 3: research list ===================== */
+  .research__list { display: flex; flex-wrap: wrap; gap: 0.5em 1em; list-style: none; margin: var(--sc-5) 0 0; padding: 0; }
+  .research__list li { font-family: "DM Mono", monospace; font-size: 0.82rem; letter-spacing: 0.03em; padding: 0.4em 0.9em; border: 1px solid rgba(11,11,12,0.22); border-radius: 999px; }
+
+  /* ===================== cut 4: bottleneck orange ===================== */
+  #cut-4 h2 { font-size: clamp(2rem, 5vw, 3.8rem); }
+
+  /* ===================== clips (phone screen) ===================== */
+  /* A consistent 34vh phone screen, read as the product: one half of a
+     two-column composition, never a floating thumbnail. */
+  .clip-frame { height: 34vh; width: calc(34vh * 428 / 948); aspect-ratio: 428 / 948; border-radius: 1.5rem; overflow: hidden; box-shadow: var(--sc-e2); flex: none; background: #000; }
+  .clip-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .clip-row { display: flex; align-items: center; justify-content: center; gap: clamp(2.4rem, 6vw, 5rem); width: 100%; }
+  .clip-row .cut__inner { max-width: 30rem; flex: 1 1 30rem; }
+  .clip-row--reverse { flex-direction: row-reverse; }
+
+  /* ===================== cut 12: role ===================== */
+  #cut-12 .cut__inner p { margin-top: var(--sc-4); }
+
+  /* ===================== cut 11: the peak line ===================== */
+  #cut-11 { align-items: flex-end; padding-bottom: calc(var(--tracker-h) + clamp(1.5rem, 5vh, 3rem)); }
+  #cut-11 .cut__wrap { text-align: left; }
+  #cut-11 .cut__inner { max-width: 40rem; margin-inline: 0; }
+  .cut__peak-line { font-size: clamp(1.6rem, 3.4vw, 2.8rem); line-height: 1.04; margin: 0; text-wrap: balance; }
+  /* A column of density under the peak line, sized to the text block, sibling
+     of the copy so the verification pass can measure it. */
+  #cut-11 .cut__scrim--peak {
+    position: absolute; left: 0; bottom: 0; top: auto; right: auto;
+    /* Wide enough to clear the gutter plus the peak line's own max-width
+       (40rem), with margin so no glyph ever sits past the covered edge. */
+    width: min(58rem, 74vw); height: 66%;
+    background: linear-gradient(0deg, rgba(11,11,12,0.94) 0%, rgba(11,11,12,0.78) 55%, rgba(11,11,12,0) 100%);
+  }
+
+  /* ===================== cut 13: series B count ===================== */
+  #cut-13 .cut__bg { object-position: 50% 35%; }
+  .count-line { font-size: clamp(3rem, 10vw, 7.5rem); font-weight: 900; line-height: 0.9; margin: 0; letter-spacing: -0.02em; }
+  .count-line .unit { font-size: 0.4em; vertical-align: middle; }
+
+  /* ===================== cut 14: close ===================== */
+  #cut-14 { min-height: 100vh; align-items: center; justify-content: center; text-align: center; }
+  #cut-14 .cut__wrap { text-align: center; }
+  #cut-14 h2 { font-size: clamp(2rem, 5.4vw, 4rem); }
+  .close__links { display: flex; gap: var(--sc-6); justify-content: center; flex-wrap: wrap; margin-top: var(--sc-6); }
+  .close__links a { font-family: var(--sc-font-display); font-weight: 900; text-transform: uppercase; font-size: clamp(1.1rem, 2.4vw, 1.5rem); color: var(--rr-orange-lg); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; border-bottom: 2px solid var(--rr-orange-lg); }
+  .close__links a:hover, .close__links a:focus-visible { opacity: 0.7; }
+  .close__colophon { font-family: "DM Mono", monospace; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rr-orange-lg); opacity: 0.75; margin-top: var(--sc-7); }
+
+  /* ===================== mobile ===================== */
+  @media (max-width: 860px) {
+    :root { --bar-h: 3rem; --tracker-h: 4.4rem; }
+    .cut { min-height: auto; padding-block: clamp(3rem, 12vh, 4.5rem); padding-top: calc(var(--bar-h) + 2rem); padding-bottom: calc(var(--tracker-h) + 2rem); }
+    #bar .bar__meta { display: none; }
+    #cut-1 h1 { font-size: 2.4rem; }
+    .cut h2 { font-size: 1.9rem; }
+    .cut--trail .cut__wrap, .cut--trail .cut__inner { text-align: left; margin-left: 0; }
+    .clip-row, .clip-row--reverse { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: var(--sc-5); }
+    .clip-row .cut__inner { flex: none; max-width: none; }
+    .clip-frame { width: 60vw; max-width: 220px; height: auto; }
+    #cut-9 .clip-frame { margin-inline: auto; }
+    #cut-11 { align-items: flex-end; }
+    #cut-11 .cut__peak-line { font-size: 2.2rem; }
+    #cut-11 .cut__scrim--peak { width: 100%; height: 88%; }
+    #tracker { gap: 0.6rem; }
+    #tracker .tr__stages { gap: 0.35rem; overflow: hidden; }
+    #tracker .tr__label { display: none; }
+    #tracker .tr__current { display: block; font-family: "DM Mono", monospace; font-size: 0.66rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--sc-ink); white-space: nowrap; }
+    #tracker.is-flash .tr__current { color: var(--rr-orange-lg); }
+    #tracker .tr__order { display: none; }
+    #tracker .tr__eta { font-size: 0.62rem; }
+    .count-line { font-size: 3.4rem; }
+    /* Below 860px both corner scrims become a full-width band, matching the
+       engine's own trail-scrim behaviour: the copy spans the whole width once
+       columns stack, so a diagonal corner gradient leaves half of it exposed. */
+    .cut__scrim--lead, .cut__scrim--trail, .cut__scrim--band {
+      background: rgba(11,11,12,0.8);
+    }
+    .cut--photo .cut__inner { max-width: none; }
+  }
+  @media (min-width: 861px) {
+    #tracker .tr__current { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<span data-sc-progress></span>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<header id="bar">
+  <span class="bar__mark">RENORUN</span>
+  <span class="bar__meta">Case study &middot; Mike Jerugim, Head of Design</span>
+  <a class="bar__link" href="mailto:mike@flat7.design">Write to Mike</a>
+</header>
+
+<div id="tracker" data-sc-verify-state="stage:0;delivered:0" aria-live="polite">
+  <span class="tr__order mono">Order #11032019-18</span>
+  <span class="tr__current" aria-hidden="true">Placed</span>
+  <div class="tr__stages" aria-hidden="true">
+    <div class="tr__stage" data-stage="1"><span class="tr__dot"></span><span class="tr__label">Placed</span></div>
+    <span class="tr__line" data-line="1"></span>
+    <div class="tr__stage" data-stage="2"><span class="tr__dot"></span><span class="tr__label">Picked</span></div>
+    <span class="tr__line" data-line="2"></span>
+    <div class="tr__stage" data-stage="3"><span class="tr__dot"></span><span class="tr__label">On the road</span></div>
+    <span class="tr__line" data-line="3"></span>
+    <div class="tr__stage" data-stage="4"><span class="tr__dot"></span><span class="tr__label">Delivered</span></div>
+  </div>
+  <span class="tr__eta mono">ETA 2:45&ndash;3:15pm</span>
+</div>
+
+<main id="top">
+
+  <!-- 1 · Hero: pulse -->
+  <section class="cut cut--dark cut--lead sc-section" id="cut-1" data-sc-act="flow">
+    <div class="cut__wrap">
+      <div class="cut__inner" data-sc-cue="0">
+        <p class="cut__eyebrow mono">Mike Jerugim, case study &middot; RenoRun</p>
+        <h1 class="sc-display">Construction runs on tight timelines.</h1>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · Halt: dread. Full-bleed photo, lead copy -->
+  <section class="cut cut--dark cut--photo cut--lead sc-section" id="cut-2" data-sc-act="flow">
+    <img class="cut__bg" src="assets/photo-02.jpg" width="1024" height="819" alt="A van unloading drywall at a house.">
+    <div class="cut__scrim cut__scrim--lead" aria-hidden="true"></div>
+    <div class="cut__wrap">
+      <div class="cut__inner" data-sc-cue="0.03">
+        <p class="lede" style="margin-top:0;">When materials are missing or delayed, everything grinds to a halt.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Listening: recognition, white ground -->
+  <section class="cut cut--white cut--lead sc-section" id="cut-3" data-sc-act="flow">
+    <div class="cut__wrap">
+      <div class="cut__inner" data-sc-cue="0.03">
+        <h2 class="sc-display" style="font-size:clamp(1.6rem,3.4vw,2.6rem);">We listened to contractors, site supers and delivery crews.</h2>
+        <p class="lede">Their shortcuts, their stress points, paired with stakeholder interviews and a close look at market conditions.</p>
+        <ul class="research__list">
+          <li>Contractors</li><li>Site supers</li><li>Delivery crews</li><li>Stakeholder interviews</li><li>Market conditions</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · The real problem: clarity, orange -->
+  <section class="cut cut--orange cut--centre sc-section" id="cut-4" data-sc-act="flow">
+    <div class="cut__wrap">
+      <div class="cut__inner" data-sc-cue="0.03">
+        <h2 class="sc-display">The bottleneck was not procurement. It was the unpredictability around it.</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · The scene: tension, dark. Tracker stamps Placed. -->
+  <section class="cut cut--dark cut--lead sc-section" id="cut-5" data-sc-act="flow">
+    <div class="cut__wrap">
+      <div class="cut__inner" data-sc-cue="0.03">
+        <h2 class="sc-display" style="font-size:clamp(1.7rem,3.6vw,2.8rem);">Everything is on schedule until someone realizes the wrong item arrived, or a crucial part was never ordered.</h2>
+        <p class="lede">One oversight sends a crew home early.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · A better way: relief, white. clip-browse beside screen-04 -->
+  <section class="cut cut--white sc-section" id="cut-6" data-sc-act="flow">
+    <div class="cut__wrap">
+      <div class="clip-row">
+        <div class="cut__inner" data-sc-cue="0.03">
+          <h2 class="sc-display" style="font-size:clamp(1.7rem,3.6vw,2.8rem);">A modern e&#8209;commerce experience tailored for construction.</h2>
+        </div>
+        <div class="clip-frame">
+          <video autoplay muted loop playsinline poster="assets/clip-browse-poster.jpg">
+            <source src="assets/clip-browse.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · Get it today: momentum, dark, warehouse photo. Tracker stamps Picked. -->
+  <section class="cut cut--dark cut--photo cut--trail sc-section" id="cut-7" data-sc-act="flow">
+    <img class="cut__bg" src="assets/photo-03.jpg" width="1024" height="1365" alt="Warehouse racking of construction materials." style="object-position:50% 40%;">
+    <div class="cut__scrim cut__scrim--trail" aria-hidden="true"></div>
+    <div class="cut__wrap">
+      <div class="cut__inner" data-sc-cue="0.03">
+        <h2 class="sc-display" style="font-size:clamp(2.2rem,5.6vw,4.4rem);" data-sc-reveal="right" data-sc-reveal-at="0.05 0.5">Get it today.</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · Split shipments: confidence, white. screen-07 + clip-orders -->
+  <section class="cut cut--white sc-section" id="cut-8" data-sc-act="flow">
+    <div class="cut__wrap">
+      <div class="clip-row clip-row--reverse">
+        <div class="cut__inner" data-sc-cue="0.03">
+          <h2 class="sc-display" style="font-size:clamp(1.6rem,3.4vw,2.6rem);">What is coming now, what is coming later, and why.</h2>
+        </div>
+        <div class="clip-frame">
+          <video autoplay muted loop playsinline poster="assets/clip-orders-poster.jpg">
+            <source src="assets/clip-orders.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · On the road: anticipation, dark, clip-map full height. Tracker stamps On the road. -->
+  <section class="cut cut--dark cut--centre sc-section" id="cut-9" data-sc-act="flow">
+    <div class="cut__wrap">
+      <div class="cut__inner" data-sc-cue="0.03" style="margin-inline:auto;">
+        <div class="clip-frame" style="margin:0 auto var(--sc-5);" data-sc-reveal="down" data-sc-reveal-at="0.05 0.5">
+          <video autoplay muted loop playsinline poster="assets/clip-map-poster.jpg">
+            <source src="assets/clip-map.mp4" type="video/mp4">
+          </video>
+        </div>
+        <h2 class="sc-display" style="font-size:clamp(1.6rem,3.2vw,2.4rem);">Replace guesswork with clarity. Every order at a glance.</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · Feedback: trust, white -->
+  <section class="cut cut--white cut--lead sc-section" id="cut-10" data-sc-act="flow">
+    <div class="cut__wrap">
+      <div class="cut__inner" data-sc-cue="0.03">
+        <h2 class="sc-display" style="font-size:clamp(1.6rem,3.4vw,2.6rem);">Constant testing with internal teams, long-time customers and new users.</h2>
+        <p class="lede">A healthy rhythm of collaboration with engineering, and a shared design system that kept everything consistent and easier to maintain as the product and team grew.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 · Delivered (peak): arrival, dark, full-bleed van photo. Iris reveal. Tracker hits Delivered. -->
+  <section class="cut cut--dark cut--photo cut--lead sc-section" id="cut-11" data-sc-act="flow">
+    <img class="cut__bg" src="assets/photo-08.jpg" width="1024" height="576" alt="An orange RenoRun van at a framed house with lumber." data-sc-reveal="iris" data-sc-reveal-at="0.02 0.28">
+    <div class="cut__scrim cut__scrim--peak" aria-hidden="true"></div>
+    <div class="cut__wrap">
+      <div class="cut__inner" data-sc-cue="0.32">
+        <h2 class="sc-display cut__peak-line">Time and momentum, given back to the crew.</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 · My role: pride, dark -->
+  <section class="cut cut--dark cut--lead sc-section" id="cut-12" data-sc-act="flow">
+    <div class="cut__wrap">
+      <div class="cut__inner" data-sc-cue="0.03">
+        <h2 class="sc-display" style="font-size:clamp(1.6rem,3.2vw,2.4rem);">As Head of Design, I shaped the vision, led the research and design, and built the team that carried RenoRun through its Series B.</h2>
+        <p class="lede">A team of twelve: product designers, UX researchers and marketing designers, hired and mentored into a customer-centered product organization.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 · Series B: scale, Times Square photo. Real count 0-142. -->
+  <section class="cut cut--dark cut--photo cut--centre sc-section" id="cut-13" data-sc-act="flow">
+    <img class="cut__bg" src="assets/photo-09.jpg" width="1024" height="683" alt="RenoRun on the Nasdaq tower screen in Times Square." data-sc-reveal="left" data-sc-reveal-at="0.05 0.5">
+    <div class="cut__scrim cut__scrim--full" aria-hidden="true"></div>
+    <div class="cut__wrap">
+      <div class="cut__inner" data-sc-cue="0.03" style="margin-inline:auto;">
+        <p class="count-line"><span class="unit">$</span><span data-sc-count="0 142">0</span><span class="unit">M Series B</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 · Close: decision, orange, abrupt. LAST element on the page. -->
+  <section class="cut cut--orange sc-section" id="cut-14" data-sc-act="flow">
+    <div class="cut__wrap">
+      <div data-sc-cue="0">
+        <h2 class="sc-display">More work, or write to Mike.</h2>
+        <div class="close__links">
+          <a href="https://flat7.design/">More work at flat7.design</a>
+          <a href="mailto:mike@flat7.design">Write to Mike</a>
+        </div>
+        <p class="close__colophon mono">RenoRun case study by Mike Jerugim. Head of Design.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="scrollcraft.js"></script>
+<script>
+  ScrollCraft.mount(document.body);
+
+  // ---- Signature move: the order tracker fulfils as you scroll --------------
+  (function () {
+    var tracker = document.getElementById('tracker');
+    var stageEls = Array.prototype.slice.call(tracker.querySelectorAll('.tr__stage'));
+    var lineEls = Array.prototype.slice.call(tracker.querySelectorAll('.tr__line'));
+    var currentEl = tracker.querySelector('.tr__current');
+    var labels = ['Placed', 'Picked', 'On the road', 'Delivered'];
+    var cutStages = { 'cut-5': 1, 'cut-7': 2, 'cut-9': 3, 'cut-11': 4 };
+    var cuts = {};
+    Object.keys(cutStages).forEach(function (id) { cuts[id] = document.getElementById(id); });
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var stampedStage = 0; // highest stage passed, persists
+    var flashed = false;
+
+    function passed(el) {
+      var r = el.getBoundingClientRect();
+      // consider the cut "passed" once its top has scrolled at least a third
+      // of the way up the viewport, so the stamp lands early in the cut's life.
+      return r.top < window.innerHeight * 0.66;
+    }
+
+    function render(stage) {
+      stageEls.forEach(function (el) {
+        var n = parseInt(el.getAttribute('data-stage'), 10);
+        el.classList.toggle('is-done', n <= stage);
+      });
+      lineEls.forEach(function (el) {
+        var n = parseInt(el.getAttribute('data-line'), 10);
+        el.classList.toggle('is-done', n <= stage);
+      });
+      currentEl.textContent = labels[Math.max(0, stage - 1)] || 'Placed';
+      var delivered = stage >= 4;
+      tracker.setAttribute('data-sc-verify-state', 'stage:' + stage + ';delivered:' + (delivered ? 1 : 0));
+      return delivered;
+    }
+
+    function update() {
+      var stage = stampedStage;
+      Object.keys(cutStages).forEach(function (id) {
+        var el = cuts[id];
+        if (!el) return;
+        if (passed(el)) stage = Math.max(stage, cutStages[id]);
+      });
+      if (stage > stampedStage) {
+        var justDelivered = stage >= 4 && stampedStage < 4;
+        stampedStage = stage;
+        render(stampedStage);
+        if (justDelivered && !flashed) {
+          flashed = true;
+          if (!reduced) {
+            tracker.classList.add('is-flash');
+            setTimeout(function () { tracker.classList.remove('is-flash'); }, 650);
+          }
+          tracker.setAttribute('data-sc-verify-hold', 'true');
+        }
+      } else if (stage === stampedStage) {
+        render(stampedStage);
+      }
+    }
+
+    var raf = null;
+    function schedule() {
+      if (raf) return;
+      raf = requestAnimationFrame(function () { raf = null; update(); });
+    }
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    render(0);
+    update();
+  })();
+</script>
+</body>
+</html>
