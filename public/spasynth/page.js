@@ -41,3 +41,15 @@
   }));
   update();
 })();
+
+
+// The listening note counts the players actually on the page, so adding a
+// track never leaves the sentence saying the wrong number.
+(function () {
+  var n = document.querySelectorAll('.audio-track audio').length;
+  var words = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve'];
+  var count = document.querySelector('[data-track-count]');
+  var noun = document.querySelector('[data-track-noun]');
+  if (count) count.textContent = n < words.length ? words[n] : String(n);
+  if (noun) noun.textContent = n === 1 ? 'track' : 'tracks';
+})();
