@@ -1,13 +1,13 @@
 # flat7.design: Session Handoff
 
-Last updated: 2026-09-07 (repo at `f549582`, live at https://flat7.design). Read this first when picking the project back up.
+Last updated: 2026-09-07 (RenoRun merged; live at https://flat7.design). Read this first when picking the project back up.
 
 flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design consultancy). React 18 + Vite + TypeScript + Tailwind + React Router v7. Every push to `main` deploys to GitHub Pages via GitHub Actions (about one to two minutes; `gh run list --limit 1` shows the run). There is no staging environment: `main` is production.
 
 ## What's on the site
 
 - **Homepage, six themes** selectable from a tab bar: Neo (id `noir`, the default, `src/themes/DefaultPage.tsx` + `src/components/*`), Mid-Century, Luxury, Bauhaus, Gen Z, MySpace (`src/themes/<name>/<Name>Page.tsx`). The chosen theme persists in `localStorage.styleTheme`.
-- **Selected Work grid**: NOT shared across themes. Each theme has its own hardcoded project array (Neo in `src/components/Work.tsx`, the rest in each theme page). Any add/remove/reorder/relink is **six separate edits**, each in that theme's own field names and styling. Current order: Onix, Soluna, Wingman, Woltspace, SPASynth, Decathlon, Hololabs, Bandsintown, Flashtract, Estateably.
+- **Selected Work grid**: NOT shared across themes. Each theme has its own hardcoded project array (Neo in `src/components/Work.tsx`, the rest in each theme page). Any add/remove/reorder/relink is **six separate edits**, each in that theme's own field names and styling. Current visible order (2026-09-07): Onix, Soluna, Wingman, Woltspace, SPASynth, Decathlon, RenoRun. Hololabs, Flashtract, Bandsintown and Estateably are commented out in every roster (not deleted) until their case studies are rebuilt.
 - **React case studies** at `/case-studies` and `/case-studies/:slug`, driven by `src/data/caseStudies.ts` (Kooth/Soluna, Decathlon, Estateably, Bandsintown and others). Theme-aware media blocks (`quotes`, `ideation`) live in `src/pages/CaseStudyDetail.tsx`; fullscreen zoomable Lightbox in `src/components/Lightbox.tsx`. **Deliberately low visibility**: no nav or hero link in any theme, only a small footer link. Do not re-add prominent links without asking.
 - **Scroll-craft case studies** (standalone static pages, the newer format, one folder each under `public/`):
 
@@ -18,15 +18,16 @@ flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design con
   | `/decathlon/` | Filmic one-shot, pinned phone | One CSS phone carries stills, then a scroll-scrubbed booking clip, then the Figma prototype. First-person copy, no headcount claims, published facts only. |
   | `/spasynth/` | Cinematic module teardown (built in Codex) | Blender-rendered frame sequence played on a canvas; placeholder WAVs, not real recordings; solo product designer/AI builder framing. See the SPASynth section below. |
   | `/woltspace/` | Chaptered editorial with an interactive exhibit (built in Codex) | Original supplied interface and pixel sprites; "Make it crazier" reveal; embedded interactive prototype; docs in `docs/woltspace/`. Shares the chaptered grammar with Onix (4/6 on the gate). |
+  | `/renorun/` | Rhythmic cutlist (a dispatch at speed) | 14 hard cuts on black/white/orange, no pinning; a fixed order tracker (Placed, Picked, On the road, Delivered) is the peak, hitting Delivered on the van photo. Published facts plus the cleared team of twelve; four 5s app loops instead of a scrub. |
   | `/wingman/` | Live surface (the page is a Wingman deck) | Wingman's own chrome is the nav; "scroll is speaking" transcript ribbon; ends in a real prompt form to wingman.design (`?topic=` prefill is live on the Wingman side). Mike's personal project; solo builder framing. |
 
-  Each Selected Work tile for those six projects links to its `/<slug>/` page (in all six themes). The old React pages for Soluna and Decathlon remain reachable.
+  Each Selected Work tile for those seven projects links to its `/<slug>/` page (in all six themes). The old React pages for Soluna and Decathlon remain reachable.
 
 ## Scroll-craft: how the static case studies are built
 
 - Engine: `scrollcraft.js` + `scrollcraft.css` copied into each `public/<slug>/`. **Never edit the engine**; bespoke behaviour is page JS driven from each act's `--sc-p`. The skill lives at `~/.claude/plugins/cache/nateherk/nateherk-design/<version>/skills/scroll-craft/` (SKILL.md, references/, scripts/).
 - Workspace: `scrollcraft/` at the repo root is **gitignored** (`FINGERPRINTS.md` registry, `builds/<slug>/BRIEF.md`, research, lab shots). It exists only on Mike's machine. The BRIEF for each build is the record of every decision, cleared claim and disclosure limit; if it is missing, the memory notes below are the fallback.
-- **Fingerprint gate**: every new build must differ from every existing row in `scrollcraft/FINGERPRINTS.md` on 4 of 6 dimensions (grammar, nav, hero, act sequence, close, signature move). Chaptered editorial, split stage, pinned-object filmic one-shot and live-surface-as-deck are all taken.
+- **Fingerprint gate**: every new build must differ from every existing row in `scrollcraft/FINGERPRINTS.md` on 4 of 6 dimensions (grammar, nav, hero, act sequence, close, signature move). Chaptered editorial (Onix, and Woltspace with an exhibit), split stage, pinned-object filmic one-shot, live-surface-as-deck and rhythmic cutlist are all taken.
 - **Process Mike wants**: interview first (AskUserQuestion rounds), write BRIEF.md, then a **Sonnet subagent builds the page from the brief** while the orchestrator verifies independently. Building the page directly (as happened on Decathlon) was flagged; do not repeat.
 - **Verification**: `node <skill>/scripts/serve.mjs --root public/<slug> --port 45xx` then `shoot.mjs` desktop, `--width 390 --height 844`, and `--reduced-motion`; read `sheet.png`. The harness misses anything parked under 0.85 opacity, so ALSO run a Playwright probe (real Chrome at `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`, `playwright-core` is in `node_modules`) that scrolls to exact act positions and reads computed opacities of headings, cues and bullets. That probe caught four real defects the harness reported as clean on Wingman.
 - **Do not verify scroll pages in the Claude-in-Chrome tab**: it is a background tab, Chrome pauses its rAF loop and CSS transitions, `--sc-p` never advances, and media will not play. Use headless Playwright (foreground) instead.
@@ -35,7 +36,7 @@ flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design con
 
 ## Recent history (2026-09-06 to 07)
 
-- 2026-09-07: Woltspace scroll-craft case study (Codex branch `codex/woltspace-case-study`) fast-forwarded to `main` at `f549582`; all six Woltspace tiles link to `/woltspace/`. SPASynth (`/spasynth/`) shipped 2026-09-06 with its build tooling moved out of git. RenoRun is in progress on `renorun-scrollcraft` (rhythmic cutlist, order-tracker chrome), not yet merged. Note: `main` is checked out in a second worktree at `/Users/mikejerugim/flat7-design-spasynth` (Codex); from the primary checkout, update `main` by pushing refs (`git push origin <branch>:main`) rather than checking it out.
+- 2026-09-07: Woltspace scroll-craft case study (Codex branch `codex/woltspace-case-study`) fast-forwarded to `main` at `f549582`; all six Woltspace tiles link to `/woltspace/`. SPASynth (`/spasynth/`) shipped 2026-09-06 with its build tooling moved out of git. RenoRun (rhythmic cutlist, order-tracker chrome) merged to `main` on 2026-09-07 with a new tile after Decathlon; the same push hid Hololabs, Flashtract, Bandsintown and Estateably from the grids. Onix device-frame corners now scale with frame width (14% outer, minus bezel for the screen); apply the same rule if other pages' frames look off. Note: `main` is checked out in a second worktree at `/Users/mikejerugim/flat7-design-spasynth` (Codex); from the primary checkout, update `main` by pushing refs (`git push origin <branch>:main`) rather than checking it out.
 
 - Wingman scroll-craft case study built and shipped, including the landing "case study" framing (eyebrow, self-typing prompt, "Scroll to start presenting" ribbon nudge which Mike asked for despite scroll-craft's ban on scroll cues, "· Case study" top-bar tag), the 14-stop tools rail grouped by stage with the heading pinned above it and the rail panning through the exit, and Mike's own slide backgrounds (`public/wingman/assets/bg-1,3,4,5.jpg`; `bg-2` villa is unused).
 - Decathlon scroll-craft case study shipped; both Decathlon role lines now "Lead Product Designer".

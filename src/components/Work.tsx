@@ -48,7 +48,7 @@ const projects: Project[] = [
     accent: '#FF3D5A',
   },
   {
-    id: '06',
+    id: '05',
     name: 'SPASynth',
     category: 'Audio Software · VST/AU',
     description:
@@ -57,7 +57,7 @@ const projects: Project[] = [
     accent: '#A8FF3E',
   },
   {
-    id: '07',
+    id: '06',
     name: 'Decathlon',
     category: 'E-Commerce · Web & App',
     description:
@@ -66,7 +66,7 @@ const projects: Project[] = [
     accent: '#00C8FF',
   },
   {
-    id: '08',
+    id: '07',
     name: 'RenoRun',
     category: 'Construction Tech · Web & App',
     description:
@@ -74,42 +74,43 @@ const projects: Project[] = [
     url: '/renorun/',
     accent: '#E8562E',
   },
-  {
-    id: '10',
-    name: 'Hololabs',
-    category: 'Spatial Computing · AR/VR',
-    description:
-      'Immersive experience design for entertainment venues and theme parks. UX that lives beyond the screen  -  spatial, embodied, and physical-first interaction design.',
-    url: 'https://hololabs.org/',
-    accent: '#FF3D5A',
-  },
-  {
-    id: '11',
-    name: 'Bandsintown',
-    category: 'Music Tech · Web',
-    description:
-      'Tour promotion and fan engagement tools for 700,000+ artists. Streamlining complex multi-platform logistics  -  ticketing, fan outreach, tour dates  -  into a single coherent workflow.',
-    url: 'https://www.artist.bandsintown.com/',
-    accent: '#A8FF3E',
-  },
-  {
-    id: '12',
-    name: 'Flashtract',
-    category: 'Construction Tech · Web',
-    description:
-      'Billing and payment automation for the construction industry. Designing for highly regulated, multi-party financial workflows where the stakes are compliance, not convenience.',
-    url: 'https://flashtract.com/',
-    accent: '#FF3D5A',
-  },
-  {
-    id: '13',
-    name: 'Estateably',
-    category: 'LegalTech · Web',
-    description:
-      'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists navigating high-stakes legal and tax requirements.',
-    url: 'https://www.estateably.com/',
-    accent: '#00C8FF',
-  },
+  // Hidden until their case studies are rebuilt (2026-09-07): Hololabs, Flashtract, Bandsintown, Estateably.
+  // {
+  //   id: '10',
+  //   name: 'Hololabs',
+  //   category: 'Spatial Computing · AR/VR',
+  //   description:
+  //     'Immersive experience design for entertainment venues and theme parks. UX that lives beyond the screen  -  spatial, embodied, and physical-first interaction design.',
+  //   url: 'https://hololabs.org/',
+  //   accent: '#FF3D5A',
+  // },
+  // {
+  //   id: '11',
+  //   name: 'Bandsintown',
+  //   category: 'Music Tech · Web',
+  //   description:
+  //     'Tour promotion and fan engagement tools for 700,000+ artists. Streamlining complex multi-platform logistics  -  ticketing, fan outreach, tour dates  -  into a single coherent workflow.',
+  //   url: 'https://www.artist.bandsintown.com/',
+  //   accent: '#A8FF3E',
+  // },
+  // {
+  //   id: '12',
+  //   name: 'Flashtract',
+  //   category: 'Construction Tech · Web',
+  //   description:
+  //     'Billing and payment automation for the construction industry. Designing for highly regulated, multi-party financial workflows where the stakes are compliance, not convenience.',
+  //   url: 'https://flashtract.com/',
+  //   accent: '#FF3D5A',
+  // },
+  // {
+  //   id: '13',
+  //   name: 'Estateably',
+  //   category: 'LegalTech · Web',
+  //   description:
+  //     'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists navigating high-stakes legal and tax requirements.',
+  //   url: 'https://www.estateably.com/',
+  //   accent: '#00C8FF',
+  // },
 ];
 
 function ProjectItem({ project, index }: { project: Project; index: number }) {
