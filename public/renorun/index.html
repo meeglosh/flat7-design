@@ -46,10 +46,10 @@
     padding: 0 clamp(1rem, 3vw, 2rem);
   }
   #bar .bar__mark { font-family: var(--sc-font-display); font-weight: 900; text-transform: uppercase; font-size: clamp(1.1rem, 2.6vw, 1.5rem); letter-spacing: -0.02em; color: var(--rr-orange-lg); }
-  #bar .bar__meta { font-family: "DM Mono", monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rr-orange-lg); opacity: 0.86; display: none; }
+  #bar .bar__right { display: flex; align-items: center; gap: clamp(0.8rem, 2vw, 1.6rem); }
+  #bar .bar__credit { font-family: var(--sc-font-display); font-weight: 600; text-transform: uppercase; font-size: clamp(0.72rem, 1.6vw, 0.9rem); letter-spacing: 0.02em; color: var(--rr-orange-lg); }
   #bar .bar__link { font-family: var(--sc-font-display); font-weight: 900; text-transform: uppercase; font-size: clamp(1rem, 2.2vw, 1.3rem); letter-spacing: -0.01em; color: var(--rr-orange-lg); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   #bar .bar__link:hover, #bar .bar__link:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
-  #bar .bar__center { display: flex; align-items: center; gap: 0.6rem; }
 
   /* ===================== the fixed order tracker (signature move) ===================== */
   #tracker {
@@ -94,10 +94,10 @@
     #cut-1  { min-height: calc(1.0  * 100vh); }
     #cut-2  { min-height: calc(1.15 * 100vh); }
     #cut-4  { min-height: calc(0.8  * 100vh); }
-    #cut-6  { min-height: calc(1.05 * 100vh); }
+    #cut-6  { min-height: calc(1.1  * 100vh); }
     #cut-7  { min-height: calc(1.15 * 100vh); }
-    #cut-8  { min-height: calc(1.05 * 100vh); }
-    #cut-9  { min-height: calc(1.05 * 100vh); }
+    #cut-8  { min-height: calc(1.1  * 100vh); }
+    #cut-9  { min-height: calc(1.1  * 100vh); }
     #cut-10 { min-height: calc(0.8  * 100vh); }
     #cut-11 { min-height: calc(1.35 * 100vh); }
     #cut-13 { min-height: calc(1.15 * 100vh); }
@@ -143,9 +143,9 @@
   #cut-4 h2 { font-size: clamp(2rem, 5vw, 3.8rem); }
 
   /* ===================== clips (phone screen) ===================== */
-  /* A consistent 34vh phone screen, read as the product: one half of a
+  /* A consistent 68vh phone screen, read as the product: one half of a
      two-column composition, never a floating thumbnail. */
-  .clip-frame { height: 34vh; width: calc(34vh * 428 / 948); aspect-ratio: 428 / 948; border-radius: 1.5rem; overflow: hidden; box-shadow: var(--sc-e2); flex: none; background: #000; }
+  .clip-frame { height: 68vh; width: calc(68vh * 428 / 948); aspect-ratio: 428 / 948; border-radius: 1.5rem; overflow: hidden; box-shadow: var(--sc-e2); flex: none; background: #000; }
   .clip-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
   .clip-row { display: flex; align-items: center; justify-content: center; gap: clamp(2.4rem, 6vw, 5rem); width: 100%; }
   .clip-row .cut__inner { max-width: 30rem; flex: 1 1 30rem; }
@@ -187,14 +187,13 @@
   @media (max-width: 860px) {
     :root { --bar-h: 3rem; --tracker-h: 4.4rem; }
     .cut { min-height: auto; padding-block: clamp(3rem, 12vh, 4.5rem); padding-top: calc(var(--bar-h) + 2rem); padding-bottom: calc(var(--tracker-h) + 2rem); }
-    #bar .bar__meta { display: none; }
+    #bar .bar__credit { display: none; }
     #cut-1 h1 { font-size: 2.4rem; }
     .cut h2 { font-size: 1.9rem; }
     .cut--trail .cut__wrap, .cut--trail .cut__inner { text-align: left; margin-left: 0; }
     .clip-row, .clip-row--reverse { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: var(--sc-5); }
     .clip-row .cut__inner { flex: none; max-width: none; }
-    .clip-frame { width: 60vw; max-width: 220px; height: auto; }
-    #cut-9 .clip-frame { margin-inline: auto; }
+    .clip-frame { height: 60vh; width: calc(60vh * 428 / 948); max-width: 80vw; }
     #cut-11 { align-items: flex-end; }
     #cut-11 .cut__peak-line { font-size: 2.2rem; }
     #cut-11 .cut__scrim--peak { width: 100%; height: 88%; }
@@ -226,8 +225,10 @@
 
 <header id="bar">
   <span class="bar__mark">RENORUN</span>
-  <span class="bar__meta">Case study &middot; Mike Jerugim, Head of Design</span>
-  <a class="bar__link" href="mailto:mike@flat7.design">Write to Mike</a>
+  <div class="bar__right">
+    <span class="bar__credit">Mike Jerugim, Head of Design</span>
+    <a class="bar__link" href="https://flat7.design/#work">All work</a>
+  </div>
 </header>
 
 <div id="tracker" data-sc-verify-state="stage:0;delivered:0" aria-live="polite">
@@ -343,16 +344,18 @@
     </div>
   </section>
 
-  <!-- 9 · On the road: anticipation, dark, clip-map full height. Tracker stamps On the road. -->
-  <section class="cut cut--dark cut--centre sc-section" id="cut-9" data-sc-act="flow">
+  <!-- 9 · On the road: anticipation, dark, clip-map. Tracker stamps On the road. -->
+  <section class="cut cut--dark sc-section" id="cut-9" data-sc-act="flow">
     <div class="cut__wrap">
-      <div class="cut__inner" data-sc-cue="0.03" style="margin-inline:auto;">
-        <div class="clip-frame" style="margin:0 auto var(--sc-5);" data-sc-reveal="down" data-sc-reveal-at="0.05 0.5">
+      <div class="clip-row clip-row--reverse">
+        <div class="cut__inner" data-sc-cue="0.03">
+          <h2 class="sc-display" style="font-size:clamp(1.6rem,3.2vw,2.4rem);">Replace guesswork with clarity. Every order at a glance.</h2>
+        </div>
+        <div class="clip-frame" data-sc-reveal="down" data-sc-reveal-at="0.05 0.5">
           <video autoplay muted loop playsinline poster="assets/clip-map-poster.jpg">
             <source src="assets/clip-map.mp4" type="video/mp4">
           </video>
         </div>
-        <h2 class="sc-display" style="font-size:clamp(1.6rem,3.2vw,2.4rem);">Replace guesswork with clarity. Every order at a glance.</h2>
       </div>
     </div>
   </section>
@@ -403,10 +406,10 @@
   <section class="cut cut--orange sc-section" id="cut-14" data-sc-act="flow">
     <div class="cut__wrap">
       <div data-sc-cue="0">
-        <h2 class="sc-display">More work, or write to Mike.</h2>
+        <h2 class="sc-display">More work, or the next case study.</h2>
         <div class="close__links">
-          <a href="https://flat7.design/">More work at flat7.design</a>
-          <a href="mailto:mike@flat7.design">Write to Mike</a>
+          <a href="https://flat7.design/#work">More work at flat7.design</a>
+          <a href="https://flat7.design/wingman/">Next case study: Wingman</a>
         </div>
         <p class="close__colophon mono">RenoRun case study by Mike Jerugim. Head of Design.</p>
       </div>
