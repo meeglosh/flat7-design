@@ -19,5 +19,7 @@ await page.waitForTimeout(400);
 await page.screenshot({path:'public/woltspace/assets/workflow.png'});
 await page.evaluate(()=>{closeProject();showProjects();toggleTerminal({preventDefault(){}});});
 await page.waitForTimeout(300);
+await page.locator('.connectors-toggle').click();
+await page.waitForTimeout(350);
 await page.screenshot({path:'public/woltspace/assets/terminal.png'});
 await browser.close();
