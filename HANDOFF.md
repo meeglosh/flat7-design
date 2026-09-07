@@ -1,6 +1,6 @@
 # flat7.design: Session Handoff
 
-Last updated: 2026-09-06 (repo at `7030d80`, live at https://flat7.design). Read this first when picking the project back up.
+Last updated: 2026-09-07 (repo at `f549582`, live at https://flat7.design). Read this first when picking the project back up.
 
 flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design consultancy). React 18 + Vite + TypeScript + Tailwind + React Router v7. Every push to `main` deploys to GitHub Pages via GitHub Actions (about one to two minutes; `gh run list --limit 1` shows the run). There is no staging environment: `main` is production.
 
@@ -17,9 +17,10 @@ flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design con
   | `/soluna/` | Split stage (before vs after) | Divider is the chrome; context cards cross into the summary sheet; collapses into a live Figma prototype. No invented numbers (see BRIEF). |
   | `/decathlon/` | Filmic one-shot, pinned phone | One CSS phone carries stills, then a scroll-scrubbed booking clip, then the Figma prototype. First-person copy, no headcount claims, published facts only. |
   | `/spasynth/` | Cinematic module teardown (built in Codex) | Blender-rendered frame sequence played on a canvas; placeholder WAVs, not real recordings; solo product designer/AI builder framing. See the SPASynth section below. |
+  | `/woltspace/` | Chaptered editorial with an interactive exhibit (built in Codex) | Original supplied interface and pixel sprites; "Make it crazier" reveal; embedded interactive prototype; docs in `docs/woltspace/`. Shares the chaptered grammar with Onix (4/6 on the gate). |
   | `/wingman/` | Live surface (the page is a Wingman deck) | Wingman's own chrome is the nav; "scroll is speaking" transcript ribbon; ends in a real prompt form to wingman.design (`?topic=` prefill is live on the Wingman side). Mike's personal project; solo builder framing. |
 
-  Each Selected Work tile for those five projects links to its `/<slug>/` page (in all six themes). The old React pages for Soluna and Decathlon remain reachable.
+  Each Selected Work tile for those six projects links to its `/<slug>/` page (in all six themes). The old React pages for Soluna and Decathlon remain reachable.
 
 ## Scroll-craft: how the static case studies are built
 
@@ -32,7 +33,9 @@ flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design con
 - **Figma embeds**: use `scaling=scale-down-width` with the iframe at 100% and never upscale it (Figma's canvas margin varies with frame size, so any fixed upscale crops at some width). Figma is blocked in the headless harness (`ERR_ABORTED`); confirm embeds in real Chrome.
 - **Dev server**: `npm run dev` on port 5174. `vite.config.ts` has `staticCaseStudyPages([...])`: add each new slug. It **redirects** `/<slug>` to `/<slug>/` (relative `scrollcraft.css/js` paths break without the trailing slash and the page renders unstyled). GitHub Pages already redirects in production.
 
-## Recent history (2026-09-06)
+## Recent history (2026-09-06 to 07)
+
+- 2026-09-07: Woltspace scroll-craft case study (Codex branch `codex/woltspace-case-study`) fast-forwarded to `main` at `f549582`; all six Woltspace tiles link to `/woltspace/`. SPASynth (`/spasynth/`) shipped 2026-09-06 with its build tooling moved out of git. RenoRun is in progress on `renorun-scrollcraft` (rhythmic cutlist, order-tracker chrome), not yet merged. Note: `main` is checked out in a second worktree at `/Users/mikejerugim/flat7-design-spasynth` (Codex); from the primary checkout, update `main` by pushing refs (`git push origin <branch>:main`) rather than checking it out.
 
 - Wingman scroll-craft case study built and shipped, including the landing "case study" framing (eyebrow, self-typing prompt, "Scroll to start presenting" ribbon nudge which Mike asked for despite scroll-craft's ban on scroll cues, "· Case study" top-bar tag), the 14-stop tools rail grouped by stage with the heading pinned above it and the rail panning through the exit, and Mike's own slide backgrounds (`public/wingman/assets/bg-1,3,4,5.jpg`; `bg-2` villa is unused).
 - Decathlon scroll-craft case study shipped; both Decathlon role lines now "Lead Product Designer".
