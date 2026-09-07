@@ -169,10 +169,13 @@
     /* A full-width band the text cannot outrun on any viewport: dense on
        the left where the line sits, fading out toward the van on the right,
        and fading upward so the top half of the photo stays clean. */
-    width: 100%; height: 72%;
-    background:
-      linear-gradient(0deg, rgba(11,11,12,0.35) 0%, rgba(11,11,12,0.35) 60%, rgba(11,11,12,0) 100%),
-      linear-gradient(90deg, rgba(11,11,12,0.94) 0%, rgba(11,11,12,0.88) 42%, rgba(11,11,12,0.55) 66%, rgba(11,11,12,0.12) 100%);
+    width: 100%; height: 76%;
+    background: linear-gradient(90deg, rgba(11,11,12,0.94) 0%, rgba(11,11,12,0.88) 42%, rgba(11,11,12,0.55) 66%, rgba(11,11,12,0.12) 100%);
+    /* The mask fades the whole band upward, so there is no hard top edge
+       across the photo; density is full in the bottom half where the line
+       sits and gone by the top of the band. */
+    -webkit-mask-image: linear-gradient(to top, #000 0%, #000 48%, transparent 100%);
+    mask-image: linear-gradient(to top, #000 0%, #000 48%, transparent 100%);
   }
   #cut-11 .cut__inner { max-width: min(40rem, 56vw); }
 
