@@ -113,12 +113,18 @@
     display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(2rem, 6vw, 5rem); align-items: center;
   }
   .app-stage__media { display: flex; flex-direction: column; align-items: center; gap: var(--sc-4); }
+  /* Device corners scale with the frame: an iPhone's outer corner is about
+     14% of its width, and the screen's corner is that minus the bezel, so the
+     two arcs stay concentric at any size. Fixed pixel radii were too sharp on
+     the large frame and too round on the small ones. --pf-w is the frame's
+     own width expression, repeated per size below. */
   .phone-frame {
-    position: relative; width: min(300px, 62vw); aspect-ratio: 532 / 1080;
-    border-radius: 22px; background: #161513; padding: 8px;
+    --pf-w: min(300px, 62vw); --pf-pad: 8px; --pf-r: calc(var(--pf-w) * 0.14);
+    position: relative; width: var(--pf-w); aspect-ratio: 532 / 1080;
+    border-radius: var(--pf-r); background: #161513; padding: var(--pf-pad);
     box-shadow: 0 24px 48px -20px rgba(20,15,10,0.35), 0 4px 12px -4px rgba(20,15,10,0.25);
   }
-  .phone-frame__screen { position: relative; width: 100%; height: 100%; border-radius: 14px; overflow: hidden; background: #000; }
+  .phone-frame__screen { position: relative; width: 100%; height: 100%; border-radius: calc(var(--pf-r) - var(--pf-pad)); overflow: hidden; background: #000; }
   .phone-frame__screen img, .phone-frame__screen video {
     display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center;
   }
@@ -130,9 +136,8 @@
 
   .app-strip { padding-block: clamp(2rem, 3.5vw, 3.5rem); background: var(--sc-canvas); }
   .app-strip__row { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sc-6); }
-  .app-strip figure { margin: 0; }
-  .app-strip .phone-frame { width: 100%; max-width: 12rem; margin-inline: auto; aspect-ratio: 720 / 1460; border-radius: 14px; padding: 5px; }
-  .app-strip .phone-frame__screen { border-radius: 9px; }
+  .app-strip figure { margin: 0; container-type: inline-size; }
+  .app-strip .phone-frame { --pf-w: min(12rem, 100cqw); --pf-pad: 5px; width: var(--pf-w); margin-inline: auto; aspect-ratio: 720 / 1460; }
   .app-strip figcaption {
     margin-top: var(--sc-3); font-size: var(--sc-t-sm); color: var(--sc-ink-soft); text-align: center;
   }
@@ -346,7 +351,7 @@
       max-width: none; margin: 0; position: absolute; inset: 0 0 auto 0;
       font-size: 1.15rem; line-height: 1.3;
     }
-    .phone-frame { width: 70vw; margin-inline: auto; }
+    .phone-frame { --pf-w: 70vw; margin-inline: auto; }
     .app-strip__row { grid-template-columns: repeat(2, 1fr); }
     .creator__media { order: -1; height: 36rem; margin-bottom: 1.5rem; }
     .plate { width: 82%; min-width: 0; }
