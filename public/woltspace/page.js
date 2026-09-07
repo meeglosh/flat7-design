@@ -63,6 +63,49 @@
     document.querySelector('#view-heading').textContent=heading;
     document.querySelector('#view-copy').textContent=copy;
   }));
+  const startPrototype = document.querySelector('#prototype-start');
+  const resetPrototype = document.querySelector('#prototype-reset');
+  const prototypeStage = document.querySelector('#prototype-stage');
+  const prototypeCover = document.querySelector('#prototype-cover');
+  const prototypeHelp = document.querySelector('#prototype-help');
+  startPrototype.hidden = false;
+  let prototypeFrame;
+  startPrototype.addEventListener('click', () => {
+    prototypeFrame = document.createElement('iframe');
+    prototypeFrame.title = 'Woltspace interactive design prototype';
+    prototypeFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-modals');
+    prototypeFrame.src = 'prototype/index.html';
+    prototypeFrame.addEventListener('load', () => {
+      // Preserve the supplied file, adapting its fixed onboarding to the embed's height.
+      const embeddedStyle = prototypeFrame.contentDocument.createElement('style');
+      embeddedStyle.textContent = `
+        #onboarding{overflow-y:auto;align-items:flex-start}.ob-inner{margin-block:auto}
+        @media(max-width:600px){
+          #waking-view .pd-back-bar{overflow-x:auto;flex-shrink:0}
+          #wk-drag-handle{display:none!important}
+          #waking-view:not(:has(#wk-btn-project.active)) #wk-preview-panel{display:none!important}
+          #waking-view:not(:has(#wk-btn-project.active)) #wk-chat-panel{display:flex!important;width:100%!important;flex:1;min-width:0}
+          #waking-view:has(#wk-btn-project.active) #wk-chat-panel{display:none!important}
+          #waking-view:has(#wk-btn-project.active) #wk-preview-panel{width:100%!important;min-width:0}
+        }`;
+      prototypeFrame.contentDocument.head.append(embeddedStyle);
+      prototypeHelp.textContent = 'Give your wolt a name to begin. Use Lodge to return to the workspace, then choose Projects.';
+    });
+    prototypeCover.hidden = true;
+    prototypeStage.append(prototypeFrame);
+    resetPrototype.hidden = false;
+    prototypeHelp.textContent = 'Loading the interactive workspace…';
+    document.querySelector('#prototype-demo').scrollIntoView({ behavior: reduced.matches ? 'instant' : 'smooth', block: 'start' });
+    prototypeFrame.focus({ preventScroll: true });
+  });
+  resetPrototype.addEventListener('click', () => {
+    prototypeFrame?.remove();
+    prototypeFrame = undefined;
+    prototypeCover.hidden = false;
+    resetPrototype.hidden = true;
+    prototypeHelp.textContent = 'Prototype reset. Start again with a new wolt.';
+    startPrototype.focus({ preventScroll: true });
+  });
   if (window.ScrollCraft) ScrollCraft.mount(document.body);
   update();
 })();

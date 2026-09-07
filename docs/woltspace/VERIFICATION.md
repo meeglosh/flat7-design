@@ -30,3 +30,11 @@ First read: curiosity → clarity → relief → familiarity → confidence → 
 Desktop Chrome emulation is not a physical phone or Safari test. No WCAG certification is claimed. The screenshot assets preserve the supplied prototype's own text contrast; the harness has no engine-cued copy to measure, so its green report is not an automatic contrast certification. Essential case-study prose sits on solid grounds and was visually checked. Original prototype animation and accessibility behavior are preserved, not redesigned by this case-study task. Production GitHub Pages deployment is deferred to the user's Claude Code merge.
 
 Evidence: local ignored `scrollcraft/builds/woltspace/lab/`. Reproducible interaction checks: `scripts/verify-woltspace.mjs`. No generated imagery or paid generation was used. Optional preflight omissions: KIE key and ffmpeg WebP encoder, neither needed for this asset route.
+
+## Inline prototype revision
+
+Embedded the supplied HTML directly in the Your turn chapter behind an explicit Start exploring button. Verified desktop and phone lazy loading (no iframe before activation), creating a wolt, reset/unload, absence of page overflow, and absence of script errors. Reviewed cover and active screenshots. Original prototype remains unchanged. The larger standalone view remains available.
+
+Embed testing caught the original fixed onboarding overflowing the shorter iframe. The host now applies vertical overflow and safe alignment inside that screen so Create wolt stays reachable.
+
+Phone visual review also caught an overly narrow split after creating a wolt. The host now presents one full-width panel and uses the existing Chat/Project buttons to switch. Both states were exercised in the final passing run.
