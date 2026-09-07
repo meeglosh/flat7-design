@@ -1141,3 +1141,21 @@ html:not(.sc-ready) .crazy-stage {
  .translation dd small { margin-top: 8px; }
  .concept-summary { font-size: 13px; }
 }
+
+/* Current landing-page animals have taller, compact silhouettes. */
+.hero-creature img, .escaped img, .cast img { height:auto; }
+.hero-creature img { width:72px; }
+.concept-art img { width:84px; }
+.escaped-beaver { width:90px; }
+.escaped-raccoon { width:85px; }
+.escaped-fish { width:80px; }
+.cast-beaver { width:160px; bottom:40px; }
+.cast-raccoon { width:135px; bottom:40px; }
+@media(max-width:600px) {
+  .concept-art img { width:65px; }
+  .escaped-beaver { width:60px; }
+  .escaped-raccoon { width:55px; }
+  .escaped-fish { width:55px; }
+  .cast-beaver { width:115px; bottom:25px; }
+  .cast-raccoon { width:100px; bottom:25px; }
+}

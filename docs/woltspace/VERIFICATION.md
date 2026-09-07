@@ -54,3 +54,5 @@ Skeletal revision: replaced the polished grayscale before with a generated text-
 ## Concept introduction revision
 
 Removed the opening dashboard screenshot and expanded the harness, scaffold, and wolt cards with decorative illustrations. The dashboard now first appears in the crazier reveal. Reviewed screenshots at 1440px and 390px; verified three concept cards, no workspace image in the challenge section, and no horizontal overflow. Production build and whitespace checks pass.
+
+Current animal revision: production build and diff checks pass. Verified concept cards and animal group at 1440px and 390px, with no horizontal overflow; confirmed footer head is absent. Visually reviewed the rendered updated sprites at both sizes.

@@ -38,3 +38,7 @@ Review and merge this branch into the then-current main using Claude Code. A pus
 The inline host injects a small layout adaptation into the iframe: onboarding scrolls vertically when taller than the panel. On phones the first-wolt conversation uses one full-width view, toggled by the existing Chat and Project buttons. The supplied HTML file itself remains byte-for-byte unchanged.
 
 Active embed chrome: the explanatory toolbar hides when exploration starts. Reset and Open larger move below the iframe as quiet text controls. Reset restores the original preview toolbar and returns focus to Start exploring.
+
+## Current landing-page artwork
+
+Decorative animals now use `assets/live-beaver.svg`, `live-raccoon.svg`, and `live-otter.svg`, extracted directly from the pixel maps and palettes in https://www.woltspace.com/ on 2026-09-07. The otter replaces the decorative fish. These are local SVG assets, with no runtime dependency on the source website. Original screenshots and the supplied interactive prototype retain their original artwork. Removed the footer's peeking head.
