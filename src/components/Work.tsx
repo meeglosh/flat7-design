@@ -44,7 +44,7 @@ const projects: Project[] = [
     category: 'AI Infrastructure · Web',
     description:
       'Persistent workspaces for AI agents with memory, identity, and autonomy that survive across sessions. Designing for non-human collaborators: a new problem that required first-principles thinking.',
-    url: 'https://woltspace.com',
+    url: '/woltspace/',
     accent: '#FF3D5A',
   },
   {

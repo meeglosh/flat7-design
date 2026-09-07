@@ -47,7 +47,7 @@ const PROJECTS = [
     desc: 'High-stakes UX where gentleness is a feature. Mental health support for young people, designed at the intersection of clinical rigor and human warmth.' },
   { id: '03', name: 'Wingman',     cat: 'Productivity AI · Web',   url: '/wingman/',                            accent: 'mustard', thumb: '/thumbnails/midcentury/wingman.png',
     desc: 'From prompt to polished presentation. AI-driven slide generation with real themes, real typography, audio visualization, and export.' },
-  { id: '04', name: 'Woltspace',   cat: 'AI Infrastructure · Web', url: 'https://woltspace.com',               accent: 'olive',   thumb: '/thumbnails/midcentury/woltspace.png',
+  { id: '04', name: 'Woltspace',   cat: 'AI Infrastructure · Web', url: '/woltspace/',               accent: 'olive',   thumb: '/thumbnails/midcentury/woltspace.png',
     desc: 'Persistent workspaces for AI agents with memory, identity, and autonomy that survive across sessions. Designing for non-human collaborators.' },
   { id: '06', name: 'SPASynth',    cat: 'Audio Software · VST/AU',  url: '/spasynth/',               accent: 'teal',    thumb: '/thumbnails/midcentury/spasynth.png',
     desc: 'A software synthesizer that turns 11,474 professional sound-effects recordings into playable instruments. Granular, wavetable, and convolution synthesis built from real-world Foley and ambient audio.' },
