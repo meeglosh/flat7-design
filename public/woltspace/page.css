@@ -1181,3 +1181,6 @@ html:not(.sc-ready) .crazy-stage {
 .step:hover:not(.selected) { background:#e5ddcd; }
 .step:focus-visible { outline:3px solid var(--sc-ink); outline-offset:3px; }
 .onboarding img { object-fit:contain; }
+
+/* Let the tightly framed form retain its natural proportions. */
+.onboarding img[src$="onboarding.png"] { aspect-ratio:auto; object-fit:contain; }

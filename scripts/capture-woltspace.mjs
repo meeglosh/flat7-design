@@ -7,9 +7,8 @@ await page.addInitScript(()=>{Element.prototype.requestPointerLock=()=>{};Elemen
 await page.goto(pathToFileURL(resolve('public/woltspace/prototype/index.html')).href);
 await page.evaluate(()=>document.fonts.ready);
 await page.waitForTimeout(1300);
-await page.screenshot({path:'public/woltspace/assets/onboarding.png'});
-await page.evaluate(()=>Object.fromEntries(['sp-bv-main-a','sp-rc-a','sp-fish','sp-peek','sp-log'].map(id=>[id,document.getElementById(id)?.querySelector('svg')?.outerHTML])));
-for(const [id,svg] of Object.entries(assets)) if(svg) await fs.writeFile(`public/woltspace/assets/${id}.svg`,svg);
+const form = await page.locator('.ob-inner').boundingBox();
+await page.screenshot({path:'public/woltspace/assets/onboarding.png', clip:{x:form.x-24,y:form.y-24,width:form.width+48,height:form.height+48}});
 await page.evaluate(()=>{document.getElementById('onboarding').style.display='none';showProjects();});
 await page.waitForTimeout(300);
 await page.screenshot({path:'public/woltspace/assets/workspace.png'});
