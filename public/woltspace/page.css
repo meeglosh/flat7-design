@@ -1184,3 +1184,25 @@ html:not(.sc-ready) .crazy-stage {
 
 /* Let the tightly framed form retain its natural proportions. */
 .onboarding img[src$="onboarding.png"] { aspect-ratio:auto; object-fit:contain; }
+
+/* The playful reveal expands beyond the dashboard into its own landscape. */
+.crazy-stage { isolation:isolate; background:#dce5d5; transition:background-color 900ms ease; }
+.is-crazy .crazy-stage { background:#c6e1e7; }
+.reveal-landscape { position:absolute; inset:0; z-index:-1; overflow:hidden; pointer-events:none; opacity:0; transition:opacity 900ms ease; }
+.is-crazy .reveal-landscape { opacity:1; }
+.landscape-hills { position:absolute; inset:48% -5% 0; }
+.landscape-hills-back { background:#9aad83; clip-path:polygon(0 30%,8% 30%,8% 20%,16% 20%,16% 10%,25% 10%,25% 23%,35% 23%,35% 35%,48% 35%,48% 15%,57% 15%,57% 5%,66% 5%,66% 20%,78% 20%,78% 10%,90% 10%,90% 27%,100% 27%,100% 100%,0 100%); }
+.landscape-hills-front { top:63%; background:#667f53; clip-path:polygon(0 15%,12% 15%,12% 30%,25% 30%,25% 45%,38% 45%,38% 20%,52% 20%,52% 35%,65% 35%,65% 15%,78% 15%,78% 30%,90% 30%,90% 10%,100% 10%,100% 100%,0 100%); }
+.landscape-river { position:absolute; bottom:0; left:0; right:0; height:21%; background:#6ea6b2; border-top:8px solid #d4e6d2; clip-path:polygon(0 10%,15% 10%,15% 20%,32% 20%,32% 6%,49% 6%,49% 16%,70% 16%,70% 0,87% 0,87% 12%,100% 12%,100% 100%,0 100%); }
+.river-current { position:absolute; inset:0 -160px; background:repeating-linear-gradient(90deg,transparent 0 45px,#b9e0df 45px 90px,transparent 90px 160px) 0 35% / 160px 3px repeat-x, repeating-linear-gradient(90deg,transparent 0 80px,#9bcbcf 80px 140px,transparent 140px 230px) 0 72% / 230px 4px repeat-x; animation:river-flow 5s linear infinite; }
+.landscape-bank { position:absolute; bottom:0; width:100%; height:12px; background:#496640; }
+.landscape-cloud { position:absolute; width:180px; height:38px; background:#f5f7ec; clip-path:polygon(0 50%,15% 50%,15% 20%,35% 20%,35% 0,68% 0,68% 25%,85% 25%,85% 50%,100% 50%,100% 100%,0 100%); animation:cloud-drift 40s linear infinite alternate; }
+.landscape-cloud-a { top:7%; left:4%; }
+.landscape-cloud-b { top:28%; right:2%; width:240px; height:50px; animation-duration:55s; animation-direction:alternate-reverse; }
+.reveal-landscape * { animation-play-state:paused; }
+.is-crazy .reveal-landscape * { animation-play-state:running; }
+.crazy-bottom { position:relative; z-index:3; border-radius:6px; padding:12px 18px; background:#eaf0e3eb; }
+@keyframes river-flow { to { transform:translateX(160px); } }
+@keyframes cloud-drift { to { transform:translateX(160px); } }
+@media(max-width:600px) { .landscape-cloud { width:100px; height:25px; }.landscape-cloud-b { width:130px; top:35%; }.landscape-hills { top:55%; }.landscape-hills-front { top:70%; }.landscape-river { height:18%; }.crazy-bottom { width:calc(100% - 32px); padding:12px; } }
+@media(prefers-reduced-motion:reduce) { .reveal-landscape,.crazy-stage { transition:none; }.reveal-landscape * { animation:none!important; } }
