@@ -1173,3 +1173,11 @@ html:not(.sc-ready) .crazy-stage {
   .view-buttons { gap:8px; }
   .view-buttons button { padding:12px 8px; min-height:64px; font-size:12px; line-height:1.4; }
 }
+
+.setup-prompt { font-size:16px; font-weight:600; margin-bottom:16px; }
+.setup-prompt span { display:block; font-size:13px; font-weight:400; color:var(--sc-ink-soft); margin-top:6px; }
+.step { padding:18px; margin-bottom:10px; border:1px solid #b8ad9b; border-radius:6px; background:#fffaf2; cursor:pointer; }
+.step.selected { background:var(--sc-accent); border-color:var(--sc-accent); color:white; }
+.step:hover:not(.selected) { background:#e5ddcd; }
+.step:focus-visible { outline:3px solid var(--sc-ink); outline-offset:3px; }
+.onboarding img { object-fit:contain; }

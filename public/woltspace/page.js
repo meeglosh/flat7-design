@@ -44,7 +44,18 @@
   ];
   document.querySelectorAll('[data-step]').forEach(button => button.addEventListener('click', () => {
     document.querySelectorAll('[data-step]').forEach(b => { b.setAttribute('aria-pressed', String(b===button)); b.classList.toggle('selected',b===button); });
-    const [title,copy] = steps[Number(button.dataset.step)];
+    const index = Number(button.dataset.step);
+    const visuals = [
+      ['setup-docker.svg', 'Docker Desktop running on a laptop: preparing your machine for Woltspace.', 'Explain the prerequisite before asking someone to install it. Concept illustration.'],
+      ['setup-repo.svg', 'The Woltspace repository on GitHub becomes a local copy on your machine.', 'Connect the technical instruction with a familiar action: bring the project onto your computer. Concept illustration.'],
+      ['onboarding.png', 'Meet your first wolt: give your collaborator a name, type, and skills.', 'The destination: create your first collaborator. Original design prototype.']
+    ];
+    const [file, alt, caption] = visuals[index];
+    document.querySelector('#setup-image').src = `assets/${file}`;
+    document.querySelector('#setup-image').alt = alt;
+    document.querySelector('#setup-image-link').href = `assets/${file}`;
+    document.querySelector('#setup-caption').textContent = caption;
+    const [title,copy] = steps[index];
     document.querySelector('#step-title').textContent=title;
     document.querySelector('#step-copy').textContent=copy;
   }));
