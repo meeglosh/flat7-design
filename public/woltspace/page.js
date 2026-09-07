@@ -37,12 +37,32 @@
   function requestUpdate() { if (!queued) { queued=true; requestAnimationFrame(update); } }
   addEventListener('scroll', requestUpdate, { passive: true });
   addEventListener('resize', requestUpdate);
+  const imageRequests = new WeakMap();
+  async function crossfadeImage(img, src, alt) {
+    const request = {};
+    imageRequests.set(img, request);
+    if (img.getAttribute('src') === src) { img.alt = alt; return; }
+    const preload = new Image(); preload.src = src;
+    try { await preload.decode(); } catch { return; }
+    if (imageRequests.get(img) !== request) return;
+    const parent = img.parentElement;
+    parent.querySelectorAll('.image-outgoing').forEach(el => el.remove());
+    const old = img.cloneNode(); old.removeAttribute('id'); old.alt = ''; old.setAttribute('aria-hidden','true');
+    const box = img.getBoundingClientRect(), host = parent.getBoundingClientRect();
+    old.classList.add('image-outgoing');
+    old.style.cssText = `position:absolute;left:${box.left-host.left}px;top:${box.top-host.top}px;width:${box.width}px;height:${box.height}px;margin:0;max-height:none;z-index:2;pointer-events:none;`;
+    img.src = src; img.alt = alt;
+    if (reduced.matches) return;
+    parent.appendChild(old);
+    const fade = old.animate([{opacity:1},{opacity:0}], {duration:450,easing:'ease-in-out'});
+    fade.finished.then(() => old.remove()).catch(() => old.remove());
+  }
   const steps = [
     ['A prerequisite needs an explanation.', 'Docker comes before the fun part. My job was to explain how to install it and get it running in language that did not assume someone had done this before.'],
     ['Translate the action, not just the label.', 'Cloning a repository means making a local copy of the project. I wanted the onboarding to connect the technical instruction with what the person was actually doing.'],
     ['Give each instruction a destination.', 'The terminal is a means to get into the workspace. I focused the instructions on setting things up and getting to that first usable screen, rather than assuming comfort with command-line tools.']
   ];
-  document.querySelectorAll('[data-step]').forEach(button => button.addEventListener('click', () => {
+  function selectStep(button) {
     document.querySelectorAll('[data-step]').forEach(b => { b.setAttribute('aria-pressed', String(b===button)); b.classList.toggle('selected',b===button); });
     const index = Number(button.dataset.step);
     const visuals = [
@@ -51,14 +71,14 @@
       ['onboarding.png', 'Meet your first wolt: give your collaborator a name, type, and skills.', 'The destination: create your first collaborator. Original design prototype.']
     ];
     const [file, alt, caption] = visuals[index];
-    document.querySelector('#setup-image').src = `assets/${file}`;
-    document.querySelector('#setup-image').alt = alt;
+    crossfadeImage(document.querySelector('#setup-image'), `assets/${file}`, alt);
     document.querySelector('#setup-image-link').href = `assets/${file}`;
     document.querySelector('#setup-caption').textContent = caption;
     const [title,copy] = steps[index];
     document.querySelector('#step-title').textContent=title;
     document.querySelector('#step-copy').textContent=copy;
-  }));
+  }
+  document.querySelectorAll('[data-step]').forEach(button => button.addEventListener('click', () => selectStep(button)));
   const views = {
     workspace: ['Projects with status labels, assigned wolts, and direct actions.', 'The project is the unit of work. Status, keeper, and actions stay together.', 'A home for the work, not just the chat.', 'Project cards show what is running and who is responsible. The team sidebar keeps agents reachable without making people switch mental models to find their projects.'],
     workflow: ['The agent conversation beside a preview of the project being worked on.', 'Conversation and output share a workspace, with ways to focus on either.', 'Keep the conversation close to the result.', 'The split view puts the agent conversation beside the project itself. People can discuss the work while looking at it, then give either view more room when they need to focus.'],
@@ -67,8 +87,7 @@
   function selectView(button) {
     document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
     const key=button.dataset.view, [alt,caption,heading,copy]=views[key];
-    document.querySelector('#view-image').src=`assets/${key}.png`;
-    document.querySelector('#view-image').alt=alt;
+    crossfadeImage(document.querySelector('#view-image'), `assets/${key}.png`, alt);
     document.querySelector('#view-link').href=`assets/${key}.png`;
     document.querySelector('#view-caption').textContent=caption;
     document.querySelector('#view-heading').textContent=heading;
@@ -86,10 +105,21 @@
     const index = Math.min(2, Math.max(0, Math.floor((-rect.top / travel) * 3)));
     if (index !== lastViewIndex) { lastViewIndex = index; selectView(viewButtons[index]); }
   }
+  const setupTrack = document.querySelector('.setup-scroll');
+  const stepButtons = [...document.querySelectorAll('[data-step]')];
+  let lastStepIndex = -1;
+  function syncSetupStep() {
+    if (reduced.matches) return;
+    const travel = setupTrack.offsetHeight - innerHeight;
+    if (travel <= 0) return;
+    const index = Math.min(2, Math.max(0, Math.floor(-setupTrack.getBoundingClientRect().top / travel * 3)));
+    if (index !== lastStepIndex) { lastStepIndex = index; selectStep(stepButtons[index]); }
+  }
   let viewQueued = false;
-  addEventListener('scroll', () => { if (!viewQueued) { viewQueued = true; requestAnimationFrame(() => { viewQueued = false; syncWorkspaceView(); }); } }, {passive:true});
+  addEventListener('scroll', () => { if (!viewQueued) { viewQueued = true; requestAnimationFrame(() => { viewQueued = false; syncWorkspaceView(); syncSetupStep(); }); } }, {passive:true});
   addEventListener('resize', syncWorkspaceView);
-  syncWorkspaceView();
+  addEventListener('resize', syncSetupStep);
+  syncWorkspaceView(); syncSetupStep();
   const startPrototype = document.querySelector('#prototype-start');
   const resetPrototype = document.querySelector('#prototype-reset');
   const prototypeStage = document.querySelector('#prototype-stage');
