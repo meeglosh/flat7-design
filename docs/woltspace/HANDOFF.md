@@ -36,3 +36,5 @@ The verification script expects local Google Chrome on macOS. Screenshot evidenc
 Review and merge this branch into the then-current main using Claude Code. A push to main deploys the portfolio through its existing GitHub Pages workflow. This task only publishes the feature branch, not the live site. No changes to RenoRun or SPASynth are included.
 
 The inline host injects a small layout adaptation into the iframe: onboarding scrolls vertically when taller than the panel. On phones the first-wolt conversation uses one full-width view, toggled by the existing Chat and Project buttons. The supplied HTML file itself remains byte-for-byte unchanged.
+
+Active embed chrome: the explanatory toolbar hides when exploration starts. Reset and Open larger move below the iframe as quiet text controls. Reset restores the original preview toolbar and returns focus to Start exploring.

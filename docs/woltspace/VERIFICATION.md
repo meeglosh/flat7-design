@@ -38,3 +38,7 @@ Embedded the supplied HTML directly in the Your turn chapter behind an explicit 
 Embed testing caught the original fixed onboarding overflowing the shorter iframe. The host now applies vertical overflow and safe alignment inside that screen so Create wolt stays reachable.
 
 Phone visual review also caught an overly narrow split after creating a wolt. The host now presents one full-width panel and uses the existing Chat/Project buttons to switch. Both states were exercised in the final passing run.
+
+## Active header simplification
+
+Verified that the extra toolbar hides after Start exploring, its controls move below the frame, and reset restores both the preview header and keyboard focus. Desktop and phone onboarding, Chat/Project switching, and reset continue to pass.

@@ -68,6 +68,10 @@
   const prototypeStage = document.querySelector('#prototype-stage');
   const prototypeCover = document.querySelector('#prototype-cover');
   const prototypeHelp = document.querySelector('#prototype-help');
+  const prototypeDemo = document.querySelector('#prototype-demo');
+  const prototypeToolbar = prototypeDemo.querySelector('.prototype-toolbar');
+  const prototypeActions = prototypeDemo.querySelector('.prototype-actions');
+  const prototypeControls = document.querySelector('#prototype-controls');
   startPrototype.hidden = false;
   let prototypeFrame;
   startPrototype.addEventListener('click', () => {
@@ -92,6 +96,10 @@
       prototypeHelp.textContent = 'Give your wolt a name to begin. Use Lodge to return to the workspace, then choose Projects.';
     });
     prototypeCover.hidden = true;
+    prototypeToolbar.hidden = true;
+    prototypeControls.hidden = false;
+    prototypeControls.append(prototypeActions);
+    prototypeDemo.classList.add('prototype-active');
     prototypeStage.append(prototypeFrame);
     resetPrototype.hidden = false;
     prototypeHelp.textContent = 'Loading the interactive workspace…';
@@ -102,6 +110,10 @@
     prototypeFrame?.remove();
     prototypeFrame = undefined;
     prototypeCover.hidden = false;
+    prototypeToolbar.hidden = false;
+    prototypeControls.hidden = true;
+    prototypeToolbar.append(prototypeActions);
+    prototypeDemo.classList.remove('prototype-active');
     resetPrototype.hidden = true;
     prototypeHelp.textContent = 'Prototype reset. Start again with a new wolt.';
     startPrototype.focus({ preventScroll: true });

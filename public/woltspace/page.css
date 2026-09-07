@@ -1107,3 +1107,10 @@ html:not(.sc-ready) .crazy-stage {
   .prototype-start-panel { padding: 18px; flex-direction: column; align-items: flex-start; gap: 16px; }
   .explore .prototype-start-panel p { font-size: 14px; }
 }
+
+.prototype-active .prototype-stage { border-top: 1px solid #c8bcaa; border-radius: 8px; }
+.prototype-controls { margin-top: 16px; color: #c5d0bf; }
+.prototype-controls .prototype-actions { justify-content: flex-end; }
+.prototype-controls button { color: inherit; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 5px; }
+.prototype-controls button:hover { background: transparent; color: #f8f5ee; }
+.prototype-controls :focus-visible { outline-color: #f5bf83; }
