@@ -51,3 +51,14 @@ flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design con
 ## Deeper context
 
 Claude's project memory at `~/.claude/projects/-Users-mikejerugim-flat7-design/memory/` holds one note per case study (decisions, cleared claims, disclosure limits, verification lessons) plus the roster, privacy and media-block notes. This file is the summary; those are the deep dives. The Wingman product itself has its own `HANDOFF.md` at `/Users/mikejerugim/wingman`.
+
+## SPASynth case study draft (2026-09-06, not deployed)
+
+- Work is isolated on `codex/spasynth-case-study` in `/Users/mikejerugim/flat7-design-spasynth`. A concurrent task switched the original checkout to `renorun-scrollcraft`, so do not build SPASynth in that shared checkout.
+- Standalone page: `public/spasynth/`. All six SPASynth tiles link to `/spasynth/`; Vite has its trailing-slash route. These changes are prepared on the dedicated SPASynth branch; the page is not deployed.
+- Real Blender model: `scripts/spasynth/SPASynth.blend`, with reproducible generator `build_model.py`. The sample oscillator, Organic Chaos and modulation matrix have separate plate/control/substrate layers. They accumulate into an exploded view and reassemble during the story.
+- Studio scene: `scripts/spasynth/SPASynth-Studio.blend` and `render_studio.py` add Cycles softboxes, shadows, material detail, and camera close-ins/pans. `public/spasynth/scene.js` plays 181 rendered WebP frames per desktop/mobile layout on a canvas, loading near the bench with bounded fetch/decode concurrency. `page.js` ties progress to readable notes; shared scroll-craft engine files are unchanged. See `scripts/spasynth/SEQUENCE-PLAYER.md`.
+- User approved: 90 packs / nearly 12,000 sounds, solo product designer/AI builder framing, Claude Code and Codex plus verified stack names, warm studio + technical teardown, selected modules only, placeholder audio. Product is approaching release.
+- Placeholder WAVs are synthetic sketches, explicitly not SPASynth recordings. Replace files and visible labels later. No autoplay; starting a track pauses the others.
+- Reduced motion uses an exploded Blender poster and normal reading flow. Frame failures use a complete poster; no-JS preserves readable content. Desktop/mobile/compact captures and verification notes are in the gitignored `scrollcraft/builds/spasynth/lab/`.
+- Preview: `npm run dev -- --host 127.0.0.1 --port 4540`, then `/spasynth/`. Mike authorized committing and pushing the dedicated branch for deployment preparation. No merge to main or production deployment is authorized. Fingerprint row remains unappended until shipped.

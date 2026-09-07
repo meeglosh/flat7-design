@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101413">
+  <title>SPASynth · An instrument from the unexpected · Mike Jerugim</title>
+  <meta name="description" content="How I am turning Silverplatter Audio's sound library into my first software synthesizer, with Claude Code and Codex. A product design case study by Mike Jerugim.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23101413'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%236dd6c2' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="scrollcraft.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="scrollcraft.js" defer></script>
+  <script src="page.js" defer></script>
+  <script type="module" src="scene.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#story">Skip to the story</a>
+<header class="masthead">
+  <a class="back-link" href="/" aria-label="Back to Flat7 Design"><span aria-hidden="true">↖</span> flat7.design</a>
+  <span class="masthead-type">Product design &amp; solo development</span>
+  <a class="masthead-author" href="#build">Mike Jerugim</a>
+</header>
+<main>
+  <section class="hero" data-sc-act="flow" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="eyebrow">Silverplatter Audio · SPASynth</p>
+      <h1 id="hero-title">An instrument from<br> the unexpected.</h1>
+      <p class="hero-deck">Turning a world of recorded sounds into my first software synthesizer.</p>
+    </div>
+    <div class="hero-object">
+      <div class="hero-light" aria-hidden="true" data-sc-parallax="0.55"></div>
+      <div class="hero-rule" aria-hidden="true"></div>
+      <img class="hero-synth" src="assets/studio-assembled.webp" width="1600" height="1050" alt="A three-dimensional SPASynth instrument with wood side panels, black controls and turquoise displays." fetchpriority="high" data-sc-parallax="-0.45">
+      <p class="object-caption">Software, imagined as hardware.</p>
+    </div>
+    <div class="hero-foot"><span>A case study in making the unfamiliar playable.</span><span class="release-status"><i aria-hidden="true"></i> Approaching release</span></div>
+  </section>
+
+  <section class="origin section-gutter" id="story" data-sc-act="flow" aria-labelledby="origin-title">
+    <div class="origin-copy">
+      <h2 id="origin-title">What if the library<br> was the instrument?</h2>
+      <p class="lead">Silverplatter Audio has 90 sound effects packs. Nearly 12,000 sounds. I couldn't stop thinking about what else they could become.</p>
+      <p>What would happen if that entire collection became the engine of a synthesizer? A recording would no longer be the end of a sound. It would be the beginning of one.</p>
+      <p>That question became SPASynth. And it took me, a product designer, into the deep end of building my first software instrument.</p>
+    </div>
+    <figure class="studio-figure" data-sc-reveal="left" data-sc-reveal-at="0.05 0.4">
+      <img src="assets/studio.jpg" width="1577" height="997" alt="SPASynth imagined in a warm studio, surrounded by recording equipment." loading="lazy">
+      <figcaption>The studio is the starting point. The instrument is software.</figcaption>
+    </figure>
+  </section>
+
+  <section class="bench-intro section-gutter" aria-labelledby="bench-title" data-sc-act="flow">
+    <div><p class="eyebrow">Inside the idea</p><h2 id="bench-title">Take it apart.<br> Find the instrument.</h2></div>
+    <div class="bench-intro-right"><p>Three parts of the synth explain the idea better than a list of features. Each opens a different part of the design problem.</p>
+      <nav class="signal-index" aria-label="Explore the instrument"><a href="#sample-note">Source <span aria-hidden="true">↗</span></a><a href="#chaos-note">Movement <span aria-hidden="true">↗</span></a><a href="#matrix-note">Connections <span aria-hidden="true">↗</span></a></nav>
+    </div>
+  </section>
+
+  <section class="teardown" id="teardown" data-sc-act="flow" aria-label="An illustrated teardown of SPASynth">
+    <div class="bench-visual">
+      <div class="bench-caption"><span>SPASynth / study model</span><span id="module-label">Sample engine</span></div>
+      <div id="synth-stage" data-poster-assembled="./assets/studio-assembled.webp" data-poster-exploded="./assets/studio-exploded.webp" role="img" aria-label="Three-dimensional SPASynth model. Selected module panels, displays and controls separate into an exploded view, then reassemble as the story progresses.">
+        <img class="scene-fallback" src="assets/studio-assembled.webp" width="1600" height="1050" alt="" aria-hidden="true">
+      </div>
+      <div class="bench-floor" aria-hidden="true"></div>
+      <p class="model-disclosure">A physical metaphor for a software instrument.<br> Internal layers are illustrative, not a hardware schematic.</p>
+    </div>
+    <div class="field-notes">
+      <article class="field-note" id="sample-note" data-module="sample">
+        <div class="note-content"><span class="component-name">Oscillator A</span>
+          <h3>A sound becomes<br> something you play.</h3>
+          <p>The sample engine carries the original idea: bring recorded sounds into an instrument, then give them a musical life beyond the recording.</p>
+          <p>The design challenge starts here. A library invites you to find a sound. A synth invites you to change it. SPASynth has to make those two ways of thinking belong together.</p>
+          <div class="signal-line"><span>Recording</span><b aria-hidden="true">→</b><span>Sample engine</span><b aria-hidden="true">→</b><span>Instrument</span></div>
+          <a class="text-link" href="#listening">Hear the placeholder sketch <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+      <article class="field-note" id="chaos-note" data-module="chaos">
+        <div class="note-content"><span class="component-name">Organic Chaos</span>
+          <h3>Leave room<br> for a surprise.</h3>
+          <p>The source material already has character. Organic Chaos brings another question into the interface: how much unpredictability do you want to invite in?</p>
+          <p>Depth, rate and mix turn that idea into controls. For me, this is where product design becomes especially interesting: making an unfamiliar possibility feel like something you can explore.</p>
+          <p class="note-pull">The control should invite an experiment.</p>
+        </div>
+      </article>
+      <article class="field-note" id="matrix-note" data-module="matrix">
+        <div class="note-content"><span class="component-name">Modulation matrix</span>
+          <h3>The interesting part<br> is the connection.</h3>
+          <p>An oscillator, an envelope, a filter. Each has a job. The modulation matrix is where separate parts become a system, connecting a source of movement to a parameter.</p>
+          <p>That is also the bigger design task. The interface cannot just make each module understandable. It has to help someone understand what those modules can do together.</p>
+          <div class="signal-line"><span>Source</span><b aria-hidden="true">→</b><span>Destination</span><b aria-hidden="true">→</b><span>Amount</span></div>
+        </div>
+      </article>
+      <article class="field-note quiet-note" id="native-note" data-module="whole">
+        <div class="note-content">
+          <h3>Then it had<br> to be real.</h3>
+          <p>Designing the surface was only part of it. This was my first software instrument, built to work both inside a DAW and on its own.</p>
+          <p>Claude Code and Codex helped me move from a product idea into native audio software. I was learning the instrument by building the instrument.</p>
+        </div>
+      </article>
+      <article class="field-note reassembly-note" id="reassembly-note" data-module="whole">
+        <div class="note-content">
+          <h3>Many parts.<br> One new voice.</h3>
+          <p>The payoff is not a collection of modules. It is one instrument, built around a question that wouldn't leave me alone.</p>
+          <p class="note-pull">What else could these sounds become?</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="build section-gutter" id="build" data-sc-act="flow" aria-labelledby="build-title">
+    <div class="build-heading"><p class="eyebrow">From product design to native audio</p><h2 id="build-title">Beyond the interface.</h2></div>
+    <div class="build-copy"><p class="lead">The part I'm proudest of: I didn't stop at designing a synth. I built one.</p><p>SPASynth is my first software instrument, and I'm bringing it to market for Silverplatter Audio. The work crosses product thinking, interface design and the realities of a native plugin.</p></div>
+    <figure class="interface-figure"><img src="assets/interface.png" width="2760" height="1800" alt="The actual SPASynth software interface, with sample and wavetable oscillators, filters, modulation and effects." loading="lazy"><figcaption>The actual software interface. The physical instrument above is a visualization.</figcaption></figure>
+    <dl class="build-facts"><div><dt>My role</dt><dd>Product designer<br> Solo developer</dd></div><div><dt>Native foundation</dt><dd>C++20 · JUCE<br> CMake</dd></div><div><dt>Build targets</dt><dd>AU · VST3<br> Standalone</dd></div><div><dt>AI build partners</dt><dd>Claude Code<br> Codex</dd></div></dl>
+  </section>
+
+  <section class="listening section-gutter" id="listening" aria-labelledby="listening-title" data-sc-act="flow">
+    <div class="listening-title"><h2 id="listening-title">A little room<br> for listening.</h2><p class="placeholder-note"><strong>Placeholder audio.</strong> These are temporary sound sketches, not recordings of SPASynth. Product demos will replace these sketches.</p></div>
+    <div class="audio-tracks">
+      <div class="audio-track"><div><span class="track-category">The starting point</span><h3>A source sound</h3></div><audio controls preload="none" src="assets/placeholder-source.wav" aria-label="Play placeholder source sound"></audio></div>
+      <div class="audio-track"><div><span class="track-category">The possibility</span><h3>An instrument sketch</h3></div><audio controls preload="none" src="assets/placeholder-instrument.wav" aria-label="Play placeholder instrument sketch"></audio></div>
+      <div class="audio-track"><div><span class="track-category">The unexpected</span><h3>A little instability</h3></div><audio controls preload="none" src="assets/placeholder-chaos.wav" aria-label="Play placeholder chaos sketch"></audio></div>
+    </div>
+  </section>
+
+  <footer class="close section-gutter">
+    <p>Still building. Getting closer.</p>
+    <a class="product-link" href="https://spasynth.com/">Meet SPASynth <span aria-hidden="true">↗</span></a>
+    <div class="close-bottom"><span>Silverplatter Audio · Approaching release</span><a href="/">Back to Flat7 Design</a><span>Designed &amp; built by Mike Jerugim</span></div>
+  </footer>
+</main>
+</body>
+</html>
