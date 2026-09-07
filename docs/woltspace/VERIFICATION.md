@@ -18,7 +18,7 @@ The first harness reported a missing favicon and classified the bespoke reveal a
 
 The first visual pass revealed the landscape too early in the opening workspace screenshot. Changed that image to the labeled scenery-hidden view so the “make it crazier” exhibit delivers the principal visual change. Mobile review caught the escaped beaver colliding with the status caption; confined it to the picture boundary and moved the cloud away from interface text.
 
-The prototype test initially tried to use the sidebar while the newly created wolt's full-screen conversation was open. The correct flow uses its visible Back/Lodge button first. This was a test navigation issue, not a change to the supplied design.
+The prototype test initially tried to use the sidebar while the newly created wolt's full-screen conversation was open. The correct flow uses its visible Back/Lodge button first, then clicks the project title (not the surrounding card). This was a test navigation issue, not a change to the supplied design.
 
 ## Feel check
 

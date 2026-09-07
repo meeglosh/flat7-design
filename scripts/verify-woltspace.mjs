@@ -44,8 +44,9 @@ await frame.locator('#ob-name').fill('Cedar');await frame.locator('#ob-cta').cli
 assert.equal(await frame.locator('#onboarding').isVisible(),false);
 assert.match(await frame.locator('body').innerText(),/Cedar/);
 await frame.locator('#waking-view .pd-back-btn').click();
-await frame.locator('#nav-projects').click();await frame.locator('.project-card').filter({hasText:'Creatorspace'}).first().click();await page.waitForTimeout(200);
-const inner=page.frames().find(f=>f.url().includes('/prototype/index.html'));
+await frame.locator('#nav-projects').click();await frame.locator('.project-name').filter({hasText:'Creatorspace'}).first().click();await page.waitForTimeout(200);
+assert.equal(await frame.locator('#project-detail').isVisible(), true);
+await page.screenshot({path:`${out}/prototype-project.png`});
 await frame.locator('#project-detail .pd-back-btn').click();
 await frame.locator('a[onclick="toggleTerminal(event)"]').click();
 await frame.locator('.connectors-toggle').click();
