@@ -1,6 +1,6 @@
 # flat7.design: Session Handoff
 
-Last updated: 2026-09-06 (repo at `7055619`, live at https://flat7.design). Read this first when picking the project back up.
+Last updated: 2026-09-06 (repo at `7030d80`, live at https://flat7.design). Read this first when picking the project back up.
 
 flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design consultancy). React 18 + Vite + TypeScript + Tailwind + React Router v7. Every push to `main` deploys to GitHub Pages via GitHub Actions (about one to two minutes; `gh run list --limit 1` shows the run). There is no staging environment: `main` is production.
 
@@ -16,9 +16,10 @@ flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design con
   | `/onix/` | Chaptered editorial | Typographic title page; fixed 16-week rail as nav. Two designers on the team: never imply Mike was sole designer. Brand-guide text must not be quoted. |
   | `/soluna/` | Split stage (before vs after) | Divider is the chrome; context cards cross into the summary sheet; collapses into a live Figma prototype. No invented numbers (see BRIEF). |
   | `/decathlon/` | Filmic one-shot, pinned phone | One CSS phone carries stills, then a scroll-scrubbed booking clip, then the Figma prototype. First-person copy, no headcount claims, published facts only. |
+  | `/spasynth/` | Cinematic module teardown (built in Codex) | Blender-rendered frame sequence played on a canvas; placeholder WAVs, not real recordings; solo product designer/AI builder framing. See the SPASynth section below. |
   | `/wingman/` | Live surface (the page is a Wingman deck) | Wingman's own chrome is the nav; "scroll is speaking" transcript ribbon; ends in a real prompt form to wingman.design (`?topic=` prefill is live on the Wingman side). Mike's personal project; solo builder framing. |
 
-  Each Selected Work tile for those four projects links to its `/<slug>/` page (in all six themes). The old React pages for Soluna and Decathlon remain reachable.
+  Each Selected Work tile for those five projects links to its `/<slug>/` page (in all six themes). The old React pages for Soluna and Decathlon remain reachable.
 
 ## Scroll-craft: how the static case studies are built
 
@@ -52,13 +53,13 @@ flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design con
 
 Claude's project memory at `~/.claude/projects/-Users-mikejerugim-flat7-design/memory/` holds one note per case study (decisions, cleared claims, disclosure limits, verification lessons) plus the roster, privacy and media-block notes. This file is the summary; those are the deep dives. The Wingman product itself has its own `HANDOFF.md` at `/Users/mikejerugim/wingman`.
 
-## SPASynth case study draft (2026-09-06, not deployed)
+## SPASynth case study (2026-09-06, merged to main and deployed at /spasynth/)
 
 - Work is isolated on `codex/spasynth-case-study` in `/Users/mikejerugim/flat7-design-spasynth`. A concurrent task switched the original checkout to `renorun-scrollcraft`, so do not build SPASynth in that shared checkout.
-- Standalone page: `public/spasynth/`. All six SPASynth tiles link to `/spasynth/`; Vite has its trailing-slash route. These changes are prepared on the dedicated SPASynth branch; the page is not deployed.
+- Standalone page: `public/spasynth/`. All six SPASynth tiles link to `/spasynth/`; Vite has its trailing-slash route. Merged to `main` from `codex/spasynth-case-study` as a fast-forward (`7030d80`) with Mike's approval; live at https://flat7.design/spasynth/.
 - Real Blender model: `scripts/spasynth/SPASynth.blend`, with reproducible generator `build_model.py`. The sample oscillator, Organic Chaos and modulation matrix have separate plate/control/substrate layers. They accumulate into an exploded view and reassemble during the story.
 - Studio scene: `scripts/spasynth/SPASynth-Studio.blend` and `render_studio.py` add Cycles softboxes, shadows, material detail, and camera close-ins/pans. `public/spasynth/scene.js` plays 181 rendered WebP frames per desktop/mobile layout on a canvas, loading near the bench with bounded fetch/decode concurrency. `page.js` ties progress to readable notes; shared scroll-craft engine files are unchanged. See `scripts/spasynth/SEQUENCE-PLAYER.md`.
 - User approved: 90 packs / nearly 12,000 sounds, solo product designer/AI builder framing, Claude Code and Codex plus verified stack names, warm studio + technical teardown, selected modules only, placeholder audio. Product is approaching release.
 - Placeholder WAVs are synthetic sketches, explicitly not SPASynth recordings. Replace files and visible labels later. No autoplay; starting a track pauses the others.
 - Reduced motion uses an exploded Blender poster and normal reading flow. Frame failures use a complete poster; no-JS preserves readable content. Desktop/mobile/compact captures and verification notes are in the gitignored `scrollcraft/builds/spasynth/lab/`.
-- Preview: `npm run dev -- --host 127.0.0.1 --port 4540`, then `/spasynth/`. Mike authorized committing and pushing the dedicated branch for deployment preparation. No merge to main or production deployment is authorized. Fingerprint row remains unappended until shipped.
+- Preview: `npm run dev -- --host 127.0.0.1 --port 4540`, then `/spasynth/`. Mike approved the merge and deploy on 2026-09-06. The SPASynth fingerprint row still needs appending to `scrollcraft/FINGERPRINTS.md` (the Codex build folder is `scrollcraft/builds/spasynth/`); `scripts/spasynth/` holds ~25MB of build tooling and binaries (Blender files, GLB, vendored three.js) that are not needed to serve the site.
