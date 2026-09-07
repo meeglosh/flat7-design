@@ -1217,3 +1217,15 @@ html:not(.sc-ready) .zany-stage {
 .exhibit-frame { box-shadow:none; transition:box-shadow 700ms ease; }
 .is-zany .exhibit-frame { box-shadow:0 24px 60px -12px #183b4266,0 6px 18px #17343c30; }
 @media(prefers-reduced-motion:reduce) { .exhibit-frame { transition:none; } }
+
+/* Three workspace views advance with the visitor's scroll. */
+.workspace-scroll { height:300svh; position:relative; margin-top:48px; }
+.workspace-sticky { position:sticky; top:16px; padding-block:8px; }
+.workspace-sticky .view-prompt { margin-top:0; }
+.workspace-sticky .workspace-view { max-width:900px; margin-inline:auto; }
+.workspace-sticky #view-image { max-height:55svh; width:100%; object-fit:contain; }
+.workspace-sticky .design-note { padding-top:18px; gap:32px; }
+.workspace-sticky .design-note h3 { font-size:18px; }
+.workspace-sticky .design-note p { font-size:14px; }
+@media(max-width:600px) { .workspace-scroll { height:270svh; margin-top:28px; }.workspace-sticky { top:8px; }.workspace-sticky .design-note { gap:8px; }.workspace-sticky .workspace-view figcaption { font-size:11px; } }
+@media(prefers-reduced-motion:reduce) { .workspace-scroll { height:auto; }.workspace-sticky { position:static; } }

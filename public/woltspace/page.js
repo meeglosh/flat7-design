@@ -64,7 +64,7 @@
     workflow: ['The agent conversation beside a preview of the project being worked on.', 'Conversation and output share a workspace, with ways to focus on either.', 'Keep the conversation close to the result.', 'The split view puts the agent conversation beside the project itself. People can discuss the work while looking at it, then give either view more room when they need to focus.'],
     terminal: ['The integrated terminal below the project workspace, with external connectors in the sidebar.', 'Advanced tools stay within reach without becoming the default experience.', 'An easier entry point. Room to go deeper.', 'Chat is an approachable way in. Integrated terminal views and external connectors keep the technical capabilities accessible to people who want more direct control.']
   };
-  document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => {
+  function selectView(button) {
     document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
     const key=button.dataset.view, [alt,caption,heading,copy]=views[key];
     document.querySelector('#view-image').src=`assets/${key}.png`;
@@ -73,7 +73,23 @@
     document.querySelector('#view-caption').textContent=caption;
     document.querySelector('#view-heading').textContent=heading;
     document.querySelector('#view-copy').textContent=copy;
-  }));
+  }
+  const viewButtons = [...document.querySelectorAll('[data-view]')];
+  const viewTrack = document.querySelector('.workspace-scroll');
+  let lastViewIndex = -1;
+  viewButtons.forEach(button => button.addEventListener('click', () => selectView(button)));
+  function syncWorkspaceView() {
+    if (reduced.matches) return;
+    const rect = viewTrack.getBoundingClientRect();
+    const travel = viewTrack.offsetHeight - innerHeight;
+    if (travel <= 0) return;
+    const index = Math.min(2, Math.max(0, Math.floor((-rect.top / travel) * 3)));
+    if (index !== lastViewIndex) { lastViewIndex = index; selectView(viewButtons[index]); }
+  }
+  let viewQueued = false;
+  addEventListener('scroll', () => { if (!viewQueued) { viewQueued = true; requestAnimationFrame(() => { viewQueued = false; syncWorkspaceView(); }); } }, {passive:true});
+  addEventListener('resize', syncWorkspaceView);
+  syncWorkspaceView();
   const startPrototype = document.querySelector('#prototype-start');
   const resetPrototype = document.querySelector('#prototype-reset');
   const prototypeStage = document.querySelector('#prototype-stage');
