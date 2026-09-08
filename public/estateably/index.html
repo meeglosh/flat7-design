@@ -49,7 +49,7 @@
 
   /* ---- scrim columns: shaped to where copy actually sits, no blur -------- */
   .scrim-col {
-    position: absolute; top: 0; bottom: 0; width: min(46vw, 42rem);
+    position: absolute; top: 0; bottom: 0; width: min(56vw, 70rem);
     pointer-events: none; z-index: 0;
   }
   .scrim-col--left  { left: 0; background: linear-gradient(90deg, rgba(4,10,20,.88) 0%, rgba(4,10,20,.6) 45%, rgba(4,10,20,0) 100%); }
@@ -66,11 +66,16 @@
     border: 1px solid var(--sc-hairline);
     border-radius: .6rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,.45);
   }
-  .card img { display: block; width: 100%; height: auto; max-width: 512px; }
-  .card--sm { width: 152px; }
-  .card--md { width: 260px; }
-  .card--lg { width: min(340px, 512px); }
-  .card--tall { max-height: 320px; overflow-y: auto; }
+  .card img { display: block; width: 100%; height: auto; max-width: 1024px; }
+  /* Cards scale with the viewport: a single card reaches the source's own
+     1024px on XL screens (about 690px on a laptop); a pair sits side by side
+     at half that. Card-bearing copy blocks widen to fit. */
+  .card--sm { width: min(440px, 21vw); }
+  .card--md { width: min(720px, 34vw); }
+  .card--lg { width: min(1024px, 48vw); }
+  .card-row--pair .card { width: min(512px, 24vw); }
+  .card--tall { max-height: 52vh; overflow-y: auto; }
+  .sc-copy:has(.card-row) { width: min(58vw, 72rem); max-width: none; }
   .card__cap {
     font-family: var(--sc-font-mono); font-size: .68rem; color: var(--sc-ink-soft);
     padding: .5rem .6rem; border-top: 1px solid var(--sc-hairline);
@@ -83,7 +88,7 @@
   }
   .frame-tablet { padding: .5rem; border-radius: 1rem; }
   .frame-tablet img { border-radius: .4rem; }
-  .frame-phone { padding: .5rem .35rem; border-radius: 1.4rem; width: 132px; }
+  .frame-phone { padding: .5rem .35rem; border-radius: 1.4rem; width: min(300px, 15vw); }
   .frame-phone img { border-radius: 1rem; }
   .frame-laptop { padding: .5rem .5rem 1.1rem; border-radius: .6rem; }
   .frame-laptop::after {
@@ -132,8 +137,9 @@
 
   @media (max-width: 780px) {
     .sc-copy { max-width: min(90vw, 32rem); }
-    .card--lg { width: 220px; }
-    .card--md { width: 180px; }
+    .card--lg, .card--md, .card-row--pair .card { width: 88vw; }
+    .card--sm { width: 60vw; }
+    .sc-copy:has(.card-row) { width: auto; }
   }
 </style>
 </head>
@@ -194,7 +200,7 @@
       <h2>It starts with a family.</h2>
       <p>Executors and beneficiaries inherit a process that has always been opaque: handoffs across institutions, repeated document requests, unclear ownership, constant delays.</p>
       <div class="card-row">
-        <div class="card card--md">
+        <div class="card card--lg">
           <img src="assets/e04.jpg" alt="Early wireframe of the Estateably platform" loading="lazy">
           <div class="card__cap">Before formal interviews, I ran an initial wireframing pass so leadership had something tangible to react to.</div>
         </div>
@@ -219,7 +225,7 @@
     <div class="sc-copy sc-copy--lead" data-sc-copy data-sc-window="0.368 0.424">
       <h2>Mid-fidelity, back in users' hands.</h2>
       <p>An interactive prototype with prospective users validated core usability and pressure-tested the end-to-end experience before any visual polish.</p>
-      <div class="card-row">
+      <div class="card-row card-row--pair">
         <div class="card card--md frame-browser"><img src="assets/e06.jpg" alt="Mid-fidelity prototype screen" loading="lazy"></div>
         <div class="card card--md frame-browser"><img src="assets/e07.jpg" alt="Mid-fidelity prototype screen" loading="lazy"></div>
       </div>
@@ -228,7 +234,7 @@
     <div class="sc-copy sc-copy--trail" data-sc-copy data-sc-window="0.422 0.478">
       <h2>Then high fidelity.</h2>
       <p>Visual hierarchy, accessibility, trust signalling, and consistency across a fast-growing platform, for people often using it under stress.</p>
-      <div class="card-row" style="justify-content:flex-end">
+      <div class="card-row card-row--pair" style="justify-content:flex-end">
         <div class="card card--lg frame-browser"><img src="assets/e11.jpg" alt="High-fidelity transactions dashboard" loading="lazy"></div>
         <div class="card card--lg frame-browser"><img src="assets/e14.jpg" alt="High-fidelity dashboard overview" loading="lazy"></div>
       </div>
@@ -237,7 +243,7 @@
     <div class="sc-copy sc-copy--lead" data-sc-copy data-sc-window="0.49 0.595">
       <h2>A dashboard for the CRA.</h2>
       <p>Agents at the Canada Revenue Agency process estate files inside Estateably: approval, rejection, and audit flagging in a secure, compliant environment.</p>
-      <div class="card-row">
+      <div class="card-row card-row--pair">
         <div class="card card--md frame-browser"><img src="assets/e17.jpg" alt="CRA documents screen" loading="lazy"></div>
         <div class="card card--sm"><img src="assets/e16.jpg" alt="Whiteboard sketch of the CRA process" loading="lazy"></div>
       </div>
