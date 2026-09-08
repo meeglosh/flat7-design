@@ -1,13 +1,13 @@
 # flat7.design: Session Handoff
 
-Last updated: 2026-09-07 (RenoRun merged; live at https://flat7.design). Read this first when picking the project back up.
+Last updated: 2026-09-08 (Estateably release; deployment via the main-branch GitHub Pages workflow). Read this first when picking the project back up.
 
 flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design consultancy). React 18 + Vite + TypeScript + Tailwind + React Router v7. Every push to `main` deploys to GitHub Pages via GitHub Actions (about one to two minutes; `gh run list --limit 1` shows the run). There is no staging environment: `main` is production.
 
 ## What's on the site
 
 - **Homepage, six themes** selectable from a tab bar: Neo (id `noir`, the default, `src/themes/DefaultPage.tsx` + `src/components/*`), Mid-Century, Luxury, Bauhaus, Gen Z, MySpace (`src/themes/<name>/<Name>Page.tsx`). The chosen theme persists in `localStorage.styleTheme`.
-- **Selected Work grid**: NOT shared across themes. Each theme has its own hardcoded project array (Neo in `src/components/Work.tsx`, the rest in each theme page). Any add/remove/reorder/relink is **six separate edits**, each in that theme's own field names and styling. Current visible order (2026-09-07): Onix, Soluna, Wingman, Woltspace, SPASynth, Decathlon, RenoRun. Hololabs, Flashtract, Bandsintown and Estateably are commented out in every roster (not deleted) until their case studies are rebuilt.
+- **Selected Work grid**: NOT shared across themes. Each theme has its own hardcoded project array (Neo in `src/components/Work.tsx`, the rest in each theme page). Any add/remove/reorder/relink is **six separate edits**, each in that theme's own field names and styling. Current visible order (2026-09-08): Onix, Soluna, Wingman, Woltspace, SPASynth, Decathlon, RenoRun, Estateably. Hololabs, Flashtract and Bandsintown are commented out in every roster (not deleted) until their case studies are rebuilt.
 - **React case studies** at `/case-studies` and `/case-studies/:slug`, driven by `src/data/caseStudies.ts` (Kooth/Soluna, Decathlon, Estateably, Bandsintown and others). Theme-aware media blocks (`quotes`, `ideation`) live in `src/pages/CaseStudyDetail.tsx`; fullscreen zoomable Lightbox in `src/components/Lightbox.tsx`. **Deliberately low visibility**: no nav or hero link in any theme, only a small footer link. Do not re-add prominent links without asking.
 - **Scroll-craft case studies** (standalone static pages, the newer format, one folder each under `public/`):
 
@@ -19,9 +19,10 @@ flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design con
   | `/spasynth/` | Cinematic module teardown (built in Codex) | Blender-rendered frame sequence played on a canvas; placeholder WAVs, not real recordings; solo product designer/AI builder framing. See the SPASynth section below. |
   | `/woltspace/` | Chaptered editorial with an interactive exhibit (built in Codex) | Original supplied interface and pixel sprites; "Make it crazier" reveal; embedded interactive prototype; docs in `docs/woltspace/`. Shares the chaptered grammar with Onix (4/6 on the gate). |
   | `/renorun/` | Rhythmic cutlist (a dispatch at speed) | 14 hard cuts on black/white/orange, no pinning; a fixed order tracker (Placed, Picked, On the road, Delivered) is the peak, hitting Delivered on the van photo. Published facts plus the cleared team of twelve; four 5s app loops instead of a scrub. |
+  | `/estateably/` | Continuous orbit around a distributed ledger | Participant medallions and layered ledger plates; original camera narrative; responsive videos and posters. Editable scene and render pipeline in `docs/estateably/`. |
   | `/wingman/` | Live surface (the page is a Wingman deck) | Wingman's own chrome is the nav; "scroll is speaking" transcript ribbon; ends in a real prompt form to wingman.design (`?topic=` prefill is live on the Wingman side). Mike's personal project; solo builder framing. |
 
-  Each Selected Work tile for those seven projects links to its `/<slug>/` page (in all six themes). The old React pages for Soluna and Decathlon remain reachable.
+  Each Selected Work tile for those eight projects links to its `/<slug>/` page (in all six themes). The old React pages for Soluna and Decathlon remain reachable.
 
 ## Scroll-craft: how the static case studies are built
 
