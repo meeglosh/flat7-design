@@ -1,0 +1,497 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Estateably world scene</title>
+<style>
+  @font-face { font-family: 'Manrope'; font-weight: 400; font-style: normal; src: url('fonts/manrope-400.woff2') format('woff2'); }
+  @font-face { font-family: 'Manrope'; font-weight: 600; font-style: normal; src: url('fonts/manrope-600.woff2') format('woff2'); }
+  @font-face { font-family: 'Manrope'; font-weight: 800; font-style: normal; src: url('fonts/manrope-800.woff2') format('woff2'); }
+  @font-face { font-family: 'DM Mono'; font-weight: 400; font-style: normal; src: url('fonts/dmmono-400.woff2') format('woff2'); }
+  html,body{margin:0;padding:0;background:#0B1626;overflow:hidden;}
+  #stage{position:relative;overflow:hidden;background:#0B1626;}
+  #stage svg{position:absolute;inset:0;width:100%;height:100%;display:block;}
+  .lbl{font-family:'DM Mono',monospace;fill:#9FB0C4;font-size:12.5px;letter-spacing:.01em;text-anchor:middle;dominant-baseline:middle;}
+  .portrait .lbl{font-size:10px;}
+  .lbl.lit{fill:#EAF4FB;}
+  .leader{stroke:#9FB0C4;stroke-width:1;}
+  #panel{position:absolute;background:#081120;border:1px solid rgba(255,255,255,.25);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+  #panel video{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;}
+  #panel video.pv-hidden{opacity:0;}
+  #panel .cap{position:absolute;left:8px;bottom:6px;font-family:'DM Mono',monospace;font-size:11px;color:#9FB0C4;letter-spacing:.04em;}
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg id="svgroot" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="grd" cx="50%" cy="50%" r="75%">
+        <stop offset="0%" stop-color="#12213A"/>
+        <stop offset="100%" stop-color="#0B1626"/>
+      </radialGradient>
+      <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b6cedd"/><stop offset=".3" stop-color="#3a566e"/><stop offset=".65" stop-color="#132b40"/><stop offset="1" stop-color="#688fa7"/></linearGradient>
+      <linearGradient id="face" x2=".8" y2="1"><stop stop-color="#263f55"/><stop offset="1" stop-color="#0a192b"/></linearGradient>
+      <linearGradient id="plate" x2="1" y2="1"><stop stop-color="#70b5d2"/><stop offset=".45" stop-color="#247aa3"/><stop offset="1" stop-color="#153d58"/></linearGradient>
+      <filter id="shadow" x="-70%" y="-70%" width="240%" height="260%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#020811" flood-opacity=".65"/></filter>
+      <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="6" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <rect x="0" y="0" width="1280" height="720" fill="url(#grd)"/>
+    <g id="cam">
+      <!-- ring -->
+      <circle id="ring" cx="0" cy="0" r="260" fill="none" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="1.4"/>
+      <circle id="ringActive" cx="0" cy="0" r="260" fill="none" stroke="#1087BF" stroke-opacity="0" stroke-width="2.2"/>
+      <path id="ringSweep" fill="none" stroke="#EAF4FB" stroke-width="3.4" stroke-linecap="round" opacity="0"/>
+      <!-- Precision-cut ledger plates, separated to reveal their structure. -->
+      <g id="cube" filter="url(#shadow)">
+        <ellipse cy="42" rx="64" ry="22" fill="#030c17" opacity=".5"/>
+        <g fill="url(#face)" stroke="#608ba5" stroke-width=".8">
+          <path d="M0 -6 60 24 60 33 0 64 -60 33 -60 24Z"/>
+          <path d="M0 -22 60 8 60 17 0 48 -60 17 -60 8Z"/>
+          <path d="M0 -38 60 -8 60 1 0 32 -60 1 -60 -8Z"/>
+        </g>
+        <path d="M0 -55 60 -25 60 -16 0 15 -60 -16 -60 -25Z" fill="url(#plate)" stroke="#8dc3da" stroke-width="1"/>
+        <path d="M-60 -25 0 5 60 -25 M0 5V15" fill="none" stroke="#bfdfec" stroke-width=".9"/>
+        <path d="M0 -43 37 -25 0 -6 -37 -25Z M-23 -25 0 -14 23 -25 M-14 -30 8 -19" fill="none" stroke="#bddde9" stroke-width="1" opacity=".7"/>
+        <path d="M-43 5 -19 17 M-43 21 -19 33 M-43 37 -19 49" stroke="#78b8d2" stroke-width="2"/>
+      </g>
+      <circle id="centreFlash" cx="0" cy="0" r="30" fill="#EAF4FB" opacity="0" filter="url(#glow)"/>
+      <g id="stations"></g>
+      <g id="pulses"></g>
+    </g>
+  </svg>
+  <div id="panel">
+    <video id="panelVideoA" class="pv" muted playsinline preload="auto" src="assets/dataflow-a.mp4"></video>
+    <video id="panelVideoB" class="pv" muted playsinline preload="auto" src="assets/dataflow-b.mp4"></video>
+    <div class="cap">DIGITAL TAX CLEARANCE &middot; DATA FLOW</div>
+  </div>
+</div>
+<script>
+(function(){
+  var params = new URLSearchParams(location.search);
+  var orientation = params.get('o') === 'portrait' ? 'portrait' : 'landscape';
+  var W = orientation === 'portrait' ? 720 : 1280;
+  var H = orientation === 'portrait' ? 1280 : 720;
+  var stage = document.getElementById('stage');
+  stage.style.width = W + 'px';
+  stage.style.height = H + 'px';
+
+  var svg = document.getElementById('svgroot');
+  if (orientation === 'portrait') svg.classList.add('portrait');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  document.querySelector('#svgroot > rect').setAttribute('width', W);
+  document.querySelector('#svgroot > rect').setAttribute('height', H);
+  var cam = document.getElementById('cam');
+  var stationsG = document.getElementById('stations');
+  var pulsesG = document.getElementById('pulses');
+  var panel = document.getElementById('panel');
+  var panelVideoA = document.getElementById('panelVideoA');
+  var panelVideoB = document.getElementById('panelVideoB');
+
+  panel.style.width = (orientation === 'portrait' ? 300 : 360) + 'px';
+  panel.style.height = (orientation === 'portrait' ? 169 : 202) + 'px';
+  panel.style.right = (orientation === 'portrait' ? '5%' : '6%');
+  panel.style.top = (orientation === 'portrait' ? '10%' : '10%');
+  panel.style.opacity = 0;
+
+  // cam group is centred on the stage centre; children drawn around (0,0)
+  cam.setAttribute('transform', 'translate(' + (W/2) + ',' + (H/2) + ')');
+
+  var LABELS = [
+    'Families and executors',
+    'Professional service providers',
+    'Financial institutions and telecoms',
+    'Government agencies',
+    'Beneficiaries'
+  ];
+  var RING_R = orientation === 'portrait' ? 300 : 260;
+  document.getElementById('ring').setAttribute('r', RING_R);
+  document.getElementById('ringActive').setAttribute('r', RING_R);
+  var ns = 'http://www.w3.org/2000/svg';
+  var tracks = document.createElementNS(ns,'g');
+  var trackMarkup = '';
+  [RING_R-9,RING_R+9,RING_R-55].forEach(function(r,j){
+    trackMarkup += '<circle r="'+r+'" fill="none" stroke="#7796af" stroke-opacity="'+(j===2?'.10':'.22')+'" stroke-width=".65"/>';
+  });
+  for(var tick=0;tick<120;tick++){
+    var pt=toXY(tick*3,RING_R+14), qt=toXY(tick*3,RING_R+(tick%5===0?21:17));
+    trackMarkup += '<path d="M'+pt.x+' '+pt.y+'L'+qt.x+' '+qt.y+'" stroke="#7899b2" stroke-opacity=".3" stroke-width=".65"/>';
+  }
+  for(var spoke=1;spoke<=5;spoke++){
+    var start=toXY(stationAngle(spoke),80), end=toXY(stationAngle(spoke),RING_R-24);
+    trackMarkup += '<path d="M'+start.x+' '+start.y+'L'+end.x+' '+end.y+'" stroke="#6795b0" stroke-opacity=".18" stroke-width=".8" stroke-dasharray="2 6"/>';
+  }
+  tracks.innerHTML=trackMarkup;
+  cam.insertBefore(tracks,document.getElementById('ring'));
+  var ICONS = [
+    '<circle cx="-6" cy="-5" r="3.5"/><circle cx="6" cy="-3" r="3"/><path d="M-13 9V5Q-6 -2 1 5V9 M2 3Q8 0 12 6V9"/>',
+    '<rect x="-12" y="-7" width="24" height="17" rx="2"/><path d="M-5 -7V-11H5V-7 M-12 0Q0 7 12 0 M-2 2H2"/>',
+    '<path d="M-13 -5 0 -12 13 -5Z M-11 10H11 M-8 -2V7 M0 -2V7 M8 -2V7"/>',
+    '<path d="M0 -13 11 -8V0Q10 8 0 13Q-10 8 -11 0V-8Z M-5 0 -1 4 6 -4"/>',
+    '<path d="M0 10 -10 0C-18 -10 -4 -15 0 -7C4 -15 18 -10 10 0Z"/>'
+  ];
+
+  function stationAngle(i){ return -90 + (i-1) * 72; } // degrees, i = 1..5
+  function toXY(angleDeg, r){
+    var a = angleDeg * Math.PI / 180;
+    return { x: Math.cos(a) * r, y: Math.sin(a) * r };
+  }
+
+  var stationEls = [];
+  for (var i = 1; i <= 5; i++){
+    var ang = stationAngle(i);
+    var p = toXY(ang, RING_R);
+    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('transform','translate(' + p.x.toFixed(2) + ',' + p.y.toFixed(2) + ')');
+    var c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('r','25'); c.setAttribute('fill','url(#metal)'); c.setAttribute('stroke','#9FB0C4'); c.setAttribute('stroke-width','1.6');
+    g.appendChild(c);
+    var ring = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    ring.setAttribute('r','29'); ring.setAttribute('fill','none'); ring.setAttribute('stroke','#1087BF'); ring.setAttribute('stroke-width','2'); ring.setAttribute('stroke-opacity','0');
+    g.appendChild(ring);
+    var glowDot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    glowDot.setAttribute('r','2.5'); glowDot.setAttribute('cy','20'); glowDot.setAttribute('fill','#1087BF'); glowDot.setAttribute('opacity','0'); 
+    g.appendChild(glowDot);
+    var face = document.createElementNS(ns,'g');
+    face.innerHTML = '<circle r="22" fill="url(#face)" stroke="#91b4c9" stroke-opacity=".4" stroke-width=".65"/><circle r="18" fill="none" stroke="#759ab3" stroke-opacity=".14" stroke-width=".5"/><g fill="none" stroke="#c5deea" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">'+ICONS[i-1]+'</g>';
+    g.insertBefore(face,glowDot);
+    // label sits on the node's own bearing, straight out from the ring centre,
+    // with a short leader tick between the node and the text so it can never
+    // cross the ring or a neighbouring label.
+    var rad = ang * Math.PI / 180;
+    var dirX = Math.cos(rad), dirY = Math.sin(rad);
+    var leaderStart = orientation === 'portrait' ? 31 : 32;
+    var leaderEnd = orientation === 'portrait' ? 38 : 48;
+    var labelDist = orientation === 'portrait' ? 76 : 82;
+    var leader = document.createElementNS('http://www.w3.org/2000/svg','line');
+    leader.setAttribute('class','leader');
+    leader.setAttribute('x1', (dirX*leaderStart).toFixed(2));
+    leader.setAttribute('y1', (dirY*leaderStart).toFixed(2));
+    leader.setAttribute('x2', (dirX*leaderEnd).toFixed(2));
+    leader.setAttribute('y2', (dirY*leaderEnd).toFixed(2));
+    g.appendChild(leader);
+    var t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('class','lbl');
+    var lx = (dirX*labelDist).toFixed(2), ly = (dirY*labelDist).toFixed(2);
+    t.setAttribute('x', lx);
+    t.setAttribute('y', ly);
+    // wrap long labels onto two lines so the bounding box grows taller
+    // rather than very wide, which is what keeps neighbouring long labels
+    // from intersecting.
+    var words = LABELS[i-1].split(' ');
+    var wrapThreshold = orientation === 'portrait' ? 1 : 2; // portrait wraps 2-word labels too
+    var lines = [];
+    if (words.length > wrapThreshold){
+      var mid = Math.ceil(words.length/2);
+      lines = [ words.slice(0,mid).join(' '), words.slice(mid).join(' ') ];
+    } else {
+      lines = [ LABELS[i-1] ];
+    }
+    var lineGap = orientation === 'portrait' ? 11.5 : 14.4;
+    var lineGapHalf = orientation === 'portrait' ? 5.75 : 7.2;
+    lines.forEach(function(line, li){
+      var ts = document.createElementNS('http://www.w3.org/2000/svg','tspan');
+      ts.setAttribute('x', lx);
+      ts.setAttribute('dy', li === 0 ? (-(lines.length-1)*lineGapHalf).toFixed(2) : lineGap.toFixed(2));
+      ts.textContent = line;
+      t.appendChild(ts);
+    });
+    g.appendChild(t);
+    stationsG.appendChild(g);
+    stationEls.push({ g:g, dot:c, halo:ring, glow:glowDot, leader:leader, label:t, angle: ang, pos: p });
+  }
+
+  var pulseEls = [];
+  for (var pi=0; pi<5; pi++){
+    var pc = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    pc.setAttribute('r','5'); pc.setAttribute('fill','#1087BF'); pc.setAttribute('opacity','0');
+    pulsesG.appendChild(pc);
+    pulseEls.push(pc);
+  }
+
+  function clamp01(x){ return Math.max(0, Math.min(1, x)); }
+  function smooth(x){ x = clamp01(x); return x*x*(3-2*x); }
+  function lerp(a,b,t){ return a + (b-a)*t; }
+
+  // keyframes over T = 0..8. Landscape: hero (0) and the peak (6) both hold
+  // the ring at about 70% of the frame HEIGHT: diameter/H = 2*RING_R*scale/H.
+  // Portrait is width-constrained instead: the frame is only 720 wide, so
+  // every wide-shot state (hero, legs 1-5's travel framing, the peak, and
+  // the leg-7 settle) uses ONE scale that keeps the ring at ~60% of the
+  // frame WIDTH. That leaves headroom for the radial labels (which reach a
+  // further labelDist + half a wrapped line beyond the ring) to clear the
+  // frame edge with margin, at every rotation, without a special case per
+  // leg. Landscape keeps its original per-state scales untouched.
+  var LANDSCAPE_HERO_PEAK_SCALE = (0.7*720)/(2*260);
+  var PORTRAIT_WIDE_SCALE = (0.6 * W) / (2 * RING_R); // ~0.72 at W=720, RING_R=300
+  var RESTING_SCALE = orientation === 'portrait'
+    ? PORTRAIT_WIDE_SCALE
+    : (0.9 * Math.min(W, H)) / (2 * 260);
+  // Continued faint rotation through leg 7 (no hard stop) so the settle
+  // still reads as "a place", not a freeze-frame.
+  var KF_ROT = [ -234, -90, -18, 54, 126, 198, 558, 596, 608 ];
+  var KF_SCL = orientation === 'portrait'
+    ? [ PORTRAIT_WIDE_SCALE, PORTRAIT_WIDE_SCALE, PORTRAIT_WIDE_SCALE, PORTRAIT_WIDE_SCALE, PORTRAIT_WIDE_SCALE, PORTRAIT_WIDE_SCALE, PORTRAIT_WIDE_SCALE, RESTING_SCALE, RESTING_SCALE ]
+    : [ LANDSCAPE_HERO_PEAK_SCALE, 1.05, 1.05, 1.05, 1.05, 1.05, LANDSCAPE_HERO_PEAK_SCALE, RESTING_SCALE, RESTING_SCALE ];
+  var KF_TX  = [ 0,0,0,0,0,0,0, 0, 0 ];
+  var KF_TY  = [ 0,0,0,0,0,0,0, 0, 0 ];
+  // ring hairline base alpha: dim establishing shot, dimmer while close on a
+  // station, brightening hard at the peak, calm for the resting arrival.
+  var KF_RINGA = [ 0.40, 0.30, 0.30, 0.30, 0.30, 0.30, 0.70, 0.35, 0.35 ];
+
+  // ---- per-station push-in (legs 1-5) ------------------------------------
+  // The active node's copy anchor decides which side of the frame it pushes
+  // to, so the node and the copy column never compete for the same space:
+  // lead copy -> node right of centre, trail copy -> node left of centre.
+  // Read from index.html: leg1 lead, leg2 trail, leg3 lead (mid-fi block),
+  // leg4 lead, leg5 trail (concierge block).
+  var NODE_SIDE = ['right', 'left', 'right', 'right', 'left']; // stations 1..5
+  var PUSH_SCALE_MULT = 2.7;
+  var LABEL_BOOST = 2.2;
+
+  function pushEnvelope(u){
+    // 0 for the first ~20% (wide travel in), full push across the middle,
+    // eased back to 0 (wide) over the last ~20% (wide travel out).
+    if (u <= 0.15 || u >= 0.95) return 0;
+    if (u >= 0.35 && u <= 0.75) return 1;
+    if (u < 0.35) return smooth((u - 0.15) / 0.20);
+    return 1 - smooth((u - 0.75) / 0.20);
+  }
+
+  function dip(T, a, b, c, d){
+    // 1 outside [a,d], 0 inside [b,c], eased ramps between: used to fade the
+    // station labels out during the fast part of the leg-6 spin and back in
+    // as the camera settles.
+    if (T <= a || T >= d) return 1;
+    if (T >= b && T <= c) return 0;
+    if (T < b) return 1 - smooth((T - a) / (b - a));
+    return smooth((T - c) / (d - c));
+  }
+
+  function sampleKF(kf, T){
+    var k = Math.max(0, Math.min(7, Math.floor(T)));
+    var u = smooth(T - k);
+    return lerp(kf[k], kf[k+1], u);
+  }
+
+  function stationBrightness(i, T){
+    // i = 1..5, brightens across leg i (T in [i, i+1)), stays lit after
+    if (T >= i+1) return 1;
+    if (T <= i) return 0;
+    return smooth(T - i);
+  }
+
+  var FONT_CHECKS = [
+    '400 16px "DM Mono"',
+    '400 16px "Manrope"',
+    '600 16px "Manrope"',
+    '800 16px "Manrope"'
+  ];
+  document.fontsReadyPromise = Promise.all(FONT_CHECKS.map(function (f) { return document.fonts.load(f); }))
+    .then(function () { return document.fonts.ready; })
+    .then(function () {
+      var missing = FONT_CHECKS.filter(function (f) { return !document.fonts.check(f); });
+      if (missing.length) {
+        var msg = 'FONT LOAD FAILURE: ' + missing.join(', ') + ' not available before first frame.';
+        window.__fontLoadError = msg;
+        console.error(msg);
+        throw new Error(msg);
+      }
+      window.__fontsOk = true;
+    });
+
+  function seekVideo(v, t){
+    return new Promise(function(resolve){
+      if (v.readyState < 1) { setTimeout(resolve, 250); return; }
+      function onSeeked(){ v.removeEventListener('seeked', onSeeked); resolve(); }
+      v.addEventListener('seeked', onSeeked);
+      try { v.currentTime = t; } catch(e){ resolve(); }
+      setTimeout(resolve, 300);
+    });
+  }
+  var panelPreload = Promise.all([
+    new Promise(function(res){ panelVideoA.readyState >= 1 ? res() : panelVideoA.addEventListener('loadedmetadata', res, { once:true }); }),
+    new Promise(function(res){ panelVideoB.readyState >= 1 ? res() : panelVideoB.addEventListener('loadedmetadata', res, { once:true }); })
+  ]);
+
+  window.setT = function(T){
+    T = Math.max(0, Math.min(7.999, T));
+    var rot = sampleKF(KF_ROT, T);
+    var scl = sampleKF(KF_SCL, T);
+    var tx = sampleKF(KF_TX, T);
+    var ty = sampleKF(KF_TY, T);
+
+    // Push-in on the active station for legs 1-5. rot is left exactly as the
+    // wide-shot formula computed it (so the ring's rotation, and hence seam
+    // continuity, is untouched); only scl/tx/ty are blended toward a target
+    // that keeps the active node fixed at its side of the frame while the
+    // ring keeps turning underneath it.
+    var pushEnv = 0, activeStation = 0;
+    if (T >= 1 && T < 6){
+      activeStation = Math.floor(T); // 1..5
+      var uLeg = T - activeStation;
+      pushEnv = pushEnvelope(uLeg);
+      if (pushEnv > 0.001){
+        var sideIdx = activeStation - 1;
+        var side = NODE_SIDE[sideIdx];
+        // Leg 5's radial label ("Beneficiaries") was clipped by the frame at
+        // wide (16:9-ish) viewports: the object-fit:cover crop on the video
+        // eats ~64px off each side of the 1280-wide render at 1440x900, and
+        // the default 0.26 left-side target only left ~60px of margin. Pull
+        // leg 5 further in from the edge; every other station has a healthy
+        // margin at the default fraction (see verify-push-margins.mjs).
+        var LEFT_FRAC = (activeStation === 5) ? 0.34 : 0.26;
+        // Leg 3's radial label ("Financial institutions and telecoms") had
+        // the same object-fit:cover clipping problem on the right edge.
+        // Pull it in from 0.74 to clear a >=120px render-space margin.
+        var RIGHT_FRAC = (activeStation === 3) ? 0.66 : 0.74;
+        var Px = orientation === 'portrait' ? W * 0.5 : (side === 'right' ? W * RIGHT_FRAC : W * LEFT_FRAC);
+        var Py = orientation === 'portrait' ? H * 0.32 : H * 0.42;
+        var sclPush = scl * PUSH_SCALE_MULT;
+        var angDeg = stationAngle(activeStation) + rot;
+        var angRad = angDeg * Math.PI / 180;
+        var pushTx = (Px - W/2) - RING_R * sclPush * Math.cos(angRad);
+        var pushTy = (Py - H/2) - RING_R * sclPush * Math.sin(angRad);
+        scl = lerp(scl, sclPush, pushEnv);
+        tx = lerp(tx, pushTx, pushEnv);
+        ty = lerp(ty, pushTy, pushEnv);
+      }
+    }
+
+    cam.setAttribute('transform',
+      'translate(' + (W/2 + tx).toFixed(2) + ',' + (H/2 + ty).toFixed(2) + ') ' +
+      'rotate(' + rot.toFixed(3) + ') ' +
+      'scale(' + scl.toFixed(4) + ')');
+
+    // peak glow: from T=6 all five nodes bloom at full strength; labels dip
+    // out during the fast part of the spin (6.1-6.7) and fade back in.
+    var peakGlow = smooth(clamp01((T-6)/0.3));
+    // Labels dip out during the fast part of the leg-6 spin and return once
+    // the camera settles; with no venue object taking over leg 7, they stay
+    // visible through the resting frame on the ledger.
+    var labelMul = dip(T, 6.05, 6.15, 6.92, 7.0);
+
+    // counter-rotate labels & dots so text/circles stay upright and same size
+    for (var i=0;i<stationEls.length;i++){
+      var s = stationEls[i];
+      var b = stationBrightness(i+1, T);
+      var bloom = Math.max(b > 0.98 ? peakGlow : 0, 0);
+      s.dot.setAttribute('fill', 'url(#metal)');
+      s.dot.setAttribute('stroke', b > 0.5 ? '#78b8d2' : '#627d93');
+      s.halo.setAttribute('stroke-opacity', (0.15 + b*0.55).toFixed(3));
+      s.glow.setAttribute('opacity', (0.2+b*0.8).toFixed(3));
+      s.label.setAttribute('class', 'lbl' + (b > 0.5 ? ' lit' : ''));
+      s.label.setAttribute('opacity', labelMul.toFixed(3));
+      s.leader.setAttribute('opacity', (labelMul*0.7).toFixed(3));
+      // The active station's label grows with the push (up to ~2.2x its
+      // wide-shot size); every other label just counter-scales to hold its
+      // normal constant screen size.
+      var isActive = (i+1) === activeStation;
+      var labelScale = (1/scl) * (isActive ? lerp(1, LABEL_BOOST, pushEnv) : 1);
+      // The CRA whiteboard occupies the left half of laptop viewports.
+      // During this close-up, dock its label below the medallion instead of
+      // extending inward across the whiteboard. Return to the radial bearing
+      // during travel so chapter boundary frames remain identical.
+      if (i === 3 && orientation === 'landscape') {
+        var dock = isActive ? pushEnv : 0;
+        var bearing = s.angle * Math.PI / 180;
+        var labelX = lerp(Math.cos(bearing) * 82, 0, dock);
+        var labelY = lerp(Math.sin(bearing) * 82, 66, dock);
+        s.label.setAttribute('x', labelX.toFixed(2));
+        s.label.setAttribute('y', labelY.toFixed(2));
+        s.label.querySelectorAll('tspan').forEach(function(span){ span.setAttribute('x', labelX.toFixed(2)); });
+        s.leader.setAttribute('x1', lerp(Math.cos(bearing) * 32, 0, dock).toFixed(2));
+        s.leader.setAttribute('y1', lerp(Math.sin(bearing) * 32, 32, dock).toFixed(2));
+        s.leader.setAttribute('x2', lerp(Math.cos(bearing) * 48, 0, dock).toFixed(2));
+        s.leader.setAttribute('y2', lerp(Math.sin(bearing) * 48, 48, dock).toFixed(2));
+      }
+
+      s.g.setAttribute('transform',
+        'translate(' + s.pos.x.toFixed(2) + ',' + s.pos.y.toFixed(2) + ') rotate(' + (-rot).toFixed(3) + ') scale(' + labelScale.toFixed(4) + ')');
+    }
+
+    // ring hairline + active glow
+    document.getElementById('ring').setAttribute('stroke-opacity', sampleKF(KF_RINGA, T).toFixed(3));
+    var ringActive = document.getElementById('ringActive');
+    var overallLit = clamp01((T) / 6);
+    var restCalm = 1 - 0.6 * smooth(clamp01((T-7)/0.4)); // leg 7: ease the blue glow down to a calm resting level
+    ringActive.setAttribute('stroke-opacity', ((0.05 + overallLit*0.35 + peakGlow*0.4) * restCalm).toFixed(3));
+
+    // pulses: legs 1..5 each send one pulse from their station to centre.
+    // Leg 6 sends all five converging AT ONCE, once, ending in a centre bloom
+    // flash and a one-time ring highlight sweep: the largest visual event.
+    var peakU = smooth(clamp01((T-6)/0.5));
+    for (var pI=0; pI<5; pI++){
+      var st = stationEls[pI];
+      var show = 0, u = 0;
+      var legIdx = pI+1;
+      if (T >= legIdx && T < legIdx+1){
+        u = clamp01((T-legIdx-0.08)/0.7);
+        show = (u>0 && u<1) ? 1 : 0;
+      } else if (T >= 6 && T < 7){
+        u = peakU;
+        show = smooth(clamp01((T-6)/0.05)) * (1 - smooth(clamp01((T-6.85)/0.15)));
+      }
+      var pos = { x: lerp(st.pos.x, 0, smooth(u)), y: lerp(st.pos.y, 0, smooth(u)) };
+      var el = pulseEls[pI];
+      el.setAttribute('cx', pos.x.toFixed(2));
+      el.setAttribute('cy', pos.y.toFixed(2));
+      el.setAttribute('opacity', (show * 0.9 * (1-Math.abs(u-0.5)*0.6)).toFixed(3));
+    }
+
+    // centre bloom flash, right as the five pulses arrive
+    var flash = smooth(clamp01((T-6.45)/0.1)) * (1 - smooth(clamp01((T-6.65)/0.2)));
+    var centreFlash = document.getElementById('centreFlash');
+    centreFlash.setAttribute('opacity', (flash*0.18).toFixed(3));
+    centreFlash.setAttribute('r', (30 + flash*40).toFixed(1));
+
+    // one-time ring highlight sweep, right after the flash
+    var ringSweep = document.getElementById('ringSweep');
+    var sweepOn = smooth(clamp01((T-6.5)/0.05)) * (1 - smooth(clamp01((T-6.95)/0.05)));
+    if (sweepOn > 0.01){
+      var sweepU = clamp01((T-6.5)/0.5);
+      var a0 = -90, a1 = -90 + sweepU*360;
+      var rr = sampleKF(KF_SCL, T) > 0 ? RING_R : RING_R; // ring radius in local units
+      var sx = Math.cos(a0*Math.PI/180)*rr, sy = Math.sin(a0*Math.PI/180)*rr;
+      var ex = Math.cos(a1*Math.PI/180)*rr, ey = Math.sin(a1*Math.PI/180)*rr;
+      var large = (sweepU*360) > 180 ? 1 : 0;
+      ringSweep.setAttribute('d', 'M ' + sx.toFixed(2) + ' ' + sy.toFixed(2) + ' A ' + rr + ' ' + rr + ' 0 ' + large + ' 1 ' + ex.toFixed(2) + ' ' + ey.toFixed(2));
+      ringSweep.setAttribute('opacity', sweepOn.toFixed(3));
+    } else {
+      ringSweep.setAttribute('opacity', 0);
+    }
+
+    // signal panel: visible during leg 4 (government), T in [4,5)
+    var panelOpacity = 0;
+    if (T >= 4 && T < 5){
+      panelOpacity = smooth(clamp01((T-4)/0.15)) * (1 - smooth(clamp01((T-4.85)/0.15)));
+    }
+    panel.style.opacity = panelOpacity.toFixed(3);
+    var seekPromise = Promise.resolve();
+    if (panelOpacity > 0.02){
+      var localU = clamp01(T-4);
+      if (localU < 0.5){
+        panelVideoA.classList.remove('pv-hidden');
+        panelVideoB.classList.add('pv-hidden');
+        seekPromise = seekVideo(panelVideoA, clamp01(localU/0.5) * 15.6);
+      } else {
+        panelVideoB.classList.remove('pv-hidden');
+        panelVideoA.classList.add('pv-hidden');
+        seekPromise = seekVideo(panelVideoB, clamp01((localU-0.5)/0.5) * 15.6);
+      }
+    }
+
+    return seekPromise;
+  };
+
+  panelVideoB.classList.add('pv-hidden');
+
+  window.sceneReady = Promise.all([document.fontsReadyPromise, panelPreload]).then(function(){
+    return window.setT(0);
+  });
+})();
+</script>
+</body>
+</html>

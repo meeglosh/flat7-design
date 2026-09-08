@@ -55,15 +55,15 @@ const PROJECTS = [
     desc: "Large-scale retail UX for one of the world's biggest sports brands. Accessible gear discovery across 15+ sport categories for millions of recreational athletes." },
   { id: '07', name: 'RenoRun',     cat: 'Construction Tech · Web & App', url: '/renorun/',                     accent: 'mustard', thumb: '/thumbnails/midcentury/renorun.png',
     desc: "The DoorDashification of construction materials. Get-it-today delivery and split-shipment tracking for job sites that cannot wait, designed and led as Head of Design through a $142M Series B." },
-  // Hidden until their case studies are rebuilt (2026-09-07): Hololabs, Flashtract, Bandsintown, Estateably.
+  { id: '08', name: 'Estateably',  cat: 'LegalTech · Web',          url: '/estateably/',        accent: 'terra',   thumb: '/thumbnails/midcentury/estateably.png',
+    desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists in high-stakes legal work.' },
+  // Hidden until their case studies are rebuilt (2026-09-07): Hololabs, Flashtract, Bandsintown.
   // { id: '09', name: 'Hololabs',    cat: 'Spatial Computing · AR/VR', url: 'https://hololabs.org/',             accent: 'terra',   thumb: '/thumbnails/midcentury/hololabs.png',
   //   desc: 'Immersive experience design for entertainment venues and theme parks. UX that lives beyond the screen  -  spatial, embodied, and physical-first.' },
   // { id: '10', name: 'Bandsintown', cat: 'Music Tech · Web',         url: 'https://www.artist.bandsintown.com/', accent: 'olive',  thumb: '/thumbnails/midcentury/bandsintown.png',
   //   desc: 'Tour promotion and fan engagement for 700,000+ artists. Streamlining complex multi-platform logistics  -  ticketing, fan outreach, tour dates  -  into a single coherent workflow.' },
   // { id: '11', name: 'Flashtract',  cat: 'Construction Tech · Web',  url: 'https://flashtract.com/',            accent: 'mustard', thumb: '/thumbnails/midcentury/flashtract.png',
   //   desc: 'Billing and payment automation for the construction industry. Designing for highly regulated, multi-party financial workflows where the stakes are compliance, not convenience.' },
-  // { id: '12', name: 'Estateably',  cat: 'LegalTech · Web',          url: 'https://www.estateably.com/',        accent: 'terra',   thumb: '/thumbnails/midcentury/estateably.png',
-  //   desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists in high-stakes legal work.' },
 ];
 
 const SERVICES = [

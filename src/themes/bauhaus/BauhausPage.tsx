@@ -51,15 +51,15 @@ const PROJECTS = [
     desc: "Large-scale retail UX for one of the world's biggest sports brands. Accessible gear discovery across 15+ sport categories for millions of recreational athletes." },
   { no: '07', name: 'RenoRun',     cat: 'Construction Tech · Web & App', url: '/renorun/',                     color: 'red',
     desc: "The DoorDashification of construction materials. Get-it-today delivery and split-shipment tracking for job sites that cannot wait, designed and led as Head of Design through a $142M Series B." },
-  // Hidden until their case studies are rebuilt (2026-09-07): Hololabs, Flashtract, Bandsintown, Estateably.
+  { no: '08', name: 'Estateably',  cat: 'LegalTech · Web',          url: '/estateably/',        color: 'teal',
+    desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists in high-stakes legal work.' },
+  // Hidden until their case studies are rebuilt (2026-09-07): Hololabs, Flashtract, Bandsintown.
   // { no: '09', name: 'Hololabs',    cat: 'Spatial Computing · AR/VR', url: 'https://hololabs.org/',             color: 'red',
   //   desc: 'Immersive experience design for entertainment venues and theme parks. UX that lives beyond the screen  -  spatial, embodied, and physical-first.' },
   // { no: '10', name: 'Bandsintown', cat: 'Music Tech · Web',         url: 'https://www.artist.bandsintown.com/', color: 'yellow',
   //   desc: 'Tour promotion and fan engagement for 700,000+ artists. Streamlining complex multi-platform logistics  -  ticketing, fan outreach, tour dates  -  into a single coherent workflow.' },
   // { no: '11', name: 'Flashtract',  cat: 'Construction Tech · Web',  url: 'https://flashtract.com/',            color: 'blue',
   //   desc: 'Billing and payment automation for the construction industry. Designing for highly regulated, multi-party financial workflows where the stakes are compliance, not convenience.' },
-  // { no: '12', name: 'Estateably',  cat: 'LegalTech · Web',          url: 'https://www.estateably.com/',        color: 'teal',
-  //   desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance  -  designed for specialists in high-stakes legal work.' },
 ];
 
 const SERVICES = [

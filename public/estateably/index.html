@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estateably &middot; Rebuilding estate settlement for the digital age</title>
+<meta name="description" content="Case study: rebuilding estate settlement as one secure, compliant network. Mike Jerugim, Director of Design, Estateably.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231087BF'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  :root {
+    --sc-canvas:      #0B1626;
+    --sc-surface:     #12213A;
+    --sc-ink:         #F2F6FA;
+    --sc-ink-soft:    #9FB0C4;
+    --sc-accent:      #1087BF;
+    --sc-accent-ink:  #FFFFFF;
+    --sc-hairline:        rgba(255,255,255,.14);
+    --sc-hairline-strong: rgba(255,255,255,.24);
+    --sc-font-display: "Manrope", system-ui, sans-serif;
+    --sc-font-text:    "Manrope", system-ui, sans-serif;
+    --sc-font-mono:    "DM Mono", ui-monospace, monospace;
+  }
+  html, body { background: var(--sc-canvas); color: var(--sc-ink); }
+  body { font-family: var(--sc-font-text); }
+  ::selection { background: var(--sc-accent); color: var(--sc-accent-ink); }
+
+  .eyebrow {
+    display: block; font-family: var(--sc-font-mono); font-size: .72rem;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--sc-ink-soft);
+    margin-bottom: .6rem;
+  }
+  /* No blurred glass chips: legibility comes from the shaped scrim columns
+     (.sc-world__scrim, .scrim-col--left / --right / --centre) painted behind
+     the copy layer, not from a per-block background. */
+  .sc-copy h1, .sc-copy h2 {
+    font-family: var(--sc-font-display); font-weight: 800;
+    line-height: 1.08; letter-spacing: -0.01em; margin: 0 0 .6rem;
+    text-wrap: balance;
+  }
+  .sc-copy h1 { font-size: var(--sc-t-2xl); max-width: 22ch; }
+  .sc-copy h2 { font-size: clamp(1.4rem, 2.6vw, 2rem); }
+  .sc-copy p { margin: 0 0 .8rem; color: var(--sc-ink-soft); font-size: clamp(1rem, 1.3vw, 1.14rem); max-width: 42ch; }
+  .sc-copy .lede { color: var(--sc-ink); font-size: var(--sc-t-lg); max-width: 40ch; }
+  .role-line { font-family: var(--sc-font-mono); font-size: .78rem; color: var(--sc-ink-soft); letter-spacing: .03em; margin: 0 0 1rem; }
+
+  /* ---- scrim columns: shaped to where copy actually sits, no blur -------- */
+  .scrim-col {
+    position: absolute; top: 0; bottom: 0; width: min(56vw, 70rem);
+    pointer-events: none; z-index: 0;
+  }
+  .scrim-col--left  { left: 0; background: linear-gradient(90deg, rgba(4,10,20,.88) 0%, rgba(4,10,20,.6) 45%, rgba(4,10,20,0) 100%); }
+  .scrim-col--right { right: 0; background: linear-gradient(270deg, rgba(4,10,20,.88) 0%, rgba(4,10,20,.6) 45%, rgba(4,10,20,0) 100%); }
+  .scrim-col--centre {
+    left: 50%; translate: -50% 0; width: min(70vw, 56rem);
+    background: radial-gradient(ellipse at center, rgba(4,10,20,.8) 0%, rgba(4,10,20,.55) 45%, rgba(4,10,20,0) 75%);
+  }
+
+  /* ---- cards ------------------------------------------------------------ */
+  .card-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; align-items: flex-start; }
+  .card {
+    background: linear-gradient(rgba(6,13,24,.72), rgba(6,13,24,.72)), var(--sc-surface);
+    border: 1px solid var(--sc-hairline);
+    border-radius: .6rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,.45);
+  }
+  .card img { display: block; width: 100%; height: auto; max-width: 1024px; }
+  /* Cards scale with the viewport: a single card reaches the source's own
+     1024px on XL screens (about 690px on a laptop); a pair sits side by side
+     at half that. Card-bearing copy blocks widen to fit. */
+  .card--sm { width: min(440px, 21vw); }
+  .card--md { width: min(720px, 34vw); }
+  .card--lg { width: min(1024px, 48vw); }
+  .card-row--pair .card { width: min(512px, 24vw); }
+  .card--tall { max-height: 52vh; overflow-y: auto; }
+  .sc-copy:has(.card-row) { width: min(58vw, 72rem); max-width: none; }
+  .card__cap {
+    font-family: var(--sc-font-mono); font-size: .68rem; color: var(--sc-ink-soft);
+    padding: .5rem .6rem; border-top: 1px solid var(--sc-hairline);
+  }
+  .frame-browser { padding-top: 1.6rem; position: relative; }
+  .frame-browser::before {
+    content: ""; position: absolute; top: .5rem; left: .6rem; width: .5rem; height: .5rem;
+    border-radius: 50%; background: var(--sc-ink-soft); opacity: .5;
+    box-shadow: .9rem 0 0 var(--sc-ink-soft), 1.8rem 0 0 var(--sc-ink-soft);
+  }
+  .frame-tablet { padding: .5rem; border-radius: 1rem; }
+  .frame-tablet img { border-radius: .4rem; }
+  .frame-phone { padding: .5rem .35rem; border-radius: 1.4rem; width: min(300px, 15vw); }
+  .frame-phone img { border-radius: 1rem; }
+  .frame-laptop { padding: .5rem .5rem 1.1rem; border-radius: .6rem; }
+  .frame-laptop::after {
+    content: ""; display: block; height: .3rem; margin: .4rem auto 0; width: 40%;
+    background: var(--sc-hairline-strong); border-radius: 0 0 .3rem .3rem;
+  }
+
+  .count-line { font-family: var(--sc-font-mono); font-size: clamp(2rem, 5vw, 3.2rem); color: var(--sc-accent); font-weight: 400; }
+  .count-line small { font-size: .5em; color: var(--sc-ink-soft); font-family: var(--sc-font-text); }
+  .outcome-line { font-family: var(--sc-font-mono); font-size: .82rem; color: var(--sc-ink-soft); letter-spacing: .02em; margin-top: .4rem; max-width: 46ch; }
+
+  /* ---- outcome (leg 6, late): display-scale count + mono facts ---------- */
+  p.outcome-count {
+    font-family: var(--sc-font-display); font-weight: 800;
+    font-size: var(--sc-t-4xl); line-height: 1; margin: 0;
+    color: var(--sc-ink); max-width: none;
+  }
+  .outcome-label { display: block; font-family: var(--sc-font-mono); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--sc-accent); margin: .5rem 0 1rem; }
+  p.outcome-fact { font-family: var(--sc-font-mono); font-size: .95rem; color: var(--sc-ink); margin: 0 0 .5rem; max-width: 34ch; }
+  p.outcome-states { font-family: var(--sc-font-mono); font-size: .8rem; color: var(--sc-ink-soft); max-width: 34ch; margin: 0; }
+  .peak-line { max-width: 34ch; }
+
+  /* ---- ring map (signature move) ----------------------------------------- */
+  #ring-map {
+    position: fixed; right: 1.6rem; bottom: 1.6rem; width: 132px; height: 132px;
+    z-index: 500; pointer-events: none;
+  }
+  #ring-map a { pointer-events: auto; }
+  #ring-map circle.node { fill: var(--sc-surface); stroke: var(--sc-ink-soft); stroke-width: 1.4; transition: fill .3s, stroke .3s; }
+  #ring-map circle.node.lit { fill: var(--sc-accent); stroke: var(--sc-accent); }
+  #ring-map circle.node.current { stroke: #fff; stroke-width: 2; }
+  #ring-map .arc { fill: none; stroke: var(--sc-accent); stroke-width: 2; opacity: .85; }
+  #ring-map .track { fill: none; stroke: var(--sc-hairline); stroke-width: 1; }
+  #ring-map text { font-family: var(--sc-font-mono); font-size: 7px; fill: var(--sc-ink-soft); pointer-events: none; }
+  @media (max-width: 780px) {
+    #ring-map { right: .75rem; bottom: .75rem; top: auto; left: auto; width: 56px; height: 56px; }
+  }
+
+  /* ---- finale objects ----------------------------------------------------- */
+  .finale-links { display: flex; gap: 1.4rem; flex-wrap: wrap; margin-top: 1.2rem; }
+  .finale-links a { color: var(--sc-ink); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--sc-hairline-strong); padding-bottom: .1rem; }
+  .finale-links a:hover, .finale-links a:focus-visible { border-color: var(--sc-accent); color: var(--sc-accent); }
+  .colophon { font-family: var(--sc-font-mono); font-size: .74rem; color: var(--sc-ink-soft); margin-top: 1.4rem; }
+  .colophon a { color: var(--sc-ink-soft); }
+  a:focus-visible, #ring-map a:focus-visible circle { outline: 2px solid var(--sc-accent); outline-offset: 3px; }
+
+  @media (max-width: 780px) {
+    .sc-copy { max-width: min(90vw, 32rem); }
+    .card--lg, .card--md, .card-row--pair .card { width: 88vw; }
+    .card--sm { width: 60vw; }
+    .sc-copy:has(.card-row) { width: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div data-sc-mode="worldflight" data-sc-seam="0.16" data-sc-lerp="0.12">
+
+  <div data-sc-world>
+    <div data-sc-segment data-sc-w="1.5" data-sc-waypoint="Establish">
+      <picture><source media="(max-width: 780px)" srcset="assets/leg-0-m.jpg"><img class="sc-world__poster" src="assets/leg-0.jpg" alt="" decoding="async"></picture>
+      <video data-sc-src="assets/leg-0.mp4" data-sc-src-mobile="assets/leg-0-m.mp4"></video>
+    </div>
+    <div data-sc-segment data-sc-w="1.5" data-sc-waypoint="Families and executors">
+      <picture><source media="(max-width: 780px)" srcset="assets/leg-1-m.jpg"><img class="sc-world__poster" src="assets/leg-1.jpg" alt="" decoding="async"></picture>
+      <video data-sc-src="assets/leg-1.mp4" data-sc-src-mobile="assets/leg-1-m.mp4"></video>
+    </div>
+    <div data-sc-segment data-sc-w="1.5" data-sc-waypoint="Professional service providers">
+      <picture><source media="(max-width: 780px)" srcset="assets/leg-2-m.jpg"><img class="sc-world__poster" src="assets/leg-2.jpg" alt="" decoding="async"></picture>
+      <video data-sc-src="assets/leg-2.mp4" data-sc-src-mobile="assets/leg-2-m.mp4"></video>
+    </div>
+    <div data-sc-segment data-sc-w="1.5" data-sc-waypoint="Financial institutions and telecoms">
+      <picture><source media="(max-width: 780px)" srcset="assets/leg-3-m.jpg"><img class="sc-world__poster" src="assets/leg-3.jpg" alt="" decoding="async"></picture>
+      <video data-sc-src="assets/leg-3.mp4" data-sc-src-mobile="assets/leg-3-m.mp4"></video>
+    </div>
+    <div data-sc-segment data-sc-w="1.5" data-sc-waypoint="Government agencies">
+      <picture><source media="(max-width: 780px)" srcset="assets/leg-4-m.jpg"><img class="sc-world__poster" src="assets/leg-4.jpg" alt="" decoding="async"></picture>
+      <video data-sc-src="assets/leg-4.mp4" data-sc-src-mobile="assets/leg-4-m.mp4"></video>
+    </div>
+    <div data-sc-segment data-sc-w="1.5" data-sc-waypoint="Beneficiaries">
+      <picture><source media="(max-width: 780px)" srcset="assets/leg-5-m.jpg"><img class="sc-world__poster" src="assets/leg-5.jpg" alt="" decoding="async"></picture>
+      <video data-sc-src="assets/leg-5.mp4" data-sc-src-mobile="assets/leg-5-m.mp4"></video>
+    </div>
+    <div data-sc-segment data-sc-w="1.928571" data-sc-linger="0.4" data-sc-waypoint="The network lights up">
+      <picture><source media="(max-width: 780px)" srcset="assets/leg-6-m.jpg"><img class="sc-world__poster" src="assets/leg-6.jpg" alt="" decoding="async"></picture>
+      <video data-sc-src="assets/leg-6.mp4" data-sc-src-mobile="assets/leg-6-m.mp4"></video>
+    </div>
+    <div data-sc-segment data-sc-w="1.5" data-sc-waypoint="Arrival">
+      <picture><source media="(max-width: 780px)" srcset="assets/leg-7-m.jpg"><img class="sc-world__poster" src="assets/leg-7.jpg" alt="" decoding="async"></picture>
+      <video data-sc-src="assets/leg-7.mp4" data-sc-src-mobile="assets/leg-7-m.mp4"></video>
+    </div>
+  </div>
+
+  <div data-sc-world-copy>
+    <div class="sc-world__scrim">
+      <div class="scrim-col scrim-col--left"></div>
+      <div class="scrim-col scrim-col--right"></div>
+      <div class="scrim-col scrim-col--centre"></div>
+    </div>
+
+    <div class="sc-copy sc-copy--lead" data-sc-copy data-sc-window="hero" style="bottom: clamp(4rem, 20vh, 11rem);">
+      <span class="eyebrow">Estateably</span>
+      <p class="role-line">Mike Jerugim, case study &middot; Estateably &middot; Director of Design</p>
+      <h1>Estate settlement is one of the most fragmented, manual, and emotionally charged workflows there is.</h1>
+      <p class="lede">We set out to rebuild it as one secure, compliant network.</p>
+    </div>
+
+    <div class="sc-copy sc-copy--lead" data-sc-copy data-sc-window="0.128 0.232">
+      <h2>It starts with a family.</h2>
+      <p>Executors and beneficiaries inherit a process that has always been opaque: handoffs across institutions, repeated document requests, unclear ownership, constant delays.</p>
+      <div class="card-row">
+        <div class="card card--lg">
+          <img src="assets/e04.jpg" alt="Early wireframe of the Estateably platform" loading="lazy">
+          <div class="card__cap">Before formal interviews, I ran an initial wireframing pass so leadership had something tangible to react to.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sc-copy sc-copy--trail" data-sc-copy data-sc-window="0.248 0.356">
+      <h2>Eighty hours in the trenches.</h2>
+      <p class="count-line"><span data-sc-count="0 80">0</span><small>+ hours</small></p>
+      <p>We interviewed professional estate agents and service providers to learn how settlement really works, then mapped how every document moves.</p>
+      <div class="card-row" style="justify-content:flex-end">
+        <div class="card card--sm card--tall">
+          <img src="assets/e01.jpg" alt="Process chart of how documents move through the network" loading="lazy">
+        </div>
+        <div class="card card--sm">
+          <img src="assets/e03.jpg" alt="One distributed ledger infographic" loading="lazy">
+          <div class="card__cap">The infographic behind this world.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sc-copy sc-copy--lead" data-sc-copy data-sc-window="0.368 0.424">
+      <h2>Mid-fidelity, back in users' hands.</h2>
+      <p>An interactive prototype with prospective users validated core usability and pressure-tested the end-to-end experience before any visual polish.</p>
+      <div class="card-row card-row--pair">
+        <div class="card card--md frame-browser"><img src="assets/e06.jpg" alt="Mid-fidelity prototype screen" loading="lazy"></div>
+        <div class="card card--md frame-browser"><img src="assets/e07.jpg" alt="Mid-fidelity prototype screen" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="sc-copy sc-copy--lead" data-sc-copy data-sc-window="0.422 0.478">
+      <h2>Then high fidelity.</h2>
+      <p>Visual hierarchy, accessibility, trust signalling, and consistency across a fast-growing platform, for people often using it under stress.</p>
+      <div class="card-row card-row--pair">
+        <div class="card card--lg frame-browser"><img src="assets/e11.jpg" alt="High-fidelity transactions dashboard" loading="lazy"></div>
+        <div class="card card--lg frame-browser"><img src="assets/e14.jpg" alt="High-fidelity dashboard overview" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="sc-copy sc-copy--lead" data-sc-copy data-sc-window="0.49 0.595">
+      <h2>A dashboard for the CRA.</h2>
+      <p>Agents at the Canada Revenue Agency process estate files inside Estateably: approval, rejection, and audit flagging in a secure, compliant environment.</p>
+      <div class="card-row card-row--pair">
+        <div class="card card--md frame-browser"><img src="assets/e17.jpg" alt="CRA documents screen" loading="lazy"></div>
+        <div class="card card--sm"><img src="assets/e16.jpg" alt="Whiteboard sketch of the CRA process" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="sc-copy sc-copy--trail" data-sc-copy data-sc-window="0.606 0.680" style="bottom: clamp(10rem, 22vh, 14rem);">
+      <h2>Beneficiary Concierge.</h2>
+      <p>It gave executors and beneficiaries real-time visibility into the estates they were part of. For many, the first clear view of a process that had always felt inaccessible.</p>
+      <div class="card-row" style="justify-content:flex-end">
+        <div class="card card--lg"><img src="assets/e09.jpg" alt="Beneficiary Concierge phone app" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="sc-copy sc-copy--lead" data-sc-copy data-sc-window="0.685 0.720">
+      <h2>Lifebook.</h2>
+      <p>Lifebook let people organise their affairs in advance: inventory, accounts, passwords, records.</p>
+      <div class="card-row">
+        <div class="card card--lg frame-laptop"><img src="assets/e10.jpg" alt="Estate Lifebook laptop mockup" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="sc-copy sc-copy--lead" data-sc-copy data-sc-window="0.7845 0.8489 0.15 0.15">
+      <h2 class="peak-line">One network. Every participant, one ledger, no more handoffs in the dark.</h2>
+    </div>
+
+    <div class="sc-copy sc-copy--trail" data-sc-copy data-sc-window="0.8571 0.9213" style="bottom: clamp(9rem, 22vh, 13rem);">
+      <p class="outcome-count"><span data-sc-count="0 1,000">0</span>+</p>
+      <span class="outcome-label">Professional firms</span>
+      <p class="outcome-fact">Trusted in all Canadian provinces.</p>
+      <p class="outcome-states">Live in the United States in Arizona, California, Colorado, Georgia, Illinois, Nevada, New Jersey, New York, North Carolina, Pennsylvania, South Carolina, and Texas.</p>
+    </div>
+
+    <div class="sc-copy sc-copy--lead" data-sc-copy data-sc-window="finale" style="bottom: clamp(2rem, 8vh, 5rem);">
+      <div class="finale-links">
+        <a href="/">More work at flat7.design</a>
+        <a href="/onix/">Next case study: Onix</a>
+      </div>
+      <p class="colophon">Estateably case study by Mike Jerugim. Director of Design. &middot; <a href="mailto:mike@flat7.design">Write to Mike</a></p>
+    </div>
+  </div>
+
+  <div data-sc-spacer aria-hidden="true"></div>
+</div>
+
+<nav id="ring-map" aria-label="Network stations">
+  <svg viewBox="0 0 132 132" width="132" height="132">
+    <circle class="track" cx="66" cy="66" r="52"/>
+    <path class="arc" id="ring-arc" d=""/>
+    <g id="ring-nodes"></g>
+  </svg>
+</nav>
+
+<script src="scrollcraft.js"></script>
+<script>
+  ScrollCraft.mount(document);
+  // Expose the mounted instance the way the verification harness expects,
+  // without touching the engine file itself.
+  window.__sc = ScrollCraft.instances[ScrollCraft.instances.length - 1];
+
+  // 7b: the spacer is sized once at mount; a resize after load and after
+  // fonts settle makes it re-measure correctly.
+  function relayout(){ dispatchEvent(new Event('resize')); }
+  addEventListener('load', relayout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+
+  // ---- ring map: the signature move --------------------------------------
+  (function(){
+    var STATIONS = [
+      'Families and executors',
+      'Professional service providers',
+      'Financial institutions and telecoms',
+      'Government agencies',
+      'Beneficiaries'
+    ];
+    var WEIGHTS = [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.928571, 1.5];
+    var TOTAL = WEIGHTS.reduce(function(a,b){ return a+b; }, 0);
+    var CUM = [0];
+    WEIGHTS.forEach(function(w, i){ CUM.push(CUM[i] + w); });
+
+    var svg = document.querySelector('#ring-map svg');
+    var nodesG = document.getElementById('ring-nodes');
+    var arc = document.getElementById('ring-arc');
+    var CX = 66, CY = 66, R = 40;
+    var nodeEls = [];
+
+    STATIONS.forEach(function(label, i){
+      var ang = -90 + i * 72;
+      var rad = ang * Math.PI / 180;
+      var x = CX + Math.cos(rad) * R;
+      var y = CY + Math.sin(rad) * R;
+      var a = document.createElementNS('http://www.w3.org/2000/svg','a');
+      a.setAttribute('href', '#station-' + i);
+      a.setAttribute('aria-label', 'Jump to ' + label);
+      var c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('class','node'); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 6);
+      a.appendChild(c);
+      a.addEventListener('click', function(ev){
+        ev.preventDefault();
+        var trackPx = document.querySelector('[data-sc-spacer]').offsetHeight;
+        var frac = CUM[i+1] / (TOTAL + 1);
+        window.scrollTo({ top: trackPx * frac, behavior: 'smooth' });
+      });
+      nodesG.appendChild(a);
+      nodeEls.push(c);
+    });
+    var centreDot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    centreDot.setAttribute('cx', CX); centreDot.setAttribute('cy', CY); centreDot.setAttribute('r', 4);
+    centreDot.setAttribute('fill', 'var(--sc-accent)');
+    nodesG.appendChild(centreDot);
+
+    function polarArc(cx, cy, r, startDeg, endDeg){
+      var s = { x: cx + r*Math.cos(startDeg*Math.PI/180), y: cy + r*Math.sin(startDeg*Math.PI/180) };
+      var e = { x: cx + r*Math.cos(endDeg*Math.PI/180), y: cy + r*Math.sin(endDeg*Math.PI/180) };
+      var large = (endDeg - startDeg) > 180 ? 1 : 0;
+      return 'M ' + s.x + ' ' + s.y + ' A ' + r + ' ' + r + ' 0 ' + large + ' 1 ' + e.x + ' ' + e.y;
+    }
+
+    var lastLeg = -1;
+    addEventListener('sc:waypoint', function(e){
+      var idx = e.detail.index;
+      lastLeg = idx;
+      var lit = idx >= 6 ? 5 : idx;
+      for (var i = 0; i < nodeEls.length; i++){
+        nodeEls[i].classList.toggle('lit', i < lit || idx >= 6);
+        nodeEls[i].classList.toggle('current', i === idx);
+      }
+      var progress = clampNum((CUM[idx] + (e.detail.progress||0) * WEIGHTS[idx]) / TOTAL, 0, 1);
+      if (idx >= 6) progress = 1;
+      var endDeg = -90 + progress * 360;
+      arc.setAttribute('d', progress > 0.002 ? polarArc(CX, CY, R, -90, endDeg) : '');
+      document.getElementById('ring-map').setAttribute('data-sc-verify-state', 'leg:' + idx + ';lit:' + lit);
+    });
+    function clampNum(x, a, b){ return Math.max(a, Math.min(b, x)); }
+    document.getElementById('ring-map').setAttribute('data-sc-verify-state', 'leg:0;lit:0');
+  })();
+</script>
+</body>
+</html>
