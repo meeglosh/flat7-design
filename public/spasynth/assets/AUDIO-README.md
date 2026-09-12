@@ -1,6 +1,6 @@
 SPASynth demonstrations supplied and approved for the case study by Mike Jerugim.
 
-- spa-1.1.mp3: SPA, approximately 61 seconds.
+- spa-1.2.mp3: SPA, approximately 61 seconds.
 - barnicle-v1.1.mp3: Barnicle, approximately 70 seconds.
 - city-of-cones.mp3: City of Cones, approximately 82 seconds (added 2026-09-07).
 
