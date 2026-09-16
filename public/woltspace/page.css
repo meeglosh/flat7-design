@@ -360,21 +360,122 @@ figcaption span:first-child {
   max-width:55ch
 }
 .turn-intro {
-  padding-block:100px 64px;
-  max-width:800px
+  position:relative;
+  background:var(--sc-canvas)
 }
-.turn-intro>p {
-  font-size:20px;
+.turn-stage {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  /* The engine's .sc-stage supplies this height once it pins the act. Repeat it
+     here so the moment is still a full screen with scripting off, where the act
+     never pins and the section would otherwise collapse to four lines of type. */
+  min-height:100svh;
+  padding-block:64px;
+  overflow:clip
+}
+.turn-wash {
+  position:absolute;
+  inset:0;
+  z-index:0;
+  opacity:0;
+  background-color:#dce5d5;
+  background-image:radial-gradient(58% 48% at 50% 46%,rgba(255,255,255,.55) 0,rgba(255,255,255,0) 72%)
+}
+.turn-inner {
+  position:relative;
+  z-index:1;
+  max-width:1100px
+}
+.turn-inner p {
+  margin-inline:auto
+}
+.turn-lede {
+  font-size:clamp(17px,1.5vw,21px);
   color:var(--sc-ink-soft)
 }
 .turn-intro h2 {
-  font-size:clamp(42px,5vw,72px);
-  margin-block:28px 12px;
-  color:var(--sc-accent)
+  font-size:clamp(46px,8.6vw,124px);
+  line-height:1.05;
+  margin-block:clamp(28px,4.5vh,56px) clamp(14px,2vh,22px);
+  color:var(--sc-ink)
+}
+/* The blank is the whole point: the quote arrives unfinished, then the missing
+   word wipes up into the slot it has been holding open. The slot is sized by the
+   word itself, so the rule can never be a different length from what fills it. */
+.zany-slot {
+  position:relative;
+  display:inline-block
+}
+.zany-rule {
+  position:absolute;
+  left:-.03em;
+  right:-.03em;
+  bottom:.1em;
+  height:.055em;
+  border-radius:.03em;
+  background:var(--line);
+  opacity:0
+}
+.zany-word {
+  display:inline-block;
+  color:var(--sc-accent);
+  will-change:clip-path
+}
+.zany-spark {
+  position:absolute;
+  font-family:var(--sc-font-text);
+  color:var(--sc-accent);
+  line-height:1;
+  opacity:0;
+  pointer-events:none
+}
+.zany-spark-a {
+  top:-.22em;
+  right:-.36em;
+  font-size:.26em
+}
+.zany-spark-b {
+  bottom:-.1em;
+  left:-.4em;
+  font-size:.17em
+}
+.zany-spark-c {
+  top:-.08em;
+  left:-.54em;
+  font-size:.13em
+}
+@media (prefers-reduced-motion:no-preference) {
+  .zany-spark {
+    animation:zany-twinkle 3.6s var(--sc-ease-out,ease-in-out) infinite
+  }
+  .zany-spark-b {
+    animation-delay:-1.2s
+  }
+  .zany-spark-c {
+    animation-delay:-2.4s
+  }
+}
+@keyframes zany-twinkle {
+  0%,100% {
+    transform:rotate(-8deg) scale(1)
+  }
+  50% {
+    transform:rotate(14deg) scale(1.18)
+  }
 }
 .turn-intro .quote-credit {
-  font-size:13px;
-  margin-bottom:32px
+  margin-top:clamp(10px,1.6vh,18px);
+  font-size:12px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--sc-ink-soft)
+}
+.turn-answer {
+  margin-top:clamp(24px,4vh,44px);
+  font-size:clamp(17px,1.5vw,21px);
+  color:var(--sc-ink-soft)
 }
 .zanier {
   background:#dce5d5;
@@ -876,17 +977,15 @@ figcaption span+span {
 .onboarding img {
   aspect-ratio:.9
 }
-.turn-intro {
-  padding-block:56px 40px
-}
-.turn-intro>p {
+.turn-lede,.turn-answer {
   font-size:16px
 }
 .turn-intro h2 {
-  font-size:40px
+  font-size:clamp(42px,15vw,72px)
 }
 .turn-intro .quote-credit {
-  font-size:11px
+  font-size:10px;
+  letter-spacing:.06em
 }
 .zanier[data-sc-act] {
   height:auto!important;
