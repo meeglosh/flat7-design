@@ -21,7 +21,10 @@ for(const config of [{name:'desktop',width:1440,height:900},{name:'mobile',width
   await page.locator('[data-step="1"]').click();await page.waitForTimeout(100);
   assert.match(await page.locator('#step-copy').textContent(),/local copy/);
   await page.locator('[data-step="2"]').click();assert.match(await page.locator('#step-title').textContent(),/destination/);
-  for(const key of ['workflow','terminal','workspace']){await page.locator(`[data-view="${key}"]`).click();await page.locator('#view-image').evaluate(img=>img.decode());assert.match(await page.locator('#view-image').getAttribute('src'),new RegExp(key));}
+  // crossfadeImage() swaps src only after the INCOMING image decodes, so assert on a
+  // wait, not immediately: decoding the outgoing image resolves at once (and can throw
+  // EncodingError mid-crossfade), which read the previous view's src and failed here.
+  for(const key of ['workflow','terminal','workspace']){await page.locator(`[data-view="${key}"]`).click();await page.waitForFunction(k=>document.querySelector('#view-image').getAttribute('src').includes(k),key);assert.match(await page.locator('#view-image').getAttribute('src'),new RegExp(key));}
   await page.locator('#zany-toggle').scrollIntoViewIfNeeded();
   const before=await page.locator('#zany-toggle').getAttribute('aria-pressed');
   await page.locator('#zany-toggle').click();assert.notEqual(await page.locator('#zany-toggle').getAttribute('aria-pressed'),before);
