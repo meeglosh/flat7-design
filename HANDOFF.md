@@ -1,6 +1,6 @@
 # flat7.design: Session Handoff
 
-Last updated: 2026-09-08 (repo at `7999e57`, live at https://flat7.design). Read this first when picking the project back up.
+Last updated: 2026-09-17 (`main` at `e44d8ad`, live at https://flat7.design). Read this first when picking the project back up, then the **Open threads** list right below Recent history.
 
 flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design consultancy). React 18 + Vite + TypeScript + Tailwind + React Router v7. Every push to `main` deploys to GitHub Pages via GitHub Actions (about one to two minutes; `gh run list --limit 1` shows the run). There is no staging environment: `main` is production.
 
@@ -42,13 +42,23 @@ flat7.design is Mike Jerugim's portfolio for Flat7 Design (AI product design con
   - **Pre-existing red test, not a regression:** `scripts/verify-woltspace.mjs:24` (the workspace view-switcher asserting `#view-image` src matches `workflow` after a click) fails on `main` as well — confirmed by stashing and re-running against untouched files. Everything else in that suite passes on desktop/mobile/compact/reduced/nojs plus the prototype flow. Worth fixing separately.
 - 2026-09-08: **Estateably** scroll-craft case study (branch `estateably-scrollcraft`) merged to `main` at `7999e57`, live at `/estateably/`, tile unhidden at slot 8 after RenoRun (Hololabs, Flashtract, Bandsintown stay hidden). See the dedicated Estateably section below: it has its own edit hazard (two scene copies) worth reading before touching that page again.
 - 2026-09-07: Woltspace scroll-craft case study (Codex branch `codex/woltspace-case-study`) fast-forwarded to `main` at `f549582`; all six Woltspace tiles link to `/woltspace/`. SPASynth (`/spasynth/`) shipped 2026-09-06 with its build tooling moved out of git. RenoRun (rhythmic cutlist, order-tracker chrome) merged to `main` on 2026-09-07 with a new tile after Decathlon; that push hid Hololabs, Flashtract, Bandsintown and (at the time) Estateably from the grids, before Estateably was unhidden the next day. Onix device-frame corners now scale with frame width (14% outer, minus bezel for the screen); apply the same rule if other pages' frames look off.
-- **Worktree layout, current as of 2026-09-08**: the primary checkout `/Users/mikejerugim/flat7-design` (this is Claude Code's shared checkout) is on branch `estateably-scrollcraft`, which is fully merged into `main` and safe to leave as-is or delete once confirmed no longer needed. `/Users/mikejerugim/flat7-design-spasynth` is a second worktree, used by Codex, checked out to `main` directly. `main` cannot be checked out in the primary checkout while the second worktree holds it: update `main` from the primary checkout by pushing refs (`git push origin <branch>:main`), or make edits in the `flat7-design-spasynth` worktree directly (as this HANDOFF update did) and commit/push from there. A third worktree may exist at `/private/tmp/flat7-woltspace` on `codex/woltspace-case-study` (already merged); check `git worktree list` before assuming it's still needed.
+- **Worktree layout, current as of 2026-09-17** (re-check with `git worktree list`; it drifts):
+  - `/Users/mikejerugim/flat7-design`: Claude Code's shared checkout, **now on `woltspace-zanier-reveal`** at `e44d8ad`, which is exactly what `main` points at. The old `estateably-scrollcraft` branch it used to sit on is merged and five behind; every local branch in this repo is fully merged into `origin/main`, so they are all safe to delete whenever.
+  - `/Users/mikejerugim/flat7-design-spasynth`: Codex's worktree, holds branch `main` directly, **and its `main` is stale (`a2a10f4`, two commits behind `origin/main`)**. Anything editing there must `git pull` first or it will re-push a `main` that silently reverts the Woltspace turn.
+  - `/private/tmp/flat7-woltspace`: gone from disk, listed as `prunable`. `git worktree prune` clears it.
+  - `main` cannot be checked out in the primary checkout while the spasynth worktree holds it. Update `main` from here by pushing refs: `git push origin <branch>:main`. That is how `e3bc476` and `e44d8ad` shipped.
 
 - Wingman scroll-craft case study built and shipped, including the landing "case study" framing (eyebrow, self-typing prompt, "Scroll to start presenting" ribbon nudge which Mike asked for despite scroll-craft's ban on scroll cues, "· Case study" top-bar tag), the 14-stop tools rail grouped by stage with the heading pinned above it and the rail panning through the exit, and Mike's own slide backgrounds (`public/wingman/assets/bg-1,3,4,5.jpg`; `bg-2` villa is unused).
 - Decathlon scroll-craft case study shipped; both Decathlon role lines now "Lead Product Designer".
 - Neo hero: static plant still replaced by a looping clip (`public/hero-plants-1080-ai.mp4`, a Real-ESRGAN 2x upscale of the clean 720p source; the 1080p file in `videos/` is a bad upscale, do not use it). Light/dark toggle removed from the Neo nav.
 - Luxury hero: static portrait replaced by `public/hero-luxury.mp4` with `hero-luxury-poster.jpg`; `unsplash5.jpg` is now unreferenced.
 - `videos/` is gitignored source footage (contains personal info in some clips); never commit it.
+
+## Open threads (pick up here)
+
+- **`scripts/verify-woltspace.mjs:24` fails, and it is the test's fault, not the page's.** It clicks `[data-view="<key>"]`, awaits `#view-image`'s `decode()`, then asserts the `src` matches the key. But `crossfadeImage()` in `public/woltspace/page.js:41` is async: it awaits `preload.decode()` on the *incoming* image before swapping `src`, so the assertion reads the *outgoing* src and fails. Verified 2026-09-17 by polling instead of asserting immediately: the switcher does work, the src settles about 50ms after the click (`workflow` → `terminal` → `workspace` all correct). `await page.waitForFunction(k => document.querySelector('#view-image').getAttribute('src').includes(k), key)` in place of the bare assert fixes it. Awaiting `decode()` on the current image can also throw `EncodingError` mid-crossfade, so drop that line rather than keeping it. Until this is fixed the suite cannot go green, and the failure is easy to mistake for a regression.
+- **SPASynth still owes a row in `scrollcraft/FINGERPRINTS.md`** (its grammar is shipped but unrecorded, so the fingerprint gate cannot be checked against it).
+- **Estateably has two copies of the scene**; `docs/estateably/scene/world.html` is the current one. See the Estateably section before touching that page.
 
 ## Standing preferences
 
