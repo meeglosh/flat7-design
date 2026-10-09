@@ -51,6 +51,8 @@ const PROJECTS = [
     desc: 'The DoorDashification of construction materials. Get-it-today delivery and split-shipment tracking for job sites that cannot wait, designed and led as Head of Design through a $142M Series B.' },
   { no: '08', name: 'Estateably',  cat: 'LegalTech · Web',           url: '/estateably/',
     desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms, fiduciary accounting, and compliance - designed for specialists in high-stakes legal work.' },
+  { no: '09', name: 'Heal with Movement', cat: 'Wellness · Website & Booking', url: '/heal-with-movement/',
+    desc: 'A calm booking site and portal for Heidi Rood, an Anat Baniel Method practitioner. Pay first, then book, with refunds, credits and approvals running quietly underneath.' },
   // Hidden until their case studies are rebuilt (2026-09-07): Hololabs, Flashtract, Bandsintown.
   // { no: '08', name: 'Hololabs',    cat: 'Spatial Computing · AR/VR', url: 'https://hololabs.org/',
   //   desc: 'Immersive experience design for entertainment venues and theme parks. UX that lives beyond the screen - spatial, embodied, and physical-first.' },

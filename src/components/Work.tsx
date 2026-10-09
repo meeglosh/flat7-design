@@ -83,6 +83,15 @@ const projects: Project[] = [
     url: '/estateably/',
     accent: '#00C8FF',
   },
+  {
+    id: '09',
+    name: 'Heal with Movement',
+    category: 'Wellness · Website & Booking',
+    description:
+      'A calm booking site and portal for Heidi Rood, an Anat Baniel Method practitioner. Pay first, then book, with refunds, credits and approvals running quietly underneath. Proven with a real payment, cancellation and refund before launch.',
+    url: '/heal-with-movement/',
+    accent: '#A8FF3E',
+  },
   // Hidden until their case studies are rebuilt (2026-09-07): Hololabs, Flashtract, Bandsintown.
   // {
   //   id: '10',

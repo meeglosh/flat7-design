@@ -80,6 +80,7 @@ const PROJECTS = [
   { name: 'Decathlon',   cat: 'E-Commerce',    url: '/decathlon/',                           color: '#005580', initials: 'Dc', thumb: '/thumbnails/myspace/decathlon.png' },
   { name: 'RenoRun',     cat: 'Construction',  url: '/renorun/',                             color: '#cc4422', initials: 'Rr', thumb: '/thumbnails/myspace/renorun.png' },
   { name: 'Estateably',  cat: 'LegalTech',     url: '/estateably/',                          color: '#554400', initials: 'Es', thumb: '/thumbnails/myspace/estateably.png' },
+  { name: 'Heal with Movement', cat: 'Wellness', url: '/heal-with-movement/', color: '#786179', initials: 'Hm', thumb: '/thumbnails/myspace/heal-with-movement.png' },
   // Hidden until their case studies are rebuilt (2026-09-07): Hololabs, Flashtract, Bandsintown.
   // { name: 'Hololabs',    cat: 'AR/VR',         url: 'https://hololabs.org/',                color: '#660066', initials: 'Hl', thumb: '/thumbnails/myspace/hololabs.png' },
   // { name: 'Bandsintown', cat: 'Music Tech',    url: 'https://www.artist.bandsintown.com/',  color: '#883300', initials: 'Bt', thumb: '/thumbnails/myspace/bandsintown.png' },

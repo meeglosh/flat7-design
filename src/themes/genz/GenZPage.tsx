@@ -71,6 +71,8 @@ const PROJECTS = [
     desc: "The DoorDashification of construction materials. Get-it-today delivery and split-shipment tracking for job sites that cannot wait, designed and led as Head of Design through a $142M Series B." },
   { no: '08', name: 'Estateably',  cat: 'LegalTech · Web',          url: '/estateably/',        pastel: 'lavender', size: 'small',
     desc: 'Estate and trust administration for attorneys and CPAs. 3,000+ jurisdiction-specific forms and fiduciary accounting.' },
+  { no: '09', name: 'Heal with Movement', cat: 'Wellness · Website & Booking', url: '/heal-with-movement/', pastel: 'mint', size: 'small',
+    desc: 'A calm booking site for an ABM practitioner. Pay first, then book, with refunds and credits running quietly underneath.' },
   // Hidden until their case studies are rebuilt (2026-09-07): Hololabs, Flashtract, Bandsintown.
   // { no: '09', name: 'Hololabs',    cat: 'Spatial Computing · AR/VR', url: 'https://hololabs.org/',             pastel: 'coral',   size: 'small',
   //   desc: 'Immersive experience design for entertainment venues and theme parks. UX beyond the screen  -  spatial and embodied.' },
